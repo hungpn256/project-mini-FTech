@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: 16,
   },
   photosItem: {
     width: windowWidth / 3 - 2,
@@ -112,6 +113,9 @@ const styles = StyleSheet.create({
   imageInModal: {
     flex: 1,
     resizeMode: 'contain',
+  },
+  viewContent: {
+    backgroundColor: '#f0f2f5',
   },
 });
 export default styles;

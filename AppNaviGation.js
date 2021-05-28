@@ -5,12 +5,12 @@ import Login from './src/Screens/Auth/Login';
 import Home from './src/Screens/Home';
 import Register from './src/Screens/Auth/Register';
 import {Provider, useSelector} from 'react-redux';
-import Profile from './src/Screens/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {Text, View, StyleSheet} from 'react-native';
+import Profile from './src/Screens/Profile';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export default function AppNavigator() {

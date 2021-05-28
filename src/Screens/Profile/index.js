@@ -1,71 +1,15 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
+import {Button} from 'react-native-paper';
+import Article from '../../Components/Article.js';
+import PostArticle from '../../Components/PostArticle.js';
+import About from './components/About.js';
 import Photos from './components/Photos.js';
 import styles from './styles';
-import {Button} from 'react-native-paper';
-import About from './components/About.js';
-import PostArticle from './components/PostArticle.js';
-const mockImages = [
-  {
-    id: 1,
-    url: 'https://randomwordgenerator.com/img/picture-generator/53e9d1454a54b10ff3d8992cc12c30771037dbf85254784a70287ed39345_640.jpg',
-  },
-  {
-    id: 2,
-    url: 'https://randomwordgenerator.com/img/picture-generator/53e9d1454a54b10ff3d8992cc12c30771037dbf85254784a70287ed39345_640.jpg',
-  },
-  {
-    id: 3,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e7dd454256a914f1dc8460962e33791c3ad6e04e50744172297bd5914ac6_640.jpg',
-  },
-  {
-    id: 4,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e1d2404e53a514f1dc8460962e33791c3ad6e04e507440762879dd9548c7_640.jpg',
-  },
-  {
-    id: 5,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e4d74b495bb10ff3d8992cc12c30771037dbf85254794e72267add944a_640.jpg',
-  },
-  {
-    id: 6,
-    url: 'https://randomwordgenerator.com/img/picture-generator/53e9d1454a54b10ff3d8992cc12c30771037dbf85254784a70287ed39345_640.jpg',
-  },
-  {
-    id: 7,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e7dd454256a914f1dc8460962e33791c3ad6e04e50744172297bd5914ac6_640.jpg',
-  },
-  {
-    id: 8,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e1d2404e53a514f1dc8460962e33791c3ad6e04e507440762879dd9548c7_640.jpg',
-  },
-  {
-    id: 9,
-    url: 'https://randomwordgenerator.com/img/picture-generator/55e1d2404e53a514f1dc8460962e33791c3ad6e04e507440762879dd9548c7_640.jpg',
-  },
-];
+
 const Profile = ({navigation}) => {
-  const [images, setImages] = useState(mockImages);
   const [tab, setTab] = useState(1);
-  const lengthPosts = useMemo(() => {
-    console.log('abc');
-    return images.length;
-  }, [images.length]);
-  const handleDelete = useCallback(
-    id => {
-      let index = -1;
-      const imagesClone = [...images];
-      imagesClone.forEach((item, ind) => {
-        if (item.id === id) {
-          index = ind;
-          return;
-        }
-      });
-      imagesClone.splice(index, 1);
-      console.log(imagesClone);
-      setImages(imagesClone);
-    },
-    [images.length],
-  );
+
   return (
     <ScrollView style={styles.background}>
       <View style={styles.body}>
@@ -87,7 +31,7 @@ const Profile = ({navigation}) => {
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>
-            <Text style={styles.inforItemNumber}>{lengthPosts}</Text>
+            <Text style={styles.inforItemNumber}>10</Text>
           </View>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Followers</Text>
@@ -138,15 +82,19 @@ const Profile = ({navigation}) => {
           </Button>
         </View>
         {tab === 1 ? (
-          <>
+          <View style={styles.viewContent}>
             <PostArticle />
-          </>
+            <Article />
+            <Article />
+            <Article />
+            <Article />
+          </View>
         ) : tab === 2 ? (
-          <View>
-            <Photos images={images} handleDelete={handleDelete} />
+          <View style={styles.viewContent}>
+            <Photos />
           </View>
         ) : (
-          <View>
+          <View style={styles.viewContent}>
             <About />
           </View>
         )}
