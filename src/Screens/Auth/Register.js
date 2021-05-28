@@ -1,108 +1,72 @@
-import React, {useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  ImageBackground,
-  Modal,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {AUTH_CHANGE_STATE, REGISTER} from './constants';
-import styles from './styles';
-const Register = ({navigation}) => {
-  const refInput2 = useRef(null);
-  const [username, setUserName] = useState('');
-  const [password, setPassword] = useState('');
-  const auth = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const {loading, registerSuccess} = auth;
-  const handleRegister = () => {
-    if (username.length > 0 && password.length > 0) {
-      dispatch({
-        type: REGISTER,
-        payload: {username, password},
-      });
+import React, { useState } from 'react'
+import { View, Text, ScrollView, ImageBackground, Image,Modal,ActivityIndicator } from 'react-native'
+import BG from '../../../assets/Img/BG.jpg'
+import Logo from '../../../assets/Img/logo.png'
+import styles  from './styles'
+import TextInput from '../../Component/TextInput/index'
+import FButton from '../../Component/TouchOpacity/index'
+import Decor from '../../Component/Decor/index'
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch,useSelector } from 'react-redux'
+import {REGISTER} from './constants'
+const Register = () => {
+  const navigate = useNavigation()
+  const [email,setEmail] = useState('')
+  const [pass,setPass] = useState('')
+  const [name,setName] = useState('')
+  const [repass,setRepass] = useState('')
+  const dispatch = useDispatch()
+  const loading = useSelector(state => state.auth.loading)
+  const handlePress = () =>{
+    if (email.length > 0 && pass.length > 0 && name.length > 0 ) {
+      if (pass === repass) {
+        dispatch({
+          type: REGISTER,
+          payload:{email,pass,name}
+        })
+      }
+      else{
+        alert("Re-Password not match with password")
+      }      
     }
-  };
-  if (registerSuccess) {
-    dispatch({
-      type: AUTH_CHANGE_STATE,
-      payload: {registerSuccess: false},
-    });
-    navigation.navigate('Login');
+    else{
+      alert("Your email,pass or name is empty")
+    }
   }
+
   return (
-    <ScrollView style={styles.background}>
-      <ImageBackground
-        style={styles.backgroundImage}
-        source={{
-          uri: 'https://wallup.net/wp-content/uploads/2018/03/19/580133-portrait_display-vertical-pattern-digital_art-748x1330.jpg',
-        }}>
-        <Modal visible={loading} transparent={true}>
-          <View style={styles.viewModal}>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </View>
-        </Modal>
-        <View style={styles.container}>
-          <Text style={styles.textHeader}>Let's sign you in.</Text>
-          <Text style={styles.text}>Welcome back.</Text>
-          <Text style={styles.text}>You've been missed!</Text>
-          <View style={styles.formInput}>
-            <TextInput
-              value={username}
-              onChangeText={text => {
-                setUserName(text);
-              }}
-              style={styles.input}
-              placeholder="Phone, email or username"
-              placeholderTextColor="#ccc"
-              onEndEditing={() => {
-                refInput2.current.focus();
-              }}
-            />
-            <TextInput
-              value={password}
-              onChangeText={text => {
-                setPassword(text);
-              }}
-              style={styles.input}
-              ref={refInput2}
-              secureTextEntry={true}
-              placeholderTextColor="#ccc"
-              placeholder="Password"
-            />
-          </View>
-          <View style={styles.controller}>
-            <View style={styles.textRegister}>
-              <Text
-                style={{
-                  color: '#ccc',
-                  fontSize: 16,
-                }}>
-                Have an account?
-              </Text>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => {
-                  navigation.navigate('Login');
-                }}>
-                <Text
-                  style={{color: '#fff', fontSize: 16, marginHorizontal: 5}}>
-                  Login
-                </Text>
-              </TouchableOpacity>
+    <View style={styles.container}>
+        <ScrollView >
+          <ImageBackground style={styles.background} source={BG}>
+          <Modal visible={loading} transparent={true}>
+              <View style={styles.viewModal}>
+                <ActivityIndicator size="large" color="#232B2B" />
+              </View>
+          </Modal>    
+            <View style={styles.overlay}>
+              <View style={styles.LogoStyle}>
+                <Image source={Logo} style={styles.LogoSize}/>
+              </View>
+              <View style={styles.quote}>
+                <Text style={styles.textQuote}>Coin social media app. We connect people !</Text>
+              </View>
+              <View style={styles.input}>
+                <TextInput placeholder="Full Name"  onChangeText={(text)=>setName(text)}/>
+                <TextInput placeholder="Email"  onChangeText={(text)=>setEmail(text)}/>
+                <TextInput placeholder="Password"  onChangeText={(text)=>setPass(text)} secure={true}/>
+                <TextInput placeholder="Re-password"  onChangeText={(text)=>setRepass(text)} secure={true}/>
+              </View>
+              <View style={styles.btn}>
+                <FButton Name="Sign up" handlePress={handlePress}/>
+              </View>
+              <View style={styles.btn}>
+              <Text style={[styles.textStyle,{marginBottom:10}]}>Already have an account ? <Text onPress={()=> navigate.navigate("Login")} style={{fontWeight:'bold',color:'white'}}>Sign in</Text></Text>
+              </View>
             </View>
-            <TouchableOpacity activeOpacity={0.8} onPress={handleRegister}>
-              <Text style={styles.buttonSignup}> Register</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ImageBackground>
-    </ScrollView>
-  );
+          </ImageBackground>        
+        </ScrollView>      
+    </View>
+  )
 };
 
 export default Register;

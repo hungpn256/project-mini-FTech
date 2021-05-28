@@ -1,9 +1,10 @@
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const USER_STATUS = "STATUS"
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-
+export const LOGOUT = 'LOGOUT'
 export const REGISTER = 'REGISTER';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
-
+export const CHECK = "CHECK";
 export const AUTH_CHANGE_STATE = 'AUTH_CHANGE_STATE';
