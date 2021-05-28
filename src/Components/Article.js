@@ -23,7 +23,7 @@ const Article = () => {
         subtitle="25m ago"
         left={LeftContent}
       />
-      <Card.Content>
+      <Card.Content style={styles.content}>
         <Paragraph>
           Muộn rồi mà sao còn Nhìn lên trần nhà rồi quay ra, lại quay vào Nằm
           trằn trọc vậy đến sáng mai Ôm tương tư nụ cười của ai đó Làm con tim
@@ -37,16 +37,16 @@ const Article = () => {
           onPress={() => {
             setLike(like => !like);
           }}>
-          <AntDesignIcon name={!like ? 'like2' : 'like1'} size={32} />
+          <AntDesignIcon name={!like ? 'like2' : 'like1'} size={28} />
         </Button>
         <Button>
-          <FontistoIcon name="comment" size={28} />
+          <FontistoIcon name="comment" size={24} />
         </Button>
         <Button>
-          <SimpleLineIcons name="share" size={28} />
+          <SimpleLineIcons name="share" size={24} />
         </Button>
       </Card.Actions>
-      <Card.Actions>
+      <Card.Actions style={{marginBottom: 8}}>
         <InputEncloseAvatar
           editable={true}
           placeholder="Write your comment..."
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 8,
     marginHorizontal: 4,
+  },
+  content: {
+    marginBottom: 8,
   },
 });
 export default Article;

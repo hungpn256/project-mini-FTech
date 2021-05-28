@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TextInput, Text} from 'react-native';
+import {View, StyleSheet, TextInput, Text, Image} from 'react-native';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default function PostArticle({editable}) {
+  const [image, setImage] = useState(null);
   return (
     <Card mode="outline" style={styles.container}>
       <View style={styles.inputWrapper}>
@@ -11,8 +13,12 @@ export default function PostArticle({editable}) {
           editable={false}
           placeholder="What's on your mind, Hung"
         />
+        {image && (
+          <View style={styles.imageWrapper}>
+            <Image style={styles.image} source={image} />
+          </View>
+        )}
       </View>
-      <Divider style={{color: '#000'}} />
       <Card.Actions style={styles.actionBottom}>
         <Button
           style={styles.actionBtn}
@@ -20,6 +26,11 @@ export default function PostArticle({editable}) {
           color="#777"
           onPress={e => {
             console.log('Camera');
+            launchCamera({mediaType: 'photo', saveToPhotos: true}, props => {
+              if (props.type === 'image/jpeg') {
+                setImage(props);
+              }
+            });
           }}>
           <Text style={styles.colorText}>Camera</Text>
         </Button>
@@ -29,6 +40,11 @@ export default function PostArticle({editable}) {
           color="#777"
           onPress={e => {
             console.log('image');
+            launchImageLibrary({mediaType: 'photo'}, props => {
+              if (props.type === 'image/jpeg') {
+                setImage(props);
+              }
+            });
           }}>
           <Text style={styles.colorText}>Photo/Video</Text>
         </Button>
@@ -65,5 +81,22 @@ const styles = StyleSheet.create({
   },
   actionBtn: {
     paddingTop: 8,
+  },
+  imageWrapper: {
+    height: 100,
+    width: 100,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    elevation: 2,
+  },
+  image: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
   },
 });
