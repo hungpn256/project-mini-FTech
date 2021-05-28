@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, TextInput, Text, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Text,
+  Image,
+  PermissionsAndroid,
+} from 'react-native';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -24,13 +31,32 @@ export default function PostArticle({editable}) {
           style={styles.actionBtn}
           icon="camera"
           color="#777"
-          onPress={e => {
+          onPress={async e => {
             console.log('Camera');
-            launchCamera({mediaType: 'photo', saveToPhotos: true}, props => {
-              if (props.type === 'image/jpeg') {
-                setImage(props);
+            try {
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                  title: 'App Camera Permission',
+                  message: 'App needs access to your camera ',
+                  buttonNeutral: 'Ask Me Later',
+                  buttonNegative: 'Cancel',
+                  buttonPositive: 'OK',
+                },
+              );
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('Camera permission given');
+                launchCamera({mediaType: 'photo'}, props => {
+                  if (props.type === 'image/jpeg') {
+                    setImage(props);
+                  }
+                });
+              } else {
+                console.log('Camera permission denied');
               }
-            });
+            } catch (err) {
+              console.warn(err);
+            }
           }}>
           <Text style={styles.colorText}>Camera</Text>
         </Button>
@@ -38,7 +64,7 @@ export default function PostArticle({editable}) {
           style={styles.actionBtn}
           icon="folder-image"
           color="#777"
-          onPress={e => {
+          onPress={async e => {
             console.log('image');
             launchImageLibrary({mediaType: 'photo'}, props => {
               if (props.type === 'image/jpeg') {

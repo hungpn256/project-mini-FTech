@@ -1,61 +1,40 @@
-import React, { useEffect,useState } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import AuthStack from './src/Navigator/AuthStack'
-import MainStack from './src/Navigator/MainStack'
-import {CHECK} from './src/Screens/Auth/constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Loading from './src/Component/Loading/index'
-import {createStackNavigator} from '@react-navigation/stack';
-import Login from './src/Screens/Auth/Login';
-import Home from './src/Screens/Home';
-import Register from './src/Screens/Auth/Register';
-import {Provider, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Text, View, StyleSheet} from 'react-native';
-import Profile from './src/Screens/Profile';
+import {createStackNavigator} from '@react-navigation/stack';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import Loading from './src/Component/Loading/index';
+import AuthStack from './src/Navigator/AuthStack';
+import MainStack from './src/Navigator/MainStack';
+import {CHECK} from './src/Screens/Auth/constants';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export default function AppNavigator() {
-  const isLogged = useSelector(state => state.auth.isLogged)
-  const dispatch = useDispatch()
-  const [loading,setLoading] = useState(true)
-  useEffect(()=>{
-    const check = async ()=> {
-      const data = await AsyncStorage.getItem("USER_ID")
+  const isLogged = useSelector(state => state.auth.isLogged);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const check = async () => {
+      const data = await AsyncStorage.getItem('USER_ID');
       if (data !== null) {
-        dispatch({type:CHECK,payload:true})
-        setLoading(false)
+        dispatch({type: CHECK, payload: true});
+        setLoading(false);
+      } else {
+        dispatch({type: CHECK, payload: false});
+        setLoading(false);
       }
-      else{
-        dispatch({type:CHECK,payload:false})
-        setLoading(false)
-      }
-    }
-    check()
-  },[])
+    };
+    check();
+  }, []);
 
-  return (
-    loading ? (
-      <>
-        <Loading/>
-      </>
-    )
-    :
-    (
+  return loading ? (
     <>
-      {
-      isLogged ?
-        <MainStack/>
-        :
-        <AuthStack/>
-      }
+      <Loading />
     </>
-  )
-  )
+  ) : (
+    <>{isLogged ? <MainStack /> : <AuthStack />}</>
+  );
 }
 const styles = StyleSheet.create({
   tabBottom: {
