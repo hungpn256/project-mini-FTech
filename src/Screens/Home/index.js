@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import { useDispatch } from 'react-redux';
-import {LOGOUT} from '../Auth/constants'
+import {ScrollView, Text, View} from 'react-native';
+import Article from '../../Components/Article';
+import PostArticle from '../../Components/PostArticle';
 const Home = () => {
   // const dispatch = useDispatch()
   // const handleLogout = () =>{
@@ -10,9 +10,17 @@ const Home = () => {
   //   })
   // }
   return (
-    <View>
-      <Text>home</Text>
-    </View>
+    <ScrollView>
+      <Text style={{fontSize: 50, backgroundColor: '#fff'}}>Logo</Text>
+      <PostArticle />
+      <Article />
+      <Article />
+      <Article />
+      <Article />
+      <Article />
+      <Article />
+      <Article />
+    </ScrollView>
   );
 };
 
