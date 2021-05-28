@@ -1,11 +1,5 @@
-import React, { useEffect,useState } from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import AuthStack from './src/Navigator/AuthStack'
-import MainStack from './src/Navigator/MainStack'
-import {CHECK} from './src/Screens/Auth/constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Loading from './src/Component/Loading/index'
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from './src/Screens/Auth/Login';
 import Home from './src/Screens/Home';
@@ -20,42 +14,90 @@ import Profile from './src/Screens/Profile';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 export default function AppNavigator() {
-  const isLogged = useSelector(state => state.auth.isLogged)
-  const dispatch = useDispatch()
-  const [loading,setLoading] = useState(true)
-  useEffect(()=>{
-    const check = async ()=> {
-      const data = await AsyncStorage.getItem("USER_ID")
-      if (data !== null) {
-        dispatch({type:CHECK,payload:true})
-        setLoading(false)
-      }
-      else{
-        dispatch({type:CHECK,payload:false})
-        setLoading(false)
-      }
-    }
-    check()
-  },[])
-
+  const isLoged = useSelector(state => state.auth.isLoged);
   return (
-    loading ? (
-      <>
-        <Loading/>
-      </>
-    )
-    :
-    (
-    <>
-      {
-      isLogged ?
-        <MainStack/>
-        :
-        <AuthStack/>
-      }
-    </>
-  )
-  )
+    <NavigationContainer>
+      {!isLoged ? (
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Login"
+            component={Login}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Register"
+            component={Register}
+          />
+        </Stack.Navigator>
+      ) : (
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              let iconName;
+
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+                return (
+                  <View
+                    style={[
+                      styles.tabBottom,
+                      focused && styles.tabBottomFocus(color),
+                    ]}>
+                    <Ionicons name={iconName} size={size} color={color} />
+                  </View>
+                );
+              } else if (route.name === 'Profile') {
+                iconName = focused ? 'user-circle-o' : 'user-circle';
+                return (
+                  <View
+                    style={[
+                      styles.tabBottom,
+                      focused && styles.tabBottomFocus(color),
+                    ]}>
+                    <FontAwesome name={iconName} size={size} color={color} />
+                  </View>
+                );
+              } else if (route.name === 'Notification') {
+                iconName = focused ? 'bell-alt' : 'bell';
+                return (
+                  <View
+                    style={[
+                      styles.tabBottom,
+                      focused && styles.tabBottomFocus(color),
+                    ]}>
+                    <Fontisto name={iconName} size={size} color={color} />
+                  </View>
+                );
+              } else if (route.name === 'List') {
+                iconName = 'nav-icon-list-a';
+                return (
+                  <View
+                    style={[
+                      styles.tabBottom,
+                      focused && styles.tabBottomFocus(color),
+                    ]}>
+                    <Fontisto name={iconName} size={size - 4} color={color} />
+                  </View>
+                );
+              }
+
+              // You can return any component that you like here!
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: '#3498DB',
+            inactiveTintColor: '#777',
+            showLabel: false,
+          }}>
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Notification" component={Profile} />
+          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen name="List" component={Profile} />
+        </Tab.Navigator>
+      )}
+    </NavigationContainer>
+  );
 }
 const styles = StyleSheet.create({
   tabBottom: {

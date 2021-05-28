@@ -1,26 +1,27 @@
 const initialState = {
+  user: null,
   loading: false,
-  isLogged: false,
+  isLoged: false,
+  registerSuccess: false,
 };
-import {AUTH_CHANGE_STATE, LOGIN_SUCCESS, USER_STATUS} from './constants';
+import {AUTH_CHANGE_STATE, LOGIN_SUCCESS, REGISTER_SUCCESS} from './constants';
 const reducer = (state = initialState, action) => {
-  console.log(action)
   switch (action.type) {
     case AUTH_CHANGE_STATE:
       return {
         ...state,
         ...action.payload,
       };
-    case USER_STATUS:{
-      return {
-        ...state,
-        isLogged: action.payload.status,
-      };
-    }
     case LOGIN_SUCCESS:
       return {
         ...state,
-        isLogged: action.payload.status,
+        user: action.payload,
+        isLoged: true,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        registerSuccess: true,
       };
     default:
       return state;
