@@ -96,6 +96,8 @@ const Profile = ({navigation}) => {
         ) : (
           <View style={styles.viewContent}>
             <About />
+            <About />
+            <About />
           </View>
         )}
       </View>

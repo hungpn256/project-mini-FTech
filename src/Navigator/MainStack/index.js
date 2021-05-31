@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from '../../Screens/Home';
+import Menu from '../../Screens/Menu';
 import Profile from '../../Screens/Profile';
 const Tab = createBottomTabNavigator();
 export default function AppNavigator() {
@@ -49,7 +50,7 @@ export default function AppNavigator() {
                   <Fontisto name={iconName} size={size} color={color} />
                 </View>
               );
-            } else if (route.name === 'List') {
+            } else if (route.name === 'Menu') {
               iconName = 'nav-icon-list-a';
               return (
                 <View
@@ -73,7 +74,7 @@ export default function AppNavigator() {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Notification" component={Profile} />
         <Tab.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="List" component={Profile} />
+        <Tab.Screen name="Menu" component={Menu} />
       </Tab.Navigator>
     </NavigationContainer>
   );

@@ -1,17 +1,15 @@
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Article from '../../Components/Article';
 import PostArticle from '../../Components/PostArticle';
+import {LOGOUT} from '../Auth/constants';
 const Home = () => {
-  // const dispatch = useDispatch()
-  // const handleLogout = () =>{
-  //   dispatch({
-  //     type:LOGOUT
-  //   })
-  // }
   return (
     <ScrollView>
-      <Text style={{fontSize: 50, backgroundColor: '#fff'}}>Logo</Text>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{fontSize: 50, backgroundColor: '#fff'}}>Logo</Text>
+      </View>
       <PostArticle />
       <Article />
       <Article />

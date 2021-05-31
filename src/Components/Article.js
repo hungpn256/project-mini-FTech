@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -14,6 +14,7 @@ const LeftContent = props => (
   />
 );
 const Article = () => {
+  const inputRef = useRef(null);
   const [like, setLike] = useState(false);
   return (
     <Card mode="outlined" style={styles.container}>
@@ -32,14 +33,17 @@ const Article = () => {
         </Paragraph>
       </Card.Content>
       <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-      <Card.Actions>
+      <Card.Actions style={styles.cardAction}>
         <Button
           onPress={() => {
             setLike(like => !like);
           }}>
           <AntDesignIcon name={!like ? 'like2' : 'like1'} size={28} />
         </Button>
-        <Button>
+        <Button
+          onPress={() => {
+            inputRef.current.focus();
+          }}>
           <FontistoIcon name="comment" size={24} />
         </Button>
         <Button>
@@ -48,6 +52,7 @@ const Article = () => {
       </Card.Actions>
       <Card.Actions style={{marginBottom: 8}}>
         <InputEncloseAvatar
+          inputRef={inputRef}
           editable={true}
           placeholder="Write your comment..."
         />
@@ -62,6 +67,14 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 8,
+  },
+  cardAction: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingVertical: 0,
+    marginVertical: 4,
   },
 });
 export default Article;
