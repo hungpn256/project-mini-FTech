@@ -2,7 +2,7 @@ import React from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
 import {Avatar} from 'react-native-paper';
 
-export default function InputEncloseAvatar({editable, placeholder}) {
+export default function InputEncloseAvatar({editable, placeholder, inputRef}) {
   return (
     <View style={styles.inputWrapper}>
       <Avatar.Image
@@ -12,6 +12,7 @@ export default function InputEncloseAvatar({editable, placeholder}) {
         }}
       />
       <TextInput
+        ref={inputRef}
         style={styles.input}
         placeholder={placeholder}
         editable={!!editable}
