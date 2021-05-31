@@ -38,7 +38,7 @@ export const logout = async () =>{
   }
 }
 //thêm user vào databse sau khi đki thành công
-const addUser = async(uid,fullName)=>{
+const addUser = async (uid,fullName) => {
   try {
     return await firebase.firestore()
     .collection('user')
