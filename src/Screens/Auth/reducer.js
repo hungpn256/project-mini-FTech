@@ -4,14 +4,14 @@ const initialState = {
 };
 import {AUTH_CHANGE_STATE, LOGIN_SUCCESS, USER_STATUS} from './constants';
 const reducer = (state = initialState, action) => {
-  console.log(action)
+  console.log(action);
   switch (action.type) {
     case AUTH_CHANGE_STATE:
       return {
         ...state,
         ...action.payload,
       };
-    case USER_STATUS:{
+    case USER_STATUS: {
       return {
         ...state,
         isLogged: action.payload.status,

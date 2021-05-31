@@ -1,10 +1,10 @@
 {
     "plugins": [
       ["module-resolver", {
-        "root": ["./src"],
         "alias": {
-          "test": "./test",
-          "underscore": "lodash"
+          "*":"./src",
+          "@Components": "./src/Components",
+          "@Screens":"./src/Screens"
         }
       }]
     ]
