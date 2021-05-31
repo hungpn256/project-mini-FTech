@@ -80,7 +80,6 @@ export default function PostArticle({editable}) {
 }
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
     padding: 8,
   },
   inputWrapper: {

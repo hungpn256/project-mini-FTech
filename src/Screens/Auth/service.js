@@ -25,6 +25,7 @@ export const login = async ({email, pass}) => {
     }
   } catch (error) {
     CatchErr(error.code);
+    console.log(error, 'err');
     return false;
   }
 };
