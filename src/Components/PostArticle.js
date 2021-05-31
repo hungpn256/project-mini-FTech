@@ -17,7 +17,7 @@ export default function PostArticle({editable}) {
     <Card mode="outline" style={styles.container}>
       <View style={styles.inputWrapper}>
         <InputEncloseAvatar
-          editable={false}
+          editable={!!editable}
           placeholder="What's on your mind, Hung"
         />
         {image && (
