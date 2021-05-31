@@ -8,6 +8,7 @@ export default function index() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     )

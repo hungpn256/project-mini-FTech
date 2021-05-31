@@ -62,7 +62,7 @@ export const register = async ({email, pass,name}) => {
       addUser(uid,name)
       return true 
     }
-} catch (error) {
+} catch (error) { 
     CatchErr(error.code)
     return false
 }
