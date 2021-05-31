@@ -1,6 +1,6 @@
 import {takeLatest, put, call, delay} from '@redux-saga/core/effects';
 import * as AUTH_CONST from './constants';
-import {login, register,logout} from './service';
+import {login, register,logout, loginGoogle} from './service';
 
 function* handleLoginSaga({payload}) {
   yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
@@ -46,10 +46,25 @@ function* handleRegisterSaga({payload}) {
   } 
 }
 
+function* handleGoogle(){
+  yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
+  try {
+    const res = yield call(loginGoogle);
+    if (res) {
+          yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status:true}});
+    }
+    yield delay(200);
+    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
+  } catch (err) {
+    console.log(err);
+  } 
+}
+
 function* watchLoginSaga() {
   yield takeLatest(AUTH_CONST.LOGIN, handleLoginSaga);
   yield takeLatest(AUTH_CONST.REGISTER, handleRegisterSaga);
   yield takeLatest(AUTH_CONST.LOGOUT, handleLogoutSaga);
   yield takeLatest(AUTH_CONST.CHECK, handleStatus)
+  yield takeLatest(AUTH_CONST.GOOGLE, handleGoogle)
 }
 export default watchLoginSaga;

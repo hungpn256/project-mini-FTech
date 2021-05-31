@@ -13,6 +13,7 @@ export default function AppNavigator() {
   useEffect(()=>{
     const check = async ()=> {
       const data = await AsyncStorage.getItem("USER_ID")
+      console.log("sadsadhjsakdjhsad"+data);
       if (data !== null) {
         dispatch({type:CHECK,payload:true})
         setLoading(false)

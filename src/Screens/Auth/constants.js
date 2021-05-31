@@ -8,3 +8,4 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
 export const CHECK = "CHECK";
 export const AUTH_CHANGE_STATE = 'AUTH_CHANGE_STATE';
+export const GOOGLE = 'GOOGLE'

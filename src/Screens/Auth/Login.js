@@ -8,8 +8,9 @@ import FButton from '../../Component/TouchOpacity/index'
 import Decor from '../../Component/Decor/index'
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
-import {LOGIN} from './constants'
+import {GOOGLE, LOGIN} from './constants'
 export default function Login() {
+  
   const navigate = useNavigation()
   const dispatch = useDispatch()
   const [email,setEmail] = useState('')
@@ -25,6 +26,13 @@ export default function Login() {
     else{
       alert("You Email or Password is empty")
     }
+  }
+
+  const handleGoogle = ()=>{
+    dispatch({
+      type:GOOGLE,
+      payload:true
+    })
   }
 
 
@@ -53,7 +61,7 @@ export default function Login() {
               </View>
               <Decor/>
               <View style={styles.btn}>
-              <FButton Name="Sign in with google "/>
+              <FButton handlePress={handleGoogle}  Name="Sign in with google "/>
               <Text style={[styles.textStyle,{marginBottom:10}]}>Don't have an account ? <Text onPress={()=> navigate.navigate("Register")} style={{fontWeight:'bold',color:'white'}}>Sign Up</Text></Text>
               </View>
             </View>
