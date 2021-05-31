@@ -1,6 +1,6 @@
 import {takeLatest, put, call, delay} from '@redux-saga/core/effects';
 import * as AUTH_CONST from './constants';
-import {login, register,logout, loginGoogle} from './service';
+import {login, register, logout, loginGoogle} from './service';
 
 function* handleLoginSaga({payload}) {
   yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
@@ -8,9 +8,10 @@ function* handleLoginSaga({payload}) {
     const res = yield call(login, payload);
     yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
     yield delay(200);
-    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   } catch (err) {
     console.log(err);
+  } finally {
+    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   }
 }
 
@@ -40,31 +41,33 @@ function* handleRegisterSaga({payload}) {
     const res = yield call(register, payload);
     yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
     yield delay(200);
-    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   } catch (err) {
     console.log(err);
+  } finally {
+    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   }
 }
 
-function* handleGoogle(){
+function* handleGoogle() {
   yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
   try {
     const res = yield call(loginGoogle);
     if (res) {
-          yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status:true}});
+      yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: true}});
     }
     yield delay(200);
-    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   } catch (err) {
     console.log(err);
-  } 
+  } finally {
+    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
+  }
 }
 
 function* watchLoginSaga() {
   yield takeLatest(AUTH_CONST.LOGIN, handleLoginSaga);
   yield takeLatest(AUTH_CONST.REGISTER, handleRegisterSaga);
   yield takeLatest(AUTH_CONST.LOGOUT, handleLogoutSaga);
-  yield takeLatest(AUTH_CONST.CHECK, handleStatus)
-  yield takeLatest(AUTH_CONST.GOOGLE, handleGoogle)
+  yield takeLatest(AUTH_CONST.CHECK, handleStatus);
+  yield takeLatest(AUTH_CONST.GOOGLE, handleGoogle);
 }
 export default watchLoginSaga;
