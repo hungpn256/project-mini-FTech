@@ -10,7 +10,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
 import {GOOGLE, LOGIN} from './constants'
 export default function Login() {
-  
   const navigate = useNavigation()
   const dispatch = useDispatch()
   const [email,setEmail] = useState('')
