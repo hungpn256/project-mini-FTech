@@ -1,10 +1,11 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: '49605558541-dqv3864n6hm810foab2v8p4rpabpm97f.apps.googleusercontent.com',
+  webClientId:
+    '49605558541-dqv3864n6hm810foab2v8p4rpabpm97f.apps.googleusercontent.com',
 });
 
 const CatchErr = error => {
@@ -22,7 +23,6 @@ const CatchErr = error => {
   }
 };
 
-
 export async function loginGoogle() {
   // Get the users ID token
   const { idToken } = await GoogleSignin.signIn();
@@ -34,7 +34,7 @@ export async function loginGoogle() {
   return auth().signInWithCredential(googleCredential);
 }
 
-export const login = async ({email, pass}) =>{
+export const login = async ({email, pass}) => {
   try {
     const res = await auth().signInWithEmailAndPassword(email, pass);
     if (res) {
@@ -57,7 +57,7 @@ export const logout = async () => {
   }
 };
 //thêm user vào databse sau khi đki thành công
-const addUser = async (uid,fullName) => {
+const addUser = async (uid, fullName) => {
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: fullName,

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import Article from '../../Components/Article.js';
-import PostArticle from '../../Components/PostArticle.js';
+import PostArticle from '@Components/PostArticle.js';
 import About from './components/About.js';
 import Photos from './components/Photos.js';
 import styles from './styles';
