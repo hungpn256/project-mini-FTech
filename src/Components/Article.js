@@ -62,8 +62,7 @@ const Article = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 8,
-    marginHorizontal: 4,
+    marginVertical: 4,
   },
   content: {
     marginBottom: 8,
