@@ -83,7 +83,9 @@ const Profile = ({navigation}) => {
         </View>
         {tab === 1 ? (
           <View style={styles.viewContent}>
-            <PostArticle />
+            <View style={{marginVertical: 8}}>
+              <PostArticle />
+            </View>
             <Article />
             <Article />
             <Article />
