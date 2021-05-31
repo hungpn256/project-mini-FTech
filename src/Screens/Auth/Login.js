@@ -3,9 +3,9 @@ import { View, Text, ScrollView, ImageBackground, Image,Modal,ActivityIndicator,
 import BG from '../../../assets/Img/BG.jpg'
 import Logo from '../../../assets/Img/logo.png'
 import styles  from './styles'
-import TextInput from '../../Component/TextInput/index'
-import FButton from '../../Component/TouchOpacity/index'
-import Decor from '../../Component/Decor/index'
+import TextInput from '../../Components/TextInput/index'
+import FButton from '../../Components/TouchOpacity/index'
+import Decor from '../../Components/Decor/index'
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux'
 import {GOOGLE, LOGIN} from './constants'
