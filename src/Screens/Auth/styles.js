@@ -1,15 +1,18 @@
-import {StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const heightWindow = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    minHeight: heightWindow,
   },
   background: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
+    minHeight: heightWindow,
   },
   overlay: {
+    flex: 1,
     paddingHorizontal: 20,
     backgroundColor: 'rgba(27,30,35 ,0.7)',
   },
