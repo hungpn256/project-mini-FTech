@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import Article from '../../Components/Article.js';
-import PostArticle from '../../Components/PostArticle.js';
+import PostArticle from '@Components/PostArticle.js';
 import About from './components/About.js';
 import Photos from './components/Photos.js';
 import styles from './styles';
@@ -83,7 +83,9 @@ const Profile = ({navigation}) => {
         </View>
         {tab === 1 ? (
           <View style={styles.viewContent}>
-            <PostArticle />
+            <View style={{marginVertical: 8}}>
+              <PostArticle />
+            </View>
             <Article />
             <Article />
             <Article />
@@ -95,6 +97,8 @@ const Profile = ({navigation}) => {
           </View>
         ) : (
           <View style={styles.viewContent}>
+            <About />
+            <About />
             <About />
           </View>
         )}
