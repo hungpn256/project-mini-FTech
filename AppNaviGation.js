@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { firebase } from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from './src/Components/Loading';
@@ -11,6 +12,16 @@ export default function AppNavigator() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+     (()=>{
+      firebase.auth().onAuthStateChanged(async function(user) {
+        if (user) {
+          await AsyncStorage.setItem('USER_ID',JSON.stringify(user.uid));
+        }
+        else{
+          await AsyncStorage.removeItem("USER_ID")
+        }
+      });
+    })()
     const check = async () => {
       const data = await AsyncStorage.getItem('USER_ID');
       if (data !== null) {

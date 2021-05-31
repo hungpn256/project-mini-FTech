@@ -25,13 +25,11 @@ const CatchErr = error => {
 
 export async function loginGoogle() {
   // Get the users ID token
-  const {idToken} = await GoogleSignin.signIn();
-  // console.log('TOKEN' + idToken);
+  const { idToken } = await GoogleSignin.signIn();
+  // console.log(firebase.auth().currentUser.uid);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  console.log(auth()?.currentUser?.uid ?? 'sda', 'id');
-  // const uid = auth()?.currentUser.uid;
-  // await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
+  // await AsyncStorage.setItem("USER_ID",JSON.stringify(uid))
   // Sign-in the user with the credential
   return auth().signInWithCredential(googleCredential);
 }
@@ -40,8 +38,6 @@ export const login = async ({email, pass}) => {
   try {
     const res = await auth().signInWithEmailAndPassword(email, pass);
     if (res) {
-      const uid = firebase.auth().currentUser.uid;
-      await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
       return true;
     }
   } catch (error) {
@@ -53,10 +49,9 @@ export const login = async ({email, pass}) => {
 
 export const logout = async () => {
   try {
-    await AsyncStorage.removeItem('USER_ID');
-    await GoogleSignin.revokeAccess();
-    await GoogleSignin.signOut();
-    await auth().signOut();
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await auth().signOut()
   } catch (error) {
     console.log(error);
   }
@@ -79,7 +74,6 @@ export const register = async ({email, pass, name}) => {
     const res = await auth().createUserWithEmailAndPassword(email, pass);
     if (res) {
       const uid = firebase.auth().currentUser.uid;
-      await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
       addUser(uid, name);
       return true;
     }
