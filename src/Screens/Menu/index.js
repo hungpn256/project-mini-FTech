@@ -7,13 +7,14 @@ import {
   Dimensions,
 } from 'react-native';
 import {Avatar, Card, Divider, List} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {LOGOUT} from '../Auth/constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 const heightWindow = Dimensions.get('window').height;
 export default function Menu({navigation}) {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
   const handleLogout = () => {
     dispatch({
       type: LOGOUT,
@@ -26,7 +27,7 @@ export default function Menu({navigation}) {
           onPress={() => {
             navigation.navigate('Profile');
           }}
-          title="Pham Nang Hung"
+          title={user ? user.name : 'Loading...'}
           description="trang cá nhân"
           titleStyle={styles.name}
           left={props => (
