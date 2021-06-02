@@ -4,6 +4,7 @@ import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useSelector} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = props => (
   <Avatar.Image
@@ -16,11 +17,12 @@ const LeftContent = props => (
 const Article = () => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
+  const user = useSelector(state => state.auth.user);
   return (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
-        titleStyle={{fontSize: 18, fontWeight: '500'}}
-        title="Phạm Năng Hưng"
+        titleStyle={{fontSize: 16, fontWeight: '500'}}
+        title={user ? user.name : 'Loading...'}
         subtitle="25m ago"
         left={LeftContent}
       />

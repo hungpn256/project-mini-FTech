@@ -1,6 +1,7 @@
 import {takeLatest, put, call, delay} from '@redux-saga/core/effects';
+import {log} from 'react-native-reanimated';
 import * as AUTH_CONST from './constants';
-import {login, register, logout, loginGoogle} from './service';
+import {login, register, logout, loginGoogle, userDocument} from './service';
 
 function* handleLoginSaga({payload}) {
   yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
@@ -63,11 +64,21 @@ function* handleGoogle() {
   }
 }
 
+function* handleUser() {
+  try {
+    const res = yield call(userDocument);
+    yield put({type: AUTH_CONST.USER_INFO, payload: res});
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* watchLoginSaga() {
   yield takeLatest(AUTH_CONST.LOGIN, handleLoginSaga);
   yield takeLatest(AUTH_CONST.REGISTER, handleRegisterSaga);
   yield takeLatest(AUTH_CONST.LOGOUT, handleLogoutSaga);
   yield takeLatest(AUTH_CONST.CHECK, handleStatus);
   yield takeLatest(AUTH_CONST.GOOGLE, handleGoogle);
+  yield takeLatest(AUTH_CONST.USER_SET, handleUser);
 }
 export default watchLoginSaga;

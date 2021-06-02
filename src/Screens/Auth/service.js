@@ -23,9 +23,17 @@ const CatchErr = error => {
   }
 };
 
+export const userDocument = async () => {
+  const user = await firestore()
+    .collection('user')
+    .doc(firebase.auth().currentUser.uid)
+    .get();
+  return user.data();
+};
+
 export async function loginGoogle() {
   // Get the users ID token
-  const { idToken } = await GoogleSignin.signIn();
+  const {idToken} = await GoogleSignin.signIn();
   // console.log(firebase.auth().currentUser.uid);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
@@ -49,9 +57,9 @@ export const login = async ({email, pass}) => {
 
 export const logout = async () => {
   try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      await auth().signOut()
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+    await auth().signOut();
   } catch (error) {
     console.log(error);
   }

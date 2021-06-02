@@ -6,10 +6,11 @@ import PostArticle from '@Components/PostArticle.js';
 import About from './components/About.js';
 import Photos from './components/Photos.js';
 import styles from './styles';
+import {useSelector} from 'react-redux';
 
 const Profile = ({navigation}) => {
   const [tab, setTab] = useState(1);
-
+  const user = useSelector(state => state.auth.user);
   return (
     <ScrollView style={styles.background}>
       <View style={styles.body}>
@@ -27,7 +28,7 @@ const Profile = ({navigation}) => {
             }}
           />
         </View>
-        <Text style={styles.name}>Phạm Năng Hưng</Text>
+        <Text style={styles.name}>{user ? user.name : 'Loading...'}</Text>
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>
