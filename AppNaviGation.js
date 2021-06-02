@@ -35,7 +35,7 @@ export default function AppNavigator() {
     const check = async () => {
       const data = await AsyncStorage.getItem('USER_ID');
       console.log('>>>?' + data);
-      if (data !== null) {
+      if (data) {
         dispatch({type: USER_SET});
       } else {
         dispatch({type: USER_DEL});
