@@ -77,6 +77,7 @@ const addUser = async (uid, fullName) => {
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: fullName,
+      userId: uid.toString(),
       avatarUrl: '',
       backgroundUrl: '',
     });
