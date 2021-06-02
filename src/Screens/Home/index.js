@@ -5,6 +5,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Article from '../../Components/Article';
 import PostArticle from '../../Components/PostArticle';
 import styles from './styles';
+
 const Home = ({navigation}) => {
   return (
     <ScrollView>
