@@ -22,7 +22,7 @@ const Article = () => {
     <Card mode="outlined" style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '500'}}
-        title={user ? user.name : 'Loading...'}
+        title={user.name}
         subtitle="25m ago"
         left={LeftContent}
       />

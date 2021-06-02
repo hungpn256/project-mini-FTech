@@ -28,7 +28,7 @@ const Profile = ({navigation}) => {
             }}
           />
         </View>
-        <Text style={styles.name}>{user ? user.name : 'Loading...'}</Text>
+        <Text style={styles.name}>{user.name}</Text>
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>

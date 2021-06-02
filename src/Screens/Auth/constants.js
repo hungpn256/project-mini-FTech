@@ -16,3 +16,7 @@ export const GOOGLE = 'GOOGLE';
 
 export const USER_SET = 'USER_SET';
 export const USER_INFO = 'USER_INFO';
+export const USER_DEL = 'USER_DEL';
+export const USER_CLEAR = 'USER_CLEAR';
+
+export const SPLASH = 'SPLASH';

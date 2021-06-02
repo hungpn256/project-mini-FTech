@@ -27,7 +27,7 @@ export default function Menu({navigation}) {
           onPress={() => {
             navigation.navigate('Profile');
           }}
-          title={user ? user.name : 'Loading...'}
+          title={user.name}
           description="trang cá nhân"
           titleStyle={styles.name}
           left={props => (
