@@ -74,12 +74,16 @@ export const logout = async () => {
 };
 //thêm user vào databse sau khi đki thành công
 const addUser = async (uid, fullName) => {
+  let friend = [];
+  let roomChat = [];
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: fullName,
       userId: uid.toString(),
       avatarUrl: '',
       backgroundUrl: '',
+      friends: friend,
+      roomChatList: roomChat,
     });
   } catch (error) {
     console.log(error);
