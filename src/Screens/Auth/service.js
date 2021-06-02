@@ -23,15 +23,26 @@ const CatchErr = error => {
   }
 };
 
+export const userDocument = async () => {
+  const user = await firestore()
+    .collection('user')
+    .doc(firebase.auth().currentUser.uid)
+    .get();
+  return user.data();
+};
+
+const saveUser = async uid => {
+  const user = await firestore().collection('user').doc(uid).get();
+  return user.data();
+};
+
 export async function loginGoogle() {
   // Get the users ID token
   const {idToken} = await GoogleSignin.signIn();
-  // console.log('TOKEN' + idToken);
+  // console.log(firebase.auth().currentUser.uid);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  console.log(auth()?.currentUser?.uid ?? 'sda', 'id');
-  // const uid = auth()?.currentUser.uid;
-  // await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
+  // await AsyncStorage.setItem("USER_ID",JSON.stringify(uid))
   // Sign-in the user with the credential
   return auth().signInWithCredential(googleCredential);
 }
@@ -40,24 +51,24 @@ export const login = async ({email, pass}) => {
   try {
     const res = await auth().signInWithEmailAndPassword(email, pass);
     if (res) {
-      const uid = firebase.auth().currentUser.uid;
-      await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
-      return true;
+      return saveUser(firebase.auth().currentUser.uid);
     }
   } catch (error) {
     CatchErr(error.code);
-    console.log(error, 'err');
-    return false;
+    return null;
   }
 };
 
 export const logout = async () => {
   try {
-    await AsyncStorage.removeItem('USER_ID');
+    // if (GoogleSignin.getTokens) {
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
+    // }
     await auth().signOut();
+    console.log('LOG OUT RA NAY');
   } catch (error) {
+    await auth().signOut();
     console.log(error);
   }
 };
@@ -79,12 +90,13 @@ export const register = async ({email, pass, name}) => {
     const res = await auth().createUserWithEmailAndPassword(email, pass);
     if (res) {
       const uid = firebase.auth().currentUser.uid;
-      await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
-      addUser(uid, name);
-      return true;
+      const add = addUser(uid, name);
+      if (add) {
+        return saveUser(firebase.auth().currentUser.uid);
+      }
     }
   } catch (error) {
     CatchErr(error.code);
-    return false;
+    return null;
   }
 };
