@@ -15,9 +15,12 @@ export default function ChatRoom({navigation}) {
       const roomList = await user.data().roomChatList;
       let tmp = [];
       for (let i = 0; i < roomList.length; i++) {
-        const x = await roomList[i].get();
+        const x = await firestore()
+          .collection('room-chat')
+          .doc(roomList[i])
+          .get();
         console.log(x._data, 'x');
-        tmp.push({...x._data});
+        tmp.push({id: roomList[i], ...x._data});
         console.log(tmp, 'roomItem');
       }
       setRoomList(tmp);
@@ -79,41 +82,43 @@ export default function ChatRoom({navigation}) {
       <View>
         {roomList &&
           roomList.map((i, index) => {
+            console.log(i, 'i');
             const userOther = i.users.find(i => i.id !== userId);
             const {messages} = i;
             console.log(userOther);
-            return (
-              <TouchableOpacity
-                key={index}
-                activeOpacity={0.7}
-                onPress={() => {
-                  navigation.navigate('Messenger');
-                }}>
-                <Card style={styles.card}>
-                  <List.Item
-                    style={styles.item}
-                    title={
-                      <View style={styles.wrapperTitle}>
-                        <Text style={styles.name}>{userOther.name}</Text>
-                        <Text style={styles.time}>
-                          {moment(i.updatedAt).fromNow()}
-                        </Text>
-                      </View>
-                    }
-                    description={messages[messages.length - 1].text}
-                    titleStyle={styles.titleStyle}
-                    left={() => (
-                      <Avatar.Image
-                        source={{
-                          uri: userOther.avatar,
-                        }}
-                        size={55}
-                      />
-                    )}
-                  />
-                </Card>
-              </TouchableOpacity>
-            );
+            if (messages.length)
+              return (
+                <TouchableOpacity
+                  key={index}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    navigation.navigate('Messenger', {roomId: i.id});
+                  }}>
+                  <Card style={styles.card}>
+                    <List.Item
+                      style={styles.item}
+                      title={
+                        <View style={styles.wrapperTitle}>
+                          <Text style={styles.name}>{userOther.name}</Text>
+                          <Text style={styles.time}>
+                            {moment(i.updatedAt).fromNow()}
+                          </Text>
+                        </View>
+                      }
+                      description={messages[messages.length - 1].text}
+                      titleStyle={styles.titleStyle}
+                      left={() => (
+                        <Avatar.Image
+                          source={{
+                            uri: userOther.avatar,
+                          }}
+                          size={55}
+                        />
+                      )}
+                    />
+                  </Card>
+                </TouchableOpacity>
+              );
           })}
       </View>
     </ScrollView>

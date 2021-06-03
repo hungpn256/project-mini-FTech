@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {firebase} from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from './src/Components/Loading';
-
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';
-import {CHECK, USER_DEL, USER_SET} from './src/Screens/Auth/constants';
+import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
+
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();

@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
+  FlatList,
   Modal,
   StyleSheet,
   TouchableOpacity,
@@ -11,23 +12,26 @@ import {Avatar, List} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
+import {commonRoom} from '../../../Helper/function';
 import {GET_USER_BY_NAME} from '../constants';
 import SearchBar from './SearchBar';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
   const navigation = useNavigation();
+  const user = useSelector(state => state.auth.user);
   const [visibleModal, setVisibleModal] = useState(false);
   const userSearch = useSelector(state => state.chat.userSearch);
-  console.log(userSearch, 'component');
   const dispatch = useDispatch();
   const [txtSearch, setTxtSearch] = useState('');
   useEffect(() => {
-    dispatch({
-      type: GET_USER_BY_NAME,
-      payload: txtSearch,
-    });
-  }, [txtSearch]);
+    if (visibleModal) {
+      dispatch({
+        type: GET_USER_BY_NAME,
+        payload: txtSearch,
+      });
+    }
+  }, [txtSearch, visibleModal]);
   return (
     <View>
       <TouchableOpacity
@@ -65,15 +69,20 @@ const NewMessenger = () => {
             </View>
             <List.Section style={styles.result}>
               <List.Subheader>Result:</List.Subheader>
-              {userSearch.map((item, index) => {
-                return (
+              <FlatList
+                data={userSearch}
+                renderItem={({item}) => (
                   <List.Item
-                    key={index}
                     style={styles.user}
                     title={item.name}
                     titleStyle={styles.name}
                     onPress={() => {
-                      navigation.navigate('Messenger');
+                      setVisibleModal(false);
+                      const room = commonRoom(item, user);
+                      navigation.navigate('Messenger', {
+                        user: item,
+                        roomId: room[0],
+                      });
                     }}
                     left={() => (
                       <Avatar.Image
@@ -87,8 +96,9 @@ const NewMessenger = () => {
                       />
                     )}
                   />
-                );
-              })}
+                )}
+                keyExtractor={item => item.id}
+              />
             </List.Section>
           </View>
         </View>
