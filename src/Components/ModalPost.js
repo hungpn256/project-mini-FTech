@@ -14,6 +14,7 @@ export default function ModalPost() {
 
   const handlePress = () => {
     setModal(true);
+    console.log('OK');
   };
 
   return (

@@ -76,12 +76,14 @@ export const logout = async () => {
 const addUser = async (uid, fullName) => {
   let friend = [];
   let roomChat = [];
+  let id = uid;
+  let userName = fullName;
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
-      name: fullName,
-      userId: uid.toString(),
-      avatarUrl: '',
-      backgroundUrl: '',
+      name: userName,
+      id: id,
+      avatar: '',
+      background: '',
       friends: friend,
       roomChatList: roomChat,
     });
