@@ -1,22 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  Image,
-  PermissionsAndroid,
-  Modal,
-  ActivityIndicator,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
-import {Avatar, Button, Card, Divider} from 'react-native-paper';
-import InputEncloseAvatar from './InputEncloseAvatar';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import ModalPost from './ModalPost';
 import FButton from '@Components/TouchOpacity/index.js';
+import React, {useState} from 'react';
+import {
+  Dimensions,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 export default function Post({status, src}) {
   const [image, setImage] = useState(null);
   return (
