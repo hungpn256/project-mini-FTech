@@ -24,11 +24,9 @@ const CatchErr = error => {
 };
 
 export const userDocument = async () => {
-  const user = await firestore()
-    .collection('user')
-    .doc(firebase.auth().currentUser.uid)
-    .get();
-  return user.data();
+  const id = firebase.auth().currentUser.uid;
+  const user = await firestore().collection('user').doc(id).get();
+  return {id, ...user.data()};
 };
 
 const saveUser = async uid => {
