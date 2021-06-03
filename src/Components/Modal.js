@@ -1,5 +1,5 @@
 import FButton from '@Components/TouchOpacity/index.js';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   Image,
@@ -10,13 +10,35 @@ import {
   TextInput,
   View,
 } from 'react-native';
-export default function Post({status, src}) {
-  const [image, setImage] = useState(null);
-  return (
+import {Avatar, Button, Card, Divider} from 'react-native-paper';
+import InputEncloseAvatar from './InputEncloseAvatar';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import ModalPost from './ModalPost';
+export default function Post({type, src}) {
+  const [image, setImage] = useState(src);
+
+  const [status, setStatus] = useState(true);
+
+  const handlePost = () => {};
+
+  const handleClose = () => {
+    setImage(null);
+  };
+
+  const handleCloseModal = () => {
+    setStatus(false);
+  };
+
+  console.log(type);
+  return status ? (
     <>
       <Modal transparent={true}>
         <View style={styles.container}>
           <View style={styles.inner}>
+            <View style={styles.closeModal}>
+              <Icon onPress={handleCloseModal} name="close" size={18} />
+            </View>
             <View style={styles.header}>
               <Text style={styles.text}>Create Post</Text>
             </View>
@@ -30,7 +52,14 @@ export default function Post({status, src}) {
                   placeholder="What's on your mind"
                 />
                 <View style={styles.imgWrapper}>
-                  <Image style={styles.img} source={src} />
+                  {image && (
+                    <View style={styles.closeBtn}>
+                      <Icon onPress={handleClose} name="close" size={16} />
+                    </View>
+                  )}
+                  <View>
+                    <Image style={styles.img} source={image} />
+                  </View>
                 </View>
               </ScrollView>
             </View>
@@ -41,7 +70,7 @@ export default function Post({status, src}) {
         </View>
       </Modal>
     </>
-  );
+  ) : null;
 }
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -51,30 +80,41 @@ const styles = StyleSheet.create({
     padding: 15,
     flex: 1,
     marginHorizontal: 0,
-    backgroundColor: 'rgba(0, 0, 0, .5)',
+    backgroundColor: 'rgba(0, 0, 0, .6)',
+  },
+  closeModal: {
+    padding: 5,
+    borderRadius: 9999,
+    position: 'absolute',
+    backgroundColor: '#f0f0f0',
+    top: -7,
+    zIndex: 999,
+    right: 0,
   },
   img: {
     flex: 1,
-    height: windowHeight * 0.8,
+    height: '100%',
+    resizeMode: 'contain',
+    borderRadius: 16,
   },
   imgWrapper: {
     borderRadius: 16,
-    overflow: 'hidden',
+    position: 'relative',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    height: windowHeight * 0.6,
   },
   inner: {
+    position: 'relative',
     borderRadius: 15,
     padding: 20,
-    backgroundColor: '#181A18',
+    backgroundColor: '#dee3de',
     flex: 1,
-    width: windowWidth * 0.9,
+    width: windowWidth * 0.85,
   },
   inputView: {
     flex: 1,
-    paddingTop: 8,
-    paddingBottom: 15,
   },
   postGroup: {
     flex: 1,
@@ -85,7 +125,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: 'white',
+    color: '#28313b',
   },
   input: {
     borderRadius: 20,
@@ -103,19 +143,14 @@ const styles = StyleSheet.create({
   actionBtn: {
     paddingTop: 8,
   },
-  imageWrapper: {
-    marginTop: 15,
-    position: 'relative',
-    height: 100,
-    width: 100,
-  },
   closeBtn: {
     padding: 5,
-    borderRadius: 999,
+    borderRadius: 9999,
     position: 'absolute',
     backgroundColor: '#f0f0f0',
-    top: -5,
-    right: 5,
+    top: -7,
+    zIndex: 999,
+    right: 4,
   },
   image: {
     flex: 1,
