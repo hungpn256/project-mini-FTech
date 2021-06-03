@@ -10,7 +10,6 @@ import {
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ModalPost from './ModalPost';
 import ModalCreatePost from '@Components/Modal';
 export default function PostArticle({editable}) {
