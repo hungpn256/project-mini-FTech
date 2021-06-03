@@ -7,6 +7,7 @@ import {Avatar, Card, List} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import SearchBar from './components/SearchBar';
 import styles from './styles';
+import {orderBy} from 'lodash';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
   const userId = auth().currentUser.uid;
@@ -21,9 +22,9 @@ export default function ChatRoom({navigation}) {
           .collection('room-chat')
           .doc(roomList[i])
           .get();
-        console.log(x._data, 'x');
-        tmp.push({id: roomList[i], ...x._data});
+        tmp.push({id: roomList[i], ...x.data()});
       }
+      tmp = orderBy(tmp, ['updatedAt'], ['desc']);
       setRoomList(tmp);
     };
     x();
