@@ -15,10 +15,8 @@ import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ModalPost from './ModalPost';
-export default function Post({type, src}) {
+export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
-
-  const [status, setStatus] = useState(true);
 
   const handlePost = () => {};
 
@@ -30,14 +28,13 @@ export default function Post({type, src}) {
     setStatus(false);
   };
 
-  console.log(type);
-  return status ? (
+  return type ? (
     <>
       <Modal transparent={true}>
         <View style={styles.container}>
           <View style={styles.inner}>
             <View style={styles.closeModal}>
-              <Icon onPress={handleCloseModal} name="close" size={18} />
+              <Icon onPress={closeModal} name="close" size={18} />
             </View>
             <View style={styles.header}>
               <Text style={styles.text}>Create Post</Text>
@@ -63,6 +60,56 @@ export default function Post({type, src}) {
                 </View>
               </ScrollView>
             </View>
+            <View style={styles.photoBtn}>
+              <Button
+                style={styles.actionBtn}
+                icon="camera"
+                color="#777"
+                onPress={async e => {
+                  console.log('Camera');
+                  try {
+                    const granted = await PermissionsAndroid.request(
+                      PermissionsAndroid.PERMISSIONS.CAMERA,
+                      {
+                        title: 'App Camera Permission',
+                        message: 'App needs access to your camera ',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                      },
+                    );
+                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                      launchCamera({mediaType: 'photo'}, props => {
+                        if (props.type === 'image/jpeg') {
+                          setImage(props);
+                          setStatus(true);
+                        }
+                      });
+                    } else {
+                      console.log('Camera permission denied');
+                    }
+                  } catch (err) {
+                    console.warn(err);
+                  }
+                }}>
+                <Text style={styles.colorText}>Camera</Text>
+              </Button>
+              <Button
+                style={styles.actionBtn}
+                icon="folder-image"
+                color="#777"
+                onPress={() => {
+                  console.log('image');
+                  launchImageLibrary({mediaType: 'photo'}, props => {
+                    if (props.type === 'image/jpeg') {
+                      setImage(props);
+                      setStatus(true);
+                    }
+                  });
+                }}>
+                <Text style={styles.colorText}>Photo/Video</Text>
+              </Button>
+            </View>
             <View>
               <FButton Name="Post" />
             </View>
@@ -81,6 +128,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 0,
     backgroundColor: 'rgba(0, 0, 0, .6)',
+  },
+  photoBtn: {
+    flexDirection: 'row',
+  },
+  hide: {
+    display: 'none',
   },
   closeModal: {
     padding: 5,

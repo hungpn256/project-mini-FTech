@@ -14,16 +14,27 @@ import ModalPost from './ModalPost';
 import ModalCreatePost from '@Components/Modal';
 export default function PostArticle({editable}) {
   const [image, setImage] = useState(null);
-
+  const [status, setStatus] = useState(null);
   const handlePress = () => {
-    console.log('OK');
+    setStatus(false);
+  };
+
+  const delImg = () => {
+    setImage(null);
   };
 
   return (
     <Card mode="outline" style={styles.container}>
       <View style={styles.inputWrapper}>
         <ModalPost />
-        {image && <ModalCreatePost src={image} />}
+        {status && (
+          <ModalCreatePost
+            type={status}
+            closeImg={delImg}
+            closeModal={handlePress}
+            src={image}
+          />
+        )}
       </View>
       <Card.Actions style={styles.actionBottom}>
         <Button
@@ -47,6 +58,7 @@ export default function PostArticle({editable}) {
                 launchCamera({mediaType: 'photo'}, props => {
                   if (props.type === 'image/jpeg') {
                     setImage(props);
+                    setStatus(true);
                   }
                 });
               } else {
@@ -67,6 +79,7 @@ export default function PostArticle({editable}) {
             launchImageLibrary({mediaType: 'photo'}, props => {
               if (props.type === 'image/jpeg') {
                 setImage(props);
+                setStatus(true);
               }
             });
           }}>
