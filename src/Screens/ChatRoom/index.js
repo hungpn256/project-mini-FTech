@@ -4,11 +4,13 @@ import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Avatar, Card, List} from 'react-native-paper';
+import {useSelector} from 'react-redux';
 import SearchBar from './components/SearchBar';
 import styles from './styles';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
   const userId = auth().currentUser.uid;
+  const conversation = useSelector(state => state.chat.conversation);
   useEffect(() => {
     const x = async () => {
       const user = await firestore().collection('user').doc(userId).get();
@@ -21,12 +23,11 @@ export default function ChatRoom({navigation}) {
           .get();
         console.log(x._data, 'x');
         tmp.push({id: roomList[i], ...x._data});
-        console.log(tmp, 'roomItem');
       }
       setRoomList(tmp);
     };
     x();
-  }, []);
+  }, [conversation]);
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
       <SearchBar />
@@ -101,7 +102,7 @@ export default function ChatRoom({navigation}) {
                         <View style={styles.wrapperTitle}>
                           <Text style={styles.name}>{userOther.name}</Text>
                           <Text style={styles.time}>
-                            {moment(i.updatedAt).fromNow()}
+                            {moment(i.updatedAt.toDate()).fromNow()}
                           </Text>
                         </View>
                       }
@@ -110,7 +111,9 @@ export default function ChatRoom({navigation}) {
                       left={() => (
                         <Avatar.Image
                           source={{
-                            uri: userOther.avatar,
+                            uri:
+                              userOther.avatar ||
+                              'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
                           }}
                           size={55}
                         />

@@ -1,10 +1,4 @@
-import {
-  call,
-  delay,
-  put,
-  takeLatest,
-  takeEvery,
-} from '@redux-saga/core/effects';
+import {call, put, takeLatest, takeEvery} from '@redux-saga/core/effects';
 import {
   CREATE_CONVERSATION,
   GET_CONVERSATION,
