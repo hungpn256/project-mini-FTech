@@ -13,29 +13,21 @@ export default function Messenger({route}) {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.auth.user);
-  console.log(user.id, 'user');
   let messages = useSelector(state => state.chat.conversation?.messages ?? []);
   messages = messages.map(message => {
     return {
       ...message,
       createdAt: message?.createdAt?.toDate(),
-      user: {...user, _id: message.user.id},
     };
   });
-  console.log(messages, 'mes');
+  messages = messages.reverse();
   let {roomId} = route.params;
   roomId = route.params.roomId;
   useEffect(() => {
-    const {user: user2} = route.params;
-    console.log(roomId);
-    if (roomId) {
-      dispatch({type: GET_CONVERSATION, payload: roomId});
-    } else {
-      dispatch({type: CREATE_CONVERSATION, payload: [user, user2]});
-    }
+    dispatch({type: GET_CONVERSATION, payload: roomId});
     firestore()
       .collection('room-chat')
-      .doc('yG1SIe4i4G5UKtmhZ8cP')
+      .doc(roomId)
       .onSnapshot(
         res => {
           dispatch({
@@ -61,7 +53,7 @@ export default function Messenger({route}) {
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
-      user={{_id: user.id, avatar: user.avatarUrl, name: user.name}}
+      user={{_id: user.id, avatar: user.avatar, name: user.name}}
       isTyping={true}
     />
   );

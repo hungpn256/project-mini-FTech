@@ -15,6 +15,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
 import {GET_USER_BY_NAME} from '../constants';
 import SearchBar from './SearchBar';
+import {v1 as uuidv1} from 'uuid';
+import {createConversation} from '../service';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
@@ -76,11 +78,14 @@ const NewMessenger = () => {
                     style={styles.user}
                     title={item.name}
                     titleStyle={styles.name}
-                    onPress={() => {
+                    onPress={async () => {
                       setVisibleModal(false);
-                      const room = commonRoom(item, user);
+                      let room = commonRoom(item, user);
+                      if (room.length === 0) {
+                        const res = await createConversation([user, item]);
+                        room.push(res.id);
+                      }
                       navigation.navigate('Messenger', {
-                        user: item,
                         roomId: room[0],
                       });
                     }}
@@ -89,8 +94,8 @@ const NewMessenger = () => {
                         style={styles.avatar}
                         source={{
                           uri:
-                            item.avatarUrl ||
-                            'https://lh3.googleusercontent.com/proxy/viY8Ajx1sbO5igZvqESVX7HE-zMHjgqlAAXvdflujTiZSs-YCdqci3sawNkZCboLRWHwSt6h76r6E8a2ERgJJLHX_KFh9wwEU6aTWKYkaA',
+                            item.avatar ||
+                            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
                         }}
                         size={60}
                       />
