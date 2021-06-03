@@ -4,6 +4,7 @@ const initialState = {
   splashScreen: true,
   user: null,
 };
+import {CREATE_CONVERSATION_SUCCESS} from '../ChatRoom/constants';
 import {
   AUTH_CHANGE_STATE,
   LOGIN_SUCCESS,
@@ -31,6 +32,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLogged: action.payload.status,
       };
+    }
+    case CREATE_CONVERSATION_SUCCESS: {
+      let newUser = {...state.user};
+      newUser.roomChatList = [...newUser.roomChatList, action.payload.id];
+      return {...state, user: newUser};
     }
     case LOGIN_SUCCESS:
       return {
