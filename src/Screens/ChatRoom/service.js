@@ -53,7 +53,7 @@ export const createConversation = payload =>
         users: payload,
         isTyping: false,
         messages: [],
-        updateAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(res => {
         console.log(res, 'resss');
@@ -88,6 +88,7 @@ export const sendMes = payload =>
       .doc(payload.roomId)
       .update({
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       // .get()
       .then(() => {
