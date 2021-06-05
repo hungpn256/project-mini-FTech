@@ -9,18 +9,31 @@ import {
   Text,
   TextInput,
   View,
+  PermissionsAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ModalPost from './ModalPost';
-export default function Post({type, src}) {
+import {CREATE_POST} from '../Screens/Home/constants';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
+
+export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
-
-  const [status, setStatus] = useState(true);
-
-  const handlePost = () => {};
+  const [text, setText] = useState('');
+  const loading = useSelector(state => state.home.postLoad);
+  const dispatch = useDispatch();
+  const handlePost = () => {
+    dispatch({
+      type: CREATE_POST,
+      payload: {text, image},
+    });
+    setImage(null);
+    setText(null);
+  };
 
   const handleClose = () => {
     setImage(null);
@@ -30,14 +43,18 @@ export default function Post({type, src}) {
     setStatus(false);
   };
 
-  console.log(type);
-  return status ? (
+  return type ? (
     <>
       <Modal transparent={true}>
+        <Modal visible={loading} transparent={true}>
+          <View style={styles.viewModal}>
+            <ActivityIndicator size="large" color="#232B2B" />
+          </View>
+        </Modal>
         <View style={styles.container}>
           <View style={styles.inner}>
             <View style={styles.closeModal}>
-              <Icon onPress={handleCloseModal} name="close" size={18} />
+              <Icon onPress={closeModal} name="close" size={18} />
             </View>
             <View style={styles.header}>
               <Text style={styles.text}>Create Post</Text>
@@ -45,6 +62,8 @@ export default function Post({type, src}) {
             <View style={styles.inputView}>
               <ScrollView>
                 <TextInput
+                  value={text}
+                  onChangeText={e => setText(e)}
                   multiline={true}
                   numberOfLines={4}
                   style={styles.input}
@@ -63,8 +82,56 @@ export default function Post({type, src}) {
                 </View>
               </ScrollView>
             </View>
+            <View style={styles.photoBtn}>
+              <Button
+                style={styles.actionBtn}
+                icon="camera"
+                color="#777"
+                onPress={async e => {
+                  console.log('Camera');
+                  try {
+                    const granted = await PermissionsAndroid.request(
+                      PermissionsAndroid.PERMISSIONS.CAMERA,
+                      {
+                        title: 'App Camera Permission',
+                        message: 'App needs access to your camera ',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                      },
+                    );
+                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                      launchCamera({mediaType: 'photo'}, props => {
+                        if (props.type === 'image/jpeg') {
+                          setImage(props);
+                        }
+                      });
+                    } else {
+                      console.log('Camera permission denied');
+                    }
+                  } catch (err) {
+                    console.warn(err);
+                  }
+                }}>
+                <Text style={styles.colorText}>Camera</Text>
+              </Button>
+              <Button
+                style={styles.actionBtn}
+                icon="folder-image"
+                color="#777"
+                onPress={() => {
+                  console.log('image');
+                  launchImageLibrary({mediaType: 'photo'}, props => {
+                    if (props.type === 'image/jpeg') {
+                      setImage(props);
+                    }
+                  });
+                }}>
+                <Text style={styles.colorText}>Photo/Video</Text>
+              </Button>
+            </View>
             <View>
-              <FButton Name="Post" />
+              <FButton handlePress={handlePost} Name="Post" />
             </View>
           </View>
         </View>
@@ -81,6 +148,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 0,
     backgroundColor: 'rgba(0, 0, 0, .6)',
+  },
+  photoBtn: {
+    flexDirection: 'row',
+  },
+  hide: {
+    display: 'none',
   },
   closeModal: {
     padding: 5,
@@ -130,7 +203,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 20,
     padding: 10,
-    color: 'white',
+    color: '#28313b',
   },
   actionBottom: {
     justifyContent: 'space-around',
@@ -157,5 +230,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     resizeMode: 'contain',
+  },
+  viewModal: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
