@@ -9,16 +9,31 @@ import {
   Text,
   TextInput,
   View,
+  PermissionsAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ModalPost from './ModalPost';
+import {CREATE_POST} from '../Screens/Home/constants';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
+
 export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
-
-  const handlePost = () => {};
+  const [text, setText] = useState('');
+  const loading = useSelector(state => state.home.postLoad);
+  const dispatch = useDispatch();
+  const handlePost = () => {
+    dispatch({
+      type: CREATE_POST,
+      payload: {text, image},
+    });
+    setImage(null);
+    setText(null);
+  };
 
   const handleClose = () => {
     setImage(null);
@@ -31,6 +46,11 @@ export default function Post({type, src, closeModal, closeImg}) {
   return type ? (
     <>
       <Modal transparent={true}>
+        <Modal visible={loading} transparent={true}>
+          <View style={styles.viewModal}>
+            <ActivityIndicator size="large" color="#232B2B" />
+          </View>
+        </Modal>
         <View style={styles.container}>
           <View style={styles.inner}>
             <View style={styles.closeModal}>
@@ -42,6 +62,8 @@ export default function Post({type, src, closeModal, closeImg}) {
             <View style={styles.inputView}>
               <ScrollView>
                 <TextInput
+                  value={text}
+                  onChangeText={e => setText(e)}
                   multiline={true}
                   numberOfLines={4}
                   style={styles.input}
@@ -82,7 +104,6 @@ export default function Post({type, src, closeModal, closeImg}) {
                       launchCamera({mediaType: 'photo'}, props => {
                         if (props.type === 'image/jpeg') {
                           setImage(props);
-                          setStatus(true);
                         }
                       });
                     } else {
@@ -103,7 +124,6 @@ export default function Post({type, src, closeModal, closeImg}) {
                   launchImageLibrary({mediaType: 'photo'}, props => {
                     if (props.type === 'image/jpeg') {
                       setImage(props);
-                      setStatus(true);
                     }
                   });
                 }}>
@@ -111,7 +131,7 @@ export default function Post({type, src, closeModal, closeImg}) {
               </Button>
             </View>
             <View>
-              <FButton Name="Post" />
+              <FButton handlePress={handlePost} Name="Post" />
             </View>
           </View>
         </View>
@@ -183,7 +203,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 20,
     padding: 10,
-    color: 'white',
+    color: '#28313b',
   },
   actionBottom: {
     justifyContent: 'space-around',
@@ -210,5 +230,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     resizeMode: 'contain',
+  },
+  viewModal: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
