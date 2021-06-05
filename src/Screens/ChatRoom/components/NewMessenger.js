@@ -17,6 +17,7 @@ import {GET_USER_BY_NAME} from '../constants';
 import SearchBar from './SearchBar';
 import {v1 as uuidv1} from 'uuid';
 import {createConversation} from '../service';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
@@ -50,7 +51,11 @@ const NewMessenger = () => {
         onRequestClose={() => {
           setVisibleModal(false);
         }}>
-        <View style={styles.background}>
+        <GestureRecognizer
+          onSwipeDown={() => {
+            setVisibleModal(false);
+          }}
+          style={styles.background}>
           <View style={styles.container}>
             <View
               style={{
@@ -106,7 +111,7 @@ const NewMessenger = () => {
               />
             </List.Section>
           </View>
-        </View>
+        </GestureRecognizer>
       </Modal>
     </View>
   );
@@ -114,15 +119,17 @@ const NewMessenger = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(0,0,0,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
+    marginHorizontal: 8,
+    marginTop: 50,
     backgroundColor: '#fff',
-    width: '100%',
     height: '100%',
     borderRadius: 10,
+    paddingTop: 20,
   },
   headerRight: {
     marginRight: 15,
