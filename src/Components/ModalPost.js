@@ -17,6 +17,11 @@ export default function ModalPost() {
     console.log('OK');
   };
 
+  const close = () => {
+    setModal(false);
+  };
+
+  console.log(modal);
   return (
     <View style={styles.inputWrapper}>
       <Avatar.Image
@@ -27,7 +32,7 @@ export default function ModalPost() {
       />
       <View style={styles.input}>
         <Text onPress={handlePress}>What's on your mind</Text>
-        {modal && <Post />}
+        <Post type={modal} closeModal={close} />
       </View>
     </View>
   );

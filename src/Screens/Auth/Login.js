@@ -17,6 +17,7 @@ import Decor from '../../Components/Decor/index';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {GOOGLE, LOGIN} from './constants';
+import Loading from '../../Components/Loading';
 export default function Login() {
   const navigate = useNavigation();
   const dispatch = useDispatch();
@@ -45,11 +46,7 @@ export default function Login() {
     <View style={styles.container}>
       <ScrollView>
         <ImageBackground style={styles.background} source={BG}>
-          <Modal visible={loading} transparent={true}>
-            <View style={styles.viewModal}>
-              <ActivityIndicator size="large" color="#232B2B" />
-            </View>
-          </Modal>
+          <Loading loading={loading} />
           <View style={styles.overlay}>
             <View style={styles.LogoStyle}>
               <Image source={Logo} style={styles.LogoSize} />
