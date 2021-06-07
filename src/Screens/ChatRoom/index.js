@@ -107,7 +107,9 @@ export default function ChatRoom({navigation}) {
                           <View style={styles.wrapperTitle}>
                             <Text style={styles.name}>{userOther.name}</Text>
                             <Text style={styles.time}>
-                              {moment(i.updatedAt.toDate()).fromNow()}
+                              {moment(
+                                i.updatedAt?.toDate() ?? new Date(),
+                              ).fromNow()}
                             </Text>
                           </View>
                         }
