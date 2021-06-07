@@ -8,16 +8,42 @@ const getPost = async id => {
   return post.data();
 };
 
-export const getAll = async () => {
+export const getMore = async ({item}) => {
   const data = [];
   await firestore()
     .collection('post')
+    .orderBy('createAt', 'desc')
+    // .startAfter(last)
+    .startAfter(item)
+    .limit(6)
     .get()
     .then(querySnapshot => {
       console.log('Total users: ', querySnapshot.size);
       querySnapshot.forEach(documentSnapshot => {
-        console.log('post_id: ', documentSnapshot.id, documentSnapshot.data());
+        console.log(
+          'post_id: ',
+          documentSnapshot.id,
+          documentSnapshot.data().content,
+        );
         data.push({postId: documentSnapshot.id, ...documentSnapshot.data()});
+      });
+    });
+  return data;
+};
+
+export const getAll = async () => {
+  const data = [];
+  await firestore()
+    .collection('post')
+    .orderBy('createAt', 'desc')
+    // .startAfter(last)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(documentSnapshot => {
+        data.push({
+          postId: documentSnapshot.id,
+          ...documentSnapshot.data(),
+        });
       });
     });
   return data;
