@@ -9,14 +9,15 @@ import {
   View,
 } from 'react-native';
 import {Avatar, List} from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
+import {avatarDefault} from '../../../index_Constant';
 import {GET_USER_BY_NAME} from '../constants';
-import SearchBar from './SearchBar';
-import {v1 as uuidv1} from 'uuid';
 import {createConversation} from '../service';
+import SearchBar from './SearchBar';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
@@ -50,7 +51,11 @@ const NewMessenger = () => {
         onRequestClose={() => {
           setVisibleModal(false);
         }}>
-        <View style={styles.background}>
+        <GestureRecognizer
+          onSwipeDown={() => {
+            setVisibleModal(false);
+          }}
+          style={styles.background}>
           <View style={styles.container}>
             <View
               style={{
@@ -93,9 +98,7 @@ const NewMessenger = () => {
                       <Avatar.Image
                         style={styles.avatar}
                         source={{
-                          uri:
-                            item.avatar ||
-                            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+                          uri: item.avatar || avatarDefault,
                         }}
                         size={60}
                       />
@@ -106,7 +109,7 @@ const NewMessenger = () => {
               />
             </List.Section>
           </View>
-        </View>
+        </GestureRecognizer>
       </Modal>
     </View>
   );
@@ -114,15 +117,17 @@ const NewMessenger = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(0,0,0,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
+    marginHorizontal: 8,
+    marginTop: 50,
     backgroundColor: '#fff',
-    width: '100%',
     height: '100%',
     borderRadius: 10,
+    paddingTop: 20,
   },
   headerRight: {
     marginRight: 15,

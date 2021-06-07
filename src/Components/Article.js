@@ -14,7 +14,7 @@ const LeftContent = props => (
     size={50}
   />
 );
-const Article = () => {
+const Article = ({text, image}) => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -27,14 +27,9 @@ const Article = () => {
         left={LeftContent}
       />
       <Card.Content style={styles.content}>
-        <Paragraph>
-          Muộn rồi mà sao còn Nhìn lên trần nhà rồi quay ra, lại quay vào Nằm
-          trằn trọc vậy đến sáng mai Ôm tương tư nụ cười của ai đó Làm con tim
-          ngô nghê như muốn khóc oà Vắt tay lên trên trán mơ mộng Được đứng bên
-          em trong nắng xuân hồng
-        </Paragraph>
+        <Paragraph>{text}</Paragraph>
       </Card.Content>
-      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+      {image ? <Card.Cover source={{uri: image}} /> : null}
       <Card.Actions style={styles.cardAction}>
         <Button
           onPress={() => {
