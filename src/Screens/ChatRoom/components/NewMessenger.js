@@ -9,15 +9,15 @@ import {
   View,
 } from 'react-native';
 import {Avatar, List} from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
+import {avatarDefault} from '../../../index_Constant';
 import {GET_USER_BY_NAME} from '../constants';
-import SearchBar from './SearchBar';
-import {v1 as uuidv1} from 'uuid';
 import {createConversation} from '../service';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import SearchBar from './SearchBar';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
@@ -98,9 +98,7 @@ const NewMessenger = () => {
                       <Avatar.Image
                         style={styles.avatar}
                         source={{
-                          uri:
-                            item.avatar ||
-                            'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+                          uri: item.avatar || avatarDefault,
                         }}
                         size={60}
                       />
