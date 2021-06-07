@@ -1,17 +1,16 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {useDispatch, useSelector} from 'react-redux';
-import * as _ from 'lodash';
-import firestore from '@react-native-firebase/firestore';
 import {
-  CREATE_CONVERSATION,
   GET_CONVERSATION,
   GET_CONVERSATION_SUCCESS,
   SEND_MESSAGE,
 } from '../../constants';
 export default function Messenger({route}) {
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
   let messages = useSelector(state => state.chat.conversation?.messages ?? []);
   messages = messages.map(message => {
@@ -55,6 +54,9 @@ export default function Messenger({route}) {
       onSend={messages => onSend(messages)}
       user={{_id: user.id, avatar: user.avatar, name: user.name}}
       isTyping={true}
+      onPressAvatar={prop => {
+        navigation.navigate('Profile-o', {id: prop._id});
+      }}
     />
   );
 }
