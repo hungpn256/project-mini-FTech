@@ -74,7 +74,6 @@ export const uploadPost = async ({text, image}) => {
 
 const uploadImg = async image => {
   if (image) {
-    console.log('1234353248734' + image);
     const fileName = image.fileName;
     const ref = storage().ref('PostImg/' + fileName);
     try {

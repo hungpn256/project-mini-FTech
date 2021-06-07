@@ -98,6 +98,7 @@ export default function AppNavigator() {
             headerRight: () => <NewMessenger />,
           }}
         />
+        <Stack.Screen name="Profile-o" component={Profile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
