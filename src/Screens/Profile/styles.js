@@ -11,13 +11,16 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 230,
   },
-  cover: {
+  wrapperCover: {
+    position: 'relative',
     height: 200,
     width: '100%',
   },
-  avatar: {
-    height: 160,
-    width: 160,
+  cover: {
+    width: '100%',
+    height: 200,
+  },
+  wrapperAvatar: {
     position: 'absolute',
     borderRadius: 50,
     borderColor: '#fff',
@@ -25,6 +28,11 @@ const styles = StyleSheet.create({
     left: '50%',
     bottom: 0,
     transform: [{translateX: -80}],
+  },
+  avatar: {
+    height: 160,
+    width: 160,
+    borderRadius: 50,
   },
   name: {
     color: '#000',

@@ -1,11 +1,20 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
-import {Styles} from './style';
-import Logo from '../../../assets/Img/logo.png';
-export default function Loading() {
+import {View} from 'react-native';
+import {ActivityIndicator} from 'react-native';
+import {Modal} from 'react-native';
+
+export default function Loading({loading}) {
   return (
-    <View style={Styles.container}>
-      <Image style={Styles.Logo} source={Logo} />
-    </View>
+    <Modal visible={loading} transparent={true}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(255,255,255,0.6)',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#232B2B" />
+      </View>
+    </Modal>
   );
 }

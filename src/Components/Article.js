@@ -1,10 +1,12 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useSelector} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
+import firestore from '@react-native-firebase/firestore';
 const LeftContent = props => (
   <Avatar.Image
     source={{
@@ -13,26 +15,44 @@ const LeftContent = props => (
     size={50}
   />
 );
-const Article = () => {
+const Article = ({text, image, time, uid}) => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
+  const user = useSelector(state => state.auth.user);
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [avatar, setAvatar] = useState();
+
+  useEffect(() => {
+    const userInfo = async () => {
+      await firestore()
+        .collection('user')
+        .where('id', '==', uid)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(documentSnapshot => {
+            console.log(documentSnapshot.data().name);
+            setId(documentSnapshot.data().id);
+            setName(documentSnapshot.data().name);
+            setAvatar(documentSnapshot.data().avatar);
+          });
+        });
+    };
+    userInfo();
+  });
+  console.log(uid);
   return (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
-        titleStyle={{fontSize: 18, fontWeight: '500'}}
-        title="Phạm Năng Hưng"
-        subtitle="25m ago"
+        titleStyle={{fontSize: 16, fontWeight: '500'}}
+        title={name}
+        subtitle={time}
         left={LeftContent}
       />
       <Card.Content style={styles.content}>
-        <Paragraph>
-          Muộn rồi mà sao còn Nhìn lên trần nhà rồi quay ra, lại quay vào Nằm
-          trằn trọc vậy đến sáng mai Ôm tương tư nụ cười của ai đó Làm con tim
-          ngô nghê như muốn khóc oà Vắt tay lên trên trán mơ mộng Được đứng bên
-          em trong nắng xuân hồng
-        </Paragraph>
+        <Paragraph>{text}</Paragraph>
       </Card.Content>
-      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+      {image ? <Card.Cover source={{uri: image}} /> : null}
       <Card.Actions style={styles.cardAction}>
         <Button
           onPress={() => {
