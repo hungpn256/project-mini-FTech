@@ -7,12 +7,16 @@ import Article from '../../Components/Article';
 import PostArticle from '../../Components/PostArticle';
 import styles from './styles';
 import firestore from '@react-native-firebase/firestore';
-import {GET_POST, GET_MORE} from './constants';
+import {GET_POST} from './constants';
 import moment from 'moment';
-import {log} from 'react-native-reanimated';
+import {set} from 'lodash';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
   const dispatch = useDispatch();
+  const [status, setStatus] = useState(false);
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [avatar, setAvatar] = useState();
   useEffect(() => {
     firestore()
       .collection('post')
@@ -22,6 +26,7 @@ const Home = ({navigation}) => {
         });
       });
   }, []);
+
   return (
     <ScrollView>
       <View style={styles.header}>
@@ -34,24 +39,10 @@ const Home = ({navigation}) => {
         </Button>
       </View>
       <PostArticle />
-      {/* <FlatList
-        data={postData}
-        renderItem={({item}) => (
-          <Article
-            time={moment(item.createAt.toDate()).fromNow()}
-            key={item.postId}
-            text={item.content}
-            image={item.imageUrl}
-          />
-        )}
-        // onEndReachedThreshold={0}
-        // onEndReached={getMore}
-        keyExtractor={item => item.postId}
-      /> */}
       {postData.map(item => {
         return (
           <Article
-            time={moment(item.createAt.toDate()).fromNow()}
+            time={moment(item.createAt?.toDate()).fromNow()}
             key={item.postId}
             text={item.content}
             image={item.imageUrl}
