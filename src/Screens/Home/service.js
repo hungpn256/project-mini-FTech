@@ -20,11 +20,6 @@ export const getMore = async ({item}) => {
     .then(querySnapshot => {
       console.log('Total users: ', querySnapshot.size);
       querySnapshot.forEach(documentSnapshot => {
-        console.log(
-          'post_id: ',
-          documentSnapshot.id,
-          documentSnapshot.data().content,
-        );
         data.push({postId: documentSnapshot.id, ...documentSnapshot.data()});
       });
     });
