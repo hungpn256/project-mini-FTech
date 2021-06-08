@@ -3,7 +3,6 @@ const heightWindow = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: heightWindow,
   },
   background: {
     flex: 1,
