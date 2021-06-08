@@ -7,23 +7,27 @@ const styles = StyleSheet.create({
   header: {
     borderRadius: 12,
     flexDirection: 'column',
-    flex: 7,
-    // backgroundColor: '#3498DB',
+    flex: 8,
   },
   header1: {
     paddingLeft: '7%',
     paddingRight: '7%',
-    flex: 2,
+    flex: 3,
     flexDirection: 'row',
-    backgroundColor: '#2E86C1',
-    justifyContent: 'space-between',
+    backgroundColor: '#3498DB',
     alignItems: 'center',
+    marginLeft: '1.5%',
+    marginRight: '1.5%',
   },
   header2: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 7,
     backgroundColor: '#3498DB',
+    marginLeft: '1.5%',
+    marginRight: '1.5%',
+    borderBottomEndRadius: 5,
+    borderBottomLeftRadius: 5,
   },
   touchOpacityHeader: {
     marginLeft: '3%',
@@ -38,11 +42,20 @@ const styles = StyleSheet.create({
   textHeader: {
     color: 'white',
   },
+  textHeader1: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
   body: {
     flex: 25,
     backgroundColor: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    margin: '1.5%',
+    borderWidth: 1,
+    borderColor: '#AEB6BF',
+    borderRadius: 5,
   },
   touchOpacityBody: {
     marginTop: '4%',
@@ -54,10 +67,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer: {
-    marginLeft: '2%',
-    marginRight: '2%',
+    marginLeft: '1.5%',
+    marginRight: '1.5%',
     flex: 8,
-    backgroundColor: '#EAF2F8',
+    borderRadius: 5,
   },
   child: {
     flex: 1,
@@ -68,6 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: windowWidth,
     resizeMode: 'stretch',
+    borderRadius: 5,
   },
 });
 

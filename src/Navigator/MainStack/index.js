@@ -11,8 +11,9 @@ import Menu from '../../Screens/Menu';
 import Messenger from '../../Screens/Messenger';
 import Profile from '../../Screens/Profile';
 import ChatRoom from '../../Screens/ChatRoom';
-import Pay from '../../Screens/Pay';
-import Notification from '../../Screens/Pay/notification';
+import PayHomeScreen from '../../Screens/Pay';
+import PayNotification from '../../Screens/Pay/notification';
+import Wallet from '../../Screens/Pay/wallet';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -131,9 +132,9 @@ const TabNavigatorPay = () => {
         inactiveTintColor: '#777',
         showLabel: false,
       }}>
-      <Tab.Screen name="Home" component={Pay} />
-      <Tab.Screen name="Notification" component={Notification} />
-      <Tab.Screen name="Wallet" component={Profile} />
+      <Tab.Screen name="Home" component={PayHomeScreen} />
+      <Tab.Screen name="Notification" component={PayNotification} />
+      <Tab.Screen name="Wallet" component={Wallet} />
     </Tab.Navigator>
   );
 };
