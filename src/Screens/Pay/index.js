@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,22 +11,45 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
+import {Divider} from 'react-native-paper';
 
 const ImageCarousel = [
   {image: require('./assets/1.jpg')},
   {image: require('./assets/2.jpg')},
   {image: require('./assets/3.jpg')},
-  {image: require('./assets/4.png')},
+  {image: require('./assets/4.jpg')},
 ];
 
+const Recharge = () => {
+  return (
+    <View>
+      <Text>Nạp tiền</Text>
+    </View>
+  );
+};
+const Transfers = () => {
+  return (
+    <View>
+      <Text>Chuyển tiền</Text>
+    </View>
+  );
+};
+const WithdrawMoney = () => {
+  return (
+    <View>
+      <Text>Rút tiền</Text>
+    </View>
+  );
+};
 const Pay = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header1}>
-          <Text style={styles.textHeader}>Số dư Ví</Text>
-          <Text style={styles.textHeader}>10000000</Text>
+          <Text style={styles.textHeader1}>Số dư :</Text>
+          <Text style={styles.textHeader1}>10000000</Text>
         </View>
+        <Divider />
         <View style={styles.header2}>
           <TouchableOpacity style={styles.touchOpacityHeader}>
             <AntDesign name="scan1" size={60} color={'white'} />
@@ -104,4 +129,14 @@ const Pay = () => {
     </View>
   );
 };
+// // const Stack = createStackNavigator();
+// // const Pay = () => {
+// //   return (
+// //     <NavigationContainer>
+// //       <Stack.Navigator initialRouteName="Home">
+// //         <Stack.Screen name="Home" component={PayHomeScreen} />
+// //       </Stack.Navigator>
+// //     </NavigationContainer>
+// //   );
+// };
 export default Pay;
