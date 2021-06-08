@@ -76,6 +76,7 @@ const addUser = async (uid, fullName) => {
   let roomChat = [];
   let id = uid;
   let userName = fullName;
+  let money = 0;
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: userName,
@@ -84,6 +85,7 @@ const addUser = async (uid, fullName) => {
       background: '',
       friends: friend,
       roomChatList: roomChat,
+      money: money,
     });
   } catch (error) {
     console.log(error);
