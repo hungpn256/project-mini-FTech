@@ -34,7 +34,6 @@ export default function AppNavigator() {
     })();
     const check = async () => {
       const data = await AsyncStorage.getItem('USER_ID');
-      console.log('>>>?' + data);
       if (data !== null) {
         dispatch({type: USER_SET});
       } else {
@@ -43,7 +42,6 @@ export default function AppNavigator() {
     };
     check();
   }, []);
-  console.log('USER DATA' + userData);
   return load ? (
     <>
       <Loading />

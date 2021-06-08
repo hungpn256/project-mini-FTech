@@ -7,47 +7,49 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import firestore from '@react-native-firebase/firestore';
-const LeftContent = props => (
-  <Avatar.Image
-    source={{
-      uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-    }}
-    size={50}
-  />
+import avatarImg from '../../assets/Img/avatar.png';
+const LeftContent = img => (
+  <>
+    {img ? (
+      <Avatar.Image source={{uri: img}} size={40} />
+    ) : (
+      <Avatar.Image source={avatarImg} size={40} />
+    )}
+  </>
 );
 const Article = ({text, image, time, uid}) => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
-  const user = useSelector(state => state.auth.user);
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState();
-
+  const [avatar, setAvatar] = useState('');
+  const [status, setStatus] = useState(false);
   useEffect(() => {
     const userInfo = async () => {
-      await firestore()
-        .collection('user')
-        .where('id', '==', uid)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(documentSnapshot => {
-            console.log(documentSnapshot.data().name);
-            setId(documentSnapshot.data().id);
-            setName(documentSnapshot.data().name);
-            setAvatar(documentSnapshot.data().avatar);
+      if (uid) {
+        await firestore()
+          .collection('user')
+          .where('id', '==', uid)
+          .get()
+          .then(querySnapshot => {
+            querySnapshot.forEach(documentSnapshot => {
+              setId(documentSnapshot.data().id);
+              setName(documentSnapshot.data().name);
+              setAvatar(documentSnapshot.data().avatar);
+              setStatus(true);
+            });
           });
-        });
+      }
     };
     userInfo();
   });
-  console.log(uid);
-  return (
+  return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '500'}}
         title={name}
         subtitle={time}
-        left={LeftContent}
+        left={() => LeftContent(avatar)}
       />
       <Card.Content style={styles.content}>
         <Paragraph>{text}</Paragraph>
@@ -78,7 +80,7 @@ const Article = ({text, image, time, uid}) => {
         />
       </Card.Actions>
     </Card>
-  );
+  ) : null;
 };
 const styles = StyleSheet.create({
   container: {
