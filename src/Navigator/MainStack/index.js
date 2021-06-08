@@ -6,23 +6,12 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-<<<<<<< HEAD
-import Home from '../../Screens/Home';
-import Menu from '../../Screens/Menu';
-import Messenger from '../../Screens/Messenger';
-import Profile from '../../Screens/Profile';
-import ChatRoom from '../../Screens/ChatRoom';
-import PayHomeScreen from '../../Screens/Pay';
-import PayNotification from '../../Screens/Pay/notification';
-import Wallet from '../../Screens/Pay/wallet';
-=======
 import Home from '@Screens/Home';
 import Menu from '@Screens/Menu';
 import Messenger from '@Screens/ChatRoom/components/Messenger';
 import Profile from '@Screens/Profile';
 import ChatRoom from '@Screens/ChatRoom';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
->>>>>>> 6f02b8b2c9296a65316c22e4b93f4656e207dc57
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -157,16 +146,6 @@ export default function AppNavigator() {
           component={TabNavigator}
         />
         <Stack.Screen name="Messenger" component={Messenger} />
-<<<<<<< HEAD
-        <Stack.Screen name="ChatRoom" component={ChatRoom} />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="Pay"
-          component={TabNavigatorPay}
-        />
-=======
         <Stack.Screen
           name="ChatRoom"
           component={ChatRoom}
@@ -175,7 +154,6 @@ export default function AppNavigator() {
           }}
         />
         <Stack.Screen name="Profile-o" component={Profile} />
->>>>>>> 6f02b8b2c9296a65316c22e4b93f4656e207dc57
       </Stack.Navigator>
     </NavigationContainer>
   );
