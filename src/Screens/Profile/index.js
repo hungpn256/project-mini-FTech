@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import Article from '../../Components/Article.js';
@@ -6,28 +6,73 @@ import PostArticle from '@Components/PostArticle.js';
 import About from './components/About.js';
 import Photos from './components/Photos.js';
 import styles from './styles';
-
-const Profile = ({navigation}) => {
+import {useDispatch, useSelector} from 'react-redux';
+import SetImage from './components/SetImage.js';
+import {avatarDefault} from '../../index_Constant.js';
+import {GET_ME, GET_PROFILE, UPDATE_ME} from './constants.js';
+import auth from '@react-native-firebase/auth';
+import Loading from '../../Components/Loading/index.js';
+const Profile = ({navigation, route}) => {
+  const id = route?.params?.id;
+  console.log('iduser', id);
   const [tab, setTab] = useState(1);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (id) {
+      dispatch({type: GET_PROFILE, payload: id});
+    } else {
+      let uid = auth().currentUser.uid;
+      dispatch({type: GET_ME, payload: uid});
+    }
+    // return () => {
+    //   dispatch({type: GET_ME, payload: auth().currentUser.uid});
+    // };
+  }, []);
+  const profile = useSelector(state => state.profile);
+  const {role, user: me, profile: other, loading} = profile;
+  const user = id ? other : me;
+  const setAvatar = image => {
+    dispatch({type: UPDATE_ME, payload: {avatar: image}});
+  };
+  const setBackground = image => {
+    dispatch({type: UPDATE_ME, payload: {background: image}});
+  };
+  if (!user && loading) {
+    return <Loading loading={loading} />;
+  }
   return (
     <ScrollView style={styles.background}>
+      <Loading loading={loading} />
       <View style={styles.body}>
         <View style={styles.image}>
-          <Image
-            style={styles.cover}
-            source={{
-              uri: 'https://scontent-xsp1-3.xx.fbcdn.net/v/t1.6435-9/s960x960/133854021_1823631001138062_4807573368620165003_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=e3f864&_nc_ohc=UMXfqOYqYpwAX9pPAtd&_nc_ht=scontent-xsp1-3.xx&tp=7&oh=2caa49a66dddbd2659604498c910de03&oe=60C1EE0D',
-            }}
-          />
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-            }}
-          />
+          <View style={styles.wrapperCover}>
+            {user.background.length > 0 && (
+              <Image
+                style={styles.cover}
+                source={{
+                  uri: user.background,
+                }}
+              />
+            )}
+            {role === 0 && (
+              <SetImage
+                setImage={setBackground}
+                style={{right: 20, bottom: 150}}
+              />
+            )}
+          </View>
+
+          <View style={styles.wrapperAvatar}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: user.avatar || avatarDefault,
+              }}
+            />
+            {role === 0 && <SetImage setImage={setAvatar} />}
+          </View>
         </View>
-        <Text style={styles.name}>Phạm Năng Hưng</Text>
+        <Text style={styles.name}>{user.name}</Text>
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>
@@ -84,7 +129,7 @@ const Profile = ({navigation}) => {
         {tab === 1 ? (
           <View style={styles.viewContent}>
             <View style={{marginVertical: 8}}>
-              <PostArticle />
+              {role === 0 && <PostArticle />}
             </View>
             <Article />
             <Article />

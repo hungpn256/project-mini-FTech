@@ -10,20 +10,30 @@ import {
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
+import ModalPost from './ModalPost';
+import ModalCreatePost from '@Components/Modal';
 export default function PostArticle({editable}) {
   const [image, setImage] = useState(null);
+  const [status, setStatus] = useState(null);
+  const handlePress = () => {
+    setStatus(false);
+  };
+
+  const delImg = () => {
+    setImage(null);
+  };
+
   return (
     <Card mode="outline" style={styles.container}>
       <View style={styles.inputWrapper}>
-        <InputEncloseAvatar
-          editable={!!editable}
-          placeholder="What's on your mind, Hung"
-        />
-        {image && (
-          <View style={styles.imageWrapper}>
-            <Image style={styles.image} source={image} />
-          </View>
+        <ModalPost />
+        {status && (
+          <ModalCreatePost
+            type={status}
+            closeImg={delImg}
+            closeModal={handlePress}
+            src={image}
+          />
         )}
       </View>
       <Card.Actions style={styles.actionBottom}>
@@ -45,10 +55,10 @@ export default function PostArticle({editable}) {
                 },
               );
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log('Camera permission given');
                 launchCamera({mediaType: 'photo'}, props => {
                   if (props.type === 'image/jpeg') {
                     setImage(props);
+                    setStatus(true);
                   }
                 });
               } else {
@@ -64,11 +74,12 @@ export default function PostArticle({editable}) {
           style={styles.actionBtn}
           icon="folder-image"
           color="#777"
-          onPress={async e => {
+          onPress={() => {
             console.log('image');
             launchImageLibrary({mediaType: 'photo'}, props => {
               if (props.type === 'image/jpeg') {
                 setImage(props);
+                setStatus(true);
               }
             });
           }}>
@@ -108,15 +119,18 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   imageWrapper: {
+    marginTop: 15,
+    position: 'relative',
     height: 100,
     width: 100,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 4,
-    },
-    shadowOpacity: 1,
-    elevation: 2,
+  },
+  closeBtn: {
+    padding: 5,
+    borderRadius: 999,
+    position: 'absolute',
+    backgroundColor: '#f0f0f0',
+    top: -5,
+    right: 5,
   },
   image: {
     flex: 1,
