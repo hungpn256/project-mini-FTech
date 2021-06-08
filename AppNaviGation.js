@@ -1,45 +1,54 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { firebase } from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
+import {firebase} from '@react-native-firebase/auth';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from './src/Components/Loading';
-
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';
-import {CHECK} from './src/Screens/Auth/constants';
+import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
+
 export default function AppNavigator() {
-  const isLogged = useSelector(state => state.auth.isLogged);
+  const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const load = useSelector(state => state.auth.splashScreen);
+
+  const saveId = async uid => {
+    await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
+  };
+
+  const removeId = async () => {
+    await AsyncStorage.removeItem('USER_ID');
+  };
+
   useEffect(() => {
-     (()=>{
-      firebase.auth().onAuthStateChanged(async function(user) {
+    (() => {
+      firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          await AsyncStorage.setItem('USER_ID',JSON.stringify(user.uid));
-        }
-        else{
-          await AsyncStorage.removeItem("USER_ID")
+          console.log('?', firebase.auth().currentUser.uid);
+          saveId(user.uid);
+        } else {
+          removeId();
+          console.log('OUTTTTTT');
         }
       });
-    })()
+    })();
     const check = async () => {
       const data = await AsyncStorage.getItem('USER_ID');
+      console.log('>>>?' + data);
       if (data !== null) {
-        dispatch({type: CHECK, payload: true});
-        setLoading(false);
+        dispatch({type: USER_SET});
       } else {
-        dispatch({type: CHECK, payload: false});
-        setLoading(false);
+        dispatch({type: USER_DEL});
       }
     };
     check();
   }, []);
-
-  return loading ? (
+  console.log('USER DATA' + userData);
+  return load ? (
     <>
       <Loading />
     </>
   ) : (
-    <>{isLogged ? <MainStack /> : <AuthStack />}</>
+    <>{userData ? <MainStack /> : <AuthStack />}</>
   );
 }
