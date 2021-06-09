@@ -13,10 +13,6 @@ import {set} from 'lodash';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
   const dispatch = useDispatch();
-  const [status, setStatus] = useState(false);
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState();
   useEffect(() => {
     firestore()
       .collection('post')
@@ -28,15 +24,25 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={{fontSize: 50, backgroundColor: '#fff'}}>Logo</Text>
-        <Button
-          onPress={() => {
-            navigation.navigate('ChatRoom');
-          }}>
-          <Fontisto name="messenger" size={30} />
-        </Button>
+        <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
+        <View style={styles.groupBtn}>
+          <Fontisto
+            style={{marginRight: 13}}
+            name="search"
+            color="#4169e1"
+            size={21}
+          />
+          <Fontisto
+            onPress={() => {
+              navigation.navigate('ChatRoom');
+            }}
+            name="messenger"
+            color="#4169e1"
+            size={21}
+          />
+        </View>
       </View>
       <PostArticle />
       {postData.map(item => {

@@ -28,3 +28,39 @@ export const uploadImg = async image => {
     return '';
   }
 };
+
+export const gallery = () => {
+  launchImageLibrary({mediaType: 'photo'}, props => {
+    if (props.type === 'image/jpeg') {
+      setImage(props);
+      setStatus(true);
+    }
+  });
+};
+
+export const camera = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+      {
+        title: 'App Camera Permission',
+        message: 'App needs access to your camera ',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      launchCamera({mediaType: 'photo'}, props => {
+        if (props.type === 'image/jpeg') {
+          setImage(props);
+          setStatus(true);
+        }
+      });
+    } else {
+      console.log('Camera permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
