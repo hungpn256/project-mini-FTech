@@ -5,7 +5,7 @@ import {Modal} from 'react-native';
 
 export default function Loading({loading}) {
   return (
-    <Modal visible={loading} transparent={true}>
+    <Modal visible={loading} animationType="fade" transparent={true}>
       <View
         style={{
           flex: 1,
@@ -13,7 +13,7 @@ export default function Loading({loading}) {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <ActivityIndicator size="large" color="#232B2B" />
+        <ActivityIndicator size="large" color="#4169e1" />
       </View>
     </Modal>
   );
