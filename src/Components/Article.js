@@ -8,6 +8,9 @@ import {useSelector} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import firestore from '@react-native-firebase/firestore';
 import avatarImg from '../../assets/Img/avatar.png';
+import {Text} from 'react-native';
+import {View} from 'react-native';
+import {Pressable} from 'react-native';
 const LeftContent = img => (
   <>
     {img ? (
@@ -17,6 +20,9 @@ const LeftContent = img => (
     )}
   </>
 );
+
+const RighContent = () => {};
+
 const Article = ({text, image, time, uid}) => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
@@ -27,18 +33,16 @@ const Article = ({text, image, time, uid}) => {
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
-        await firestore()
+        const users = await firestore()
           .collection('user')
           .where('id', '==', uid)
-          .get()
-          .then(querySnapshot => {
-            querySnapshot.forEach(documentSnapshot => {
-              setId(documentSnapshot.data().id);
-              setName(documentSnapshot.data().name);
-              setAvatar(documentSnapshot.data().avatar);
-              setStatus(true);
-            });
-          });
+          .get();
+        users.forEach(user => {
+          setId(user.data().id);
+          setName(user.data().name);
+          setAvatar(user.data().avatar);
+          setStatus(true);
+        });
       }
     };
     userInfo();
@@ -46,7 +50,7 @@ const Article = ({text, image, time, uid}) => {
   return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
-        titleStyle={{fontSize: 16, fontWeight: '500'}}
+        titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={name}
         subtitle={time}
         left={() => LeftContent(avatar)}
@@ -56,21 +60,34 @@ const Article = ({text, image, time, uid}) => {
       </Card.Content>
       {image ? <Card.Cover source={{uri: image}} /> : null}
       <Card.Actions style={styles.cardAction}>
-        <Button
-          onPress={() => {
-            setLike(like => !like);
-          }}>
-          <AntDesignIcon name={!like ? 'like2' : 'like1'} size={28} />
-        </Button>
-        <Button
-          onPress={() => {
-            inputRef.current.focus();
-          }}>
-          <FontistoIcon name="comment" size={24} />
-        </Button>
-        <Button>
-          <SimpleLineIcons name="share" size={24} />
-        </Button>
+        <Pressable onPress={() => setLike(like => !like)}>
+          <View style={styles.actionBtn}>
+            <AntDesignIcon
+              color={like ? '#4169e1' : '#696969'}
+              name={!like ? 'like2' : 'like1'}
+              size={20}
+            />
+            <Text
+              style={[
+                styles.actionText,
+                {color: like ? '#4169e1' : '#696969'},
+              ]}>
+              Like
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => inputRef.current.focus()}>
+          <View style={styles.actionBtn}>
+            <FontistoIcon color="#696969" name="comment" size={20} />
+            <Text style={[styles.actionText, {color: '#696969'}]}>Comment</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => inputRef.current.focus()}>
+          <View style={styles.actionBtn}>
+            <SimpleLineIcons name="share" color="#696969" size={20} />
+            <Text style={[styles.actionText, {color: '#696969'}]}>Share</Text>
+          </View>
+        </Pressable>
       </Card.Actions>
       <Card.Actions style={{marginBottom: 8}}>
         <InputEncloseAvatar
@@ -86,16 +103,28 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 4,
   },
+  actionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  //#A4A4A4
+  //#4169e1
+  actionText: {
+    fontSize: 15,
+    marginLeft: 5,
+    fontWeight: '700',
+  },
   content: {
     marginBottom: 8,
   },
   cardAction: {
-    borderBottomColor: '#ccc',
+    justifyContent: 'space-evenly',
+    borderBottomColor: '#E5E5E5',
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    paddingVertical: 0,
-    marginVertical: 4,
+    borderTopColor: '#E5E5E5',
+    paddingVertical: 10,
+    paddingHorizontal: -10,
   },
 });
 export default Article;
