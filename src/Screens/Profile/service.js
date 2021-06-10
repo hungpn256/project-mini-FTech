@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 export const getProfile = payload =>
   new Promise((resolve, reject) => {
-    console.log(payload.messages, 'sendMes');
     firestore()
       .collection('user')
       .doc(payload)

@@ -14,7 +14,6 @@ import {
   SPLASH,
 } from './constants';
 const reducer = (state = initialState, action) => {
-  console.log(state.user);
   switch (action.type) {
     case SPLASH:
       return {...state, splashScreen: false};

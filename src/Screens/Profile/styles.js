@@ -9,16 +9,15 @@ const styles = StyleSheet.create({
 
   image: {
     position: 'relative',
-    height: 230,
+    height: 290,
   },
   wrapperCover: {
-    position: 'relative',
-    height: 200,
     width: '100%',
+    height: 250,
   },
   cover: {
     width: '100%',
-    height: 200,
+    height: 250,
   },
   wrapperAvatar: {
     position: 'absolute',

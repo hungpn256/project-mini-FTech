@@ -79,7 +79,6 @@ const uploadImg = async image => {
     } catch (error) {
       console.log(error);
     }
-    console.log(image.uri);
   } else {
     return '';
   }
