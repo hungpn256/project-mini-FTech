@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -12,6 +12,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import {Divider} from 'react-native-paper';
+import {useSelector} from 'react-redux';
 
 const ImageCarousel = [
   {image: require('./assets/1.jpg')},
@@ -21,12 +22,20 @@ const ImageCarousel = [
 ];
 
 const Pay = () => {
+  const userMoney = useSelector(state => state.auth.user);
+  const [modalRecharge, setModalReacharget] = useState(false);
+  const [modalTranfers, setModalTranfers] = useState(false);
+  const [modalWithDraw, setModalWithDraw] = useState(false);
+
+  console.log('====================================');
+  console.log(userMoney);
+  console.log('====================================');
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header1}>
           <Text style={styles.textHeader1}>Số dư :</Text>
-          <Text style={styles.textHeader1}>10000000</Text>
+          <Text style={styles.textHeader1}>{userMoney.money} vnđ</Text>
         </View>
         <Divider />
         <View style={styles.header2}>
