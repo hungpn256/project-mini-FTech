@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-const Recharge = () => {
+export default Recharge = () => {
   return (
     <View>
       <Text>Nạp tiền</Text>
