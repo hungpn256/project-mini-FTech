@@ -53,7 +53,10 @@ const Profile = ({navigation, route}) => {
             {role === 0 && (
               <SetImage
                 setImage={setBackground}
-                style={{right: 20, bottom: 150}}
+                style={{
+                  right: 20,
+                  bottom: user.background?.length > 0 ? 180 : -100,
+                }}
               />
             )}
           </View>

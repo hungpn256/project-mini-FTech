@@ -31,9 +31,9 @@ function* handleCreatePost({payload}) {
   }
 }
 
-function* handleGetPost({payload}) {
+function* handleGetPost() {
   try {
-    const res = yield call(getAll, payload);
+    const res = yield call(getAll);
     console.log(res);
     yield put({type: ALL_POST, payload: {data: res}});
   } catch (err) {
@@ -41,12 +41,12 @@ function* handleGetPost({payload}) {
   }
 }
 
-function* handleGetMore() {
-  try {
-    const res = yield call(getMore);
-    yield put({type: MORE_POST, payload: {more: res}});
-  } catch (error) {}
-}
+// function* handleGetMore() {
+//   try {
+//     const res = yield call(getMore);
+//     yield put({type: MORE_POST, payload: {more: res}});
+//   } catch (error) {}
+// }
 function* watchPostSaga() {
   yield takeLatest(CREATE_POST, handleCreatePost);
   yield takeLatest(GET_POST, handleGetPost);
