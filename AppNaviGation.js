@@ -24,11 +24,9 @@ export default function AppNavigator() {
     (() => {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          console.log('?', firebase.auth().currentUser.uid);
           saveId(user.uid);
         } else {
           removeId();
-          console.log('OUTTTTTT');
         }
       });
     })();
