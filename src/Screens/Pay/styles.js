@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     paddingRight: '7%',
     flex: 3,
     flexDirection: 'row',
-    backgroundColor: '#3498DB',
+    backgroundColor: '#4169e1',
     alignItems: 'center',
     marginLeft: '1.5%',
     marginRight: '1.5%',
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     flex: 7,
-    backgroundColor: '#3498DB',
+    backgroundColor: '#4169e1',
     marginLeft: '1.5%',
     marginRight: '1.5%',
     borderBottomEndRadius: 5,
@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   textHeader1: {
     color: 'white',
