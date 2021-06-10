@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
 import CameraGroup from './CameraGroup';
+import {set} from 'lodash';
 export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
   const [text, setText] = useState('');
@@ -76,7 +77,7 @@ export default function Post({type, src, closeModal, closeImg}) {
       console.warn(err);
     }
   };
-
+  console.log('loading' + loading);
   return type ? (
     <>
       <Modal animationType="fade">
@@ -221,13 +222,11 @@ const styles = StyleSheet.create({
   },
   actionBottom: {
     justifyContent: 'space-around',
-    paddingVertical: 0,
   },
   colorText: {
     color: '#696969',
   },
   actionBtn: {
-    paddingTop: 8,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
