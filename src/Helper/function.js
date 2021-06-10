@@ -11,7 +11,6 @@ export const commonRoom = (user1, user2) => {
 
 export const uploadImg = async image => {
   if (image) {
-    console.log('1234353248734' + image);
     const fileName = image.fileName;
     const ref = storage().ref('PostImg/' + fileName);
     try {
@@ -23,7 +22,6 @@ export const uploadImg = async image => {
     } catch (error) {
       console.log(error);
     }
-    console.log(image.uri);
   } else {
     return '';
   }

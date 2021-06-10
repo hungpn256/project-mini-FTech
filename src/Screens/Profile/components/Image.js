@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 function ImageComponent({handleDelete, setImageModal, index, item}) {
-  console.log('render' + index);
   return (
     <View style={styles.photosItem}>
       {item ? (

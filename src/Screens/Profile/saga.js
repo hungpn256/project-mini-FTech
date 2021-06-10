@@ -46,12 +46,8 @@ function* updateMeSaga({payload}) {
       payloadtmp.background = url;
     }
     const res = yield call(updateMe, payload);
-    console.log('sda');
     yield put({type: GET_ME, payload: auth().currentUser.uid});
-    console.log('a');
-    console.log('update', res);
   } catch (e) {
-    console.log('sdasdasd');
   } finally {
     yield put({type: PROFILE_CHANGE_STATE, payload: {loading: false}});
   }
@@ -61,12 +57,7 @@ function* getProfileSaga({payload}) {
   try {
     yield put({type: PROFILE_CHANGE_STATE, payload: {loading: true}});
     const res = yield call(getProfile, payload);
-    const idAuth = yield select(state => state.auth.user.id);
-    let role = 3;
-    if (idAuth === res.id) {
-      role = 0;
-    }
-    yield put({type: GET_PROFILE_SUCCESS, payload: {profile: res, role}});
+    yield put({type: GET_PROFILE_SUCCESS, payload: {profile: res}});
   } catch (e) {
     console.log(e);
   } finally {

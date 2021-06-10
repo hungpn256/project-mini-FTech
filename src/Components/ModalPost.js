@@ -14,14 +14,11 @@ export default function ModalPost() {
 
   const handlePress = () => {
     setModal(true);
-    console.log('OK');
   };
 
   const close = () => {
     setModal(false);
   };
-
-  console.log(modal);
   return (
     <View style={styles.inputWrapper}>
       <Avatar.Image

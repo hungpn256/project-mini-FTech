@@ -64,7 +64,6 @@ export const logout = async () => {
     await GoogleSignin.signOut();
     // }
     await auth().signOut();
-    console.log('LOG OUT RA NAY');
   } catch (error) {
     await auth().signOut();
     console.log(error);

@@ -24,17 +24,14 @@ export default function AppNavigator() {
     (() => {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-          console.log('?', firebase.auth().currentUser.uid);
           saveId(user.uid);
         } else {
           removeId();
-          console.log('OUTTTTTT');
         }
       });
     })();
     const check = async () => {
       const data = await AsyncStorage.getItem('USER_ID');
-      console.log('>>>?' + data);
       if (data !== null) {
         dispatch({type: USER_SET});
       } else {
@@ -43,7 +40,6 @@ export default function AppNavigator() {
     };
     check();
   }, []);
-  console.log('USER DATA' + userData);
   return load ? (
     <>
       <Loading />
