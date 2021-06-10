@@ -27,6 +27,7 @@ const Profile = ({navigation, route}) => {
   const profile = useSelector(state => state.profile);
   const {role, user: me, profile: other, loading} = profile;
   const user = id ? other : me;
+  console.log(user, 'user');
   const setAvatar = image => {
     dispatch({type: UPDATE_ME, payload: {avatar: image}});
   };
