@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {LOGOUT} from '../Auth/constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import {avatarDefault} from '../../index_Constant';
 const heightWindow = Dimensions.get('window').height;
 export default function Menu({navigation}) {
   const dispatch = useDispatch();
@@ -32,9 +33,7 @@ export default function Menu({navigation}) {
           titleStyle={styles.name}
           left={props => (
             <Avatar.Image
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
+              source={{uri: user.avatar || avatarDefault}}
               size={65}
             />
           )}
@@ -64,7 +63,10 @@ export default function Menu({navigation}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Pay');
+          }}>
           <List.Item
             style={styles.item}
             title="Pay"
