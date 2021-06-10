@@ -9,15 +9,17 @@ const styles = StyleSheet.create({
 
   image: {
     position: 'relative',
-    height: 230,
+    height: 290,
+  },
+  wrapperCover: {
+    width: '100%',
+    height: 250,
   },
   cover: {
-    height: 200,
     width: '100%',
+    height: 250,
   },
-  avatar: {
-    height: 160,
-    width: 160,
+  wrapperAvatar: {
     position: 'absolute',
     borderRadius: 50,
     borderColor: '#fff',
@@ -25,6 +27,11 @@ const styles = StyleSheet.create({
     left: '50%',
     bottom: 0,
     transform: [{translateX: -80}],
+  },
+  avatar: {
+    height: 160,
+    width: 160,
+    borderRadius: 50,
   },
   name: {
     color: '#000',

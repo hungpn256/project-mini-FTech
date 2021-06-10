@@ -1,71 +1,50 @@
-import React, { useEffect,useState } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {firebase} from '@react-native-firebase/auth';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import AuthStack from './src/Navigator/AuthStack'
-import MainStack from './src/Navigator/MainStack'
-import {CHECK} from './src/Screens/Auth/constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Loading from './src/Component/Loading/index'
-import {createStackNavigator} from '@react-navigation/stack';
-import Login from './src/Screens/Auth/Login';
-import Home from './src/Screens/Home';
-import Register from './src/Screens/Auth/Register';
-import {Provider, useSelector} from 'react-redux';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Text, View, StyleSheet} from 'react-native';
-import Profile from './src/Screens/Profile';
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-export default function AppNavigator() {
-  const isLogged = useSelector(state => state.auth.isLogged)
-  const dispatch = useDispatch()
-  const [loading,setLoading] = useState(true)
-  useEffect(()=>{
-    const check = async ()=> {
-      const data = await AsyncStorage.getItem("USER_ID")
-      if (data !== null) {
-        dispatch({type:CHECK,payload:true})
-        setLoading(false)
-      }
-      else{
-        dispatch({type:CHECK,payload:false})
-        setLoading(false)
-      }
-    }
-    check()
-  },[])
+import Loading from './src/Components/Loading';
+import AuthStack from './src/Navigator/AuthStack';
+import MainStack from './src/Navigator/MainStack';
+import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 
-  return (
-    loading ? (
-      <>
-        <Loading/>
-      </>
-    )
-    :
-    (
-    <>
-      {
-      isLogged ?
-        <MainStack/>
-        :
-        <AuthStack/>
+export default function AppNavigator() {
+  const userData = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
+  const load = useSelector(state => state.auth.splashScreen);
+
+  const saveId = async uid => {
+    await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
+  };
+
+  const removeId = async () => {
+    await AsyncStorage.removeItem('USER_ID');
+  };
+
+  useEffect(() => {
+    (() => {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          saveId(user.uid);
+        } else {
+          removeId();
+        }
+      });
+    })();
+    const check = async () => {
+      const data = await AsyncStorage.getItem('USER_ID');
+      if (data !== null) {
+        dispatch({type: USER_SET});
+      } else {
+        dispatch({type: USER_DEL});
       }
+    };
+    check();
+  }, []);
+  return load ? (
+    <>
+      <Loading />
     </>
-  )
-  )
+  ) : (
+    <>{userData ? <MainStack /> : <AuthStack />}</>
+  );
 }
-const styles = StyleSheet.create({
-  tabBottom: {
-    width: '90%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tabBottomFocus: color => ({
-    borderColor: color,
-    borderTopWidth: 4,
-  }),
-});
