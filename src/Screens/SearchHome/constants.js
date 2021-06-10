@@ -1,0 +1,2 @@
+export const USERINFO_SEARCH = 'USERINFO_SEARCH';
+export const USERINFO_DATA = 'USERINFO_DATA';

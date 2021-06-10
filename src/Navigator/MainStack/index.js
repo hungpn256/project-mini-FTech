@@ -11,6 +11,7 @@ import Menu from '@Screens/Menu';
 import Messenger from '@Screens/ChatRoom/components/Messenger';
 import Profile from '@Screens/Profile';
 import ChatRoom from '@Screens/ChatRoom';
+import Search from '@Screens/SearchHome';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import Pay from '@Screens/Pay/index';
 import Wallet from '@Screens/Pay/wallet';
@@ -147,6 +148,11 @@ export default function AppNavigator() {
           options={{headerShown: false}}
           name="#"
           component={TabNavigator}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Search"
+          component={Search}
         />
         <Stack.Screen name="Messenger" component={Messenger} />
         <Stack.Screen
