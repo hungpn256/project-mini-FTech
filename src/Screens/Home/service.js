@@ -8,39 +8,41 @@ const getPost = async id => {
   return post.data();
 };
 
-export const getMore = async ({item}) => {
-  const data = [];
-  await firestore()
-    .collection('post')
-    .orderBy('createAt', 'desc')
-    // .startAfter(last)
-    .startAfter(item)
-    .limit(6)
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(documentSnapshot => {
-        data.push({postId: documentSnapshot.id, ...documentSnapshot.data()});
-      });
-    });
-  return data;
-};
+// export const getMore = async ({item}) => {
+//   const data = [];
+//   await firestore()
+//     .collection('post')
+//     .orderBy('createAt', 'desc')
+//     // .startAfter(last)
+//     .startAfter(item)
+//     .limit(6)
+//     .get()
+//     .then(querySnapshot => {
+//       console.log('Total users: ', querySnapshot.size);
+//       querySnapshot.forEach(documentSnapshot => {
+//         data.push({postId: documentSnapshot.id, ...documentSnapshot.data()});
+//       });
+//     });
+//   return data;
+// };
 
 export const getAll = async () => {
   const data = [];
-  await firestore()
-    .collection('post')
-    .orderBy('createAt', 'desc')
-    // .startAfter(last)
-    .get()
-    .then(querySnapshot => {
-      querySnapshot.forEach(documentSnapshot => {
-        data.push({
-          postId: documentSnapshot.id,
-          ...documentSnapshot.data(),
-        });
+  try {
+    const post = await firestore()
+      .collection('post')
+      .orderBy('createAt', 'desc')
+      .get();
+    post.forEach(documentSnapshot => {
+      data.push({
+        postId: documentSnapshot.id,
+        ...documentSnapshot.data(),
       });
     });
-  return data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const uploadPost = async ({text, image}) => {

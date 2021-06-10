@@ -7,66 +7,87 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import firestore from '@react-native-firebase/firestore';
-const LeftContent = props => (
-  <Avatar.Image
-    source={{
-      uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-    }}
-    size={50}
-  />
+import avatarImg from '../../assets/Img/avatar.png';
+import {Text} from 'react-native';
+import {View} from 'react-native';
+import {Pressable} from 'react-native';
+const LeftContent = img => (
+  <>
+    {img ? (
+      <Avatar.Image source={{uri: img}} size={40} />
+    ) : (
+      <Avatar.Image source={avatarImg} size={40} />
+    )}
+  </>
 );
+
+const RighContent = () => {};
+
 const Article = ({text, image, time, uid}) => {
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
-  const user = useSelector(state => state.auth.user);
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState();
-
+  const [avatar, setAvatar] = useState('');
+  const [status, setStatus] = useState(false);
   useEffect(() => {
     const userInfo = async () => {
-      await firestore()
-        .collection('user')
-        .where('id', '==', uid)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(documentSnapshot => {
-            setId(documentSnapshot.data().id);
-            setName(documentSnapshot.data().name);
-            setAvatar(documentSnapshot.data().avatar);
-          });
+      if (uid) {
+        const users = await firestore()
+          .collection('user')
+          .where('id', '==', uid)
+          .get();
+        users.forEach(user => {
+          setId(user.data().id);
+          setName(user.data().name);
+          setAvatar(user.data().avatar);
+          setStatus(true);
         });
+      }
     };
     userInfo();
   });
-  return (
+  return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
-        titleStyle={{fontSize: 16, fontWeight: '500'}}
+        titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={name}
         subtitle={time}
-        left={LeftContent}
+        left={() => LeftContent(avatar)}
       />
       <Card.Content style={styles.content}>
         <Paragraph>{text}</Paragraph>
       </Card.Content>
       {image ? <Card.Cover source={{uri: image}} /> : null}
       <Card.Actions style={styles.cardAction}>
-        <Button
-          onPress={() => {
-            setLike(like => !like);
-          }}>
-          <AntDesignIcon name={!like ? 'like2' : 'like1'} size={28} />
-        </Button>
-        <Button
-          onPress={() => {
-            inputRef.current.focus();
-          }}>
-          <FontistoIcon name="comment" size={24} />
-        </Button>
-        <Button>
-          <SimpleLineIcons name="share" size={24} />
-        </Button>
+        <Pressable onPress={() => setLike(like => !like)}>
+          <View style={styles.actionBtn}>
+            <AntDesignIcon
+              color={like ? '#4169e1' : '#696969'}
+              name={!like ? 'like2' : 'like1'}
+              size={20}
+            />
+            <Text
+              style={[
+                styles.actionText,
+                {color: like ? '#4169e1' : '#696969'},
+              ]}>
+              Like
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => inputRef.current.focus()}>
+          <View style={styles.actionBtn}>
+            <FontistoIcon color="#696969" name="comment" size={20} />
+            <Text style={[styles.actionText, {color: '#696969'}]}>Comment</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => inputRef.current.focus()}>
+          <View style={styles.actionBtn}>
+            <SimpleLineIcons name="share" color="#696969" size={20} />
+            <Text style={[styles.actionText, {color: '#696969'}]}>Share</Text>
+          </View>
+        </Pressable>
       </Card.Actions>
       <Card.Actions style={{marginBottom: 8}}>
         <InputEncloseAvatar
@@ -76,22 +97,34 @@ const Article = ({text, image, time, uid}) => {
         />
       </Card.Actions>
     </Card>
-  );
+  ) : null;
 };
 const styles = StyleSheet.create({
   container: {
     marginVertical: 4,
   },
+  actionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  //#A4A4A4
+  //#4169e1
+  actionText: {
+    fontSize: 15,
+    marginLeft: 5,
+    fontWeight: '700',
+  },
   content: {
     marginBottom: 8,
   },
   cardAction: {
-    borderBottomColor: '#ccc',
+    justifyContent: 'space-evenly',
+    borderBottomColor: '#E5E5E5',
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    paddingVertical: 0,
-    marginVertical: 4,
+    borderTopColor: '#E5E5E5',
+    paddingVertical: 10,
+    paddingHorizontal: -10,
   },
 });
 export default Article;

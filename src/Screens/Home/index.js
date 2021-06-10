@@ -7,9 +7,9 @@ import Article from '../../Components/Article';
 import PostArticle from '../../Components/PostArticle';
 import styles from './styles';
 import firestore from '@react-native-firebase/firestore';
-import {GET_POST, GET_MORE} from './constants';
+import {GET_POST} from './constants';
 import moment from 'moment';
-import {log} from 'react-native-reanimated';
+import {set} from 'lodash';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
   const dispatch = useDispatch();
@@ -22,36 +22,33 @@ const Home = ({navigation}) => {
         });
       });
   }, []);
+
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={{fontSize: 50, backgroundColor: '#fff'}}>Logo</Text>
-        <Button
-          onPress={() => {
-            navigation.navigate('ChatRoom');
-          }}>
-          <Fontisto name="messenger" size={30} />
-        </Button>
+        <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
+        <View style={styles.groupBtn}>
+          <Fontisto
+            style={{marginRight: 13}}
+            name="search"
+            color="#4169e1"
+            size={21}
+          />
+          <Fontisto
+            onPress={() => {
+              navigation.navigate('ChatRoom');
+            }}
+            name="messenger"
+            color="#4169e1"
+            size={21}
+          />
+        </View>
       </View>
       <PostArticle />
-      {/* <FlatList
-        data={postData}
-        renderItem={({item}) => (
-          <Article
-            time={moment(item.createAt.toDate()).fromNow()}
-            key={item.postId}
-            text={item.content}
-            image={item.imageUrl}
-          />
-        )}
-        // onEndReachedThreshold={0}
-        // onEndReached={getMore}
-        keyExtractor={item => item.postId}
-      /> */}
       {postData.map(item => {
         return (
           <Article
-            time={moment(item.createAt.toDate()).fromNow()}
+            time={moment(item.createAt?.toDate()).fromNow()}
             key={item.postId}
             text={item.content}
             image={item.imageUrl}
