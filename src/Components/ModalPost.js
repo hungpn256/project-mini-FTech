@@ -6,6 +6,7 @@ import {
   Text,
   Modal,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -36,12 +37,12 @@ export default function ModalPost() {
       ) : (
         <Avatar.Image size={40} source={avatarImg} />
       )}
-      <View style={styles.input}>
-        <Text style={styles.text} onPress={handlePress}>
-          What's on your mind ?
-        </Text>
-        <Post type={modal} closeModal={close} />
-      </View>
+      <Pressable style={{flex: 1}} onPress={handlePress}>
+        <View style={styles.input}>
+          <Text style={styles.text}>What's on your mind ?</Text>
+          <Post type={modal} closeModal={close} />
+        </View>
+      </Pressable>
     </View>
   );
 }
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderRadius: 20,
     marginLeft: 8,
+    justifyContent: 'center',
   },
 });
