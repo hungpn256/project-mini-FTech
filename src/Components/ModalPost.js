@@ -17,14 +17,11 @@ export default function ModalPost() {
   const userData = useSelector(state => state.auth.user);
   const handlePress = () => {
     setModal(true);
-    console.log('OK');
   };
 
   const close = () => {
     setModal(false);
   };
-
-  console.log(modal);
   return (
     <View style={styles.inputWrapper}>
       {userData.avatar ? (

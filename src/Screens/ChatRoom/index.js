@@ -91,7 +91,6 @@ export default function ChatRoom({navigation}) {
             roomList.map((i, index) => {
               const userOther = i.users.find(i => i.id !== userId);
               const {messages} = i;
-              console.log(userOther);
               if (messages.length)
                 return (
                   <TouchableOpacity
