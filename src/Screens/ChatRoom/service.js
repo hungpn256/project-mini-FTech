@@ -8,11 +8,6 @@ export const getUserByName = payload =>
       .then(querySnapshot => {
         let resultAll = [];
         querySnapshot.forEach(documentSnapshot => {
-          console.log(
-            'User ID: ',
-            documentSnapshot.id,
-            documentSnapshot.data(),
-          );
           resultAll.push({id: documentSnapshot.id, ...documentSnapshot.data()});
         });
         let result = [];
@@ -46,7 +41,6 @@ export const getConversation = payload =>
 
 export const createConversation = payload =>
   new Promise((resolve, reject) => {
-    console.log(payload, 'payload');
     firestore()
       .collection('room-chat')
       .add({
@@ -56,15 +50,12 @@ export const createConversation = payload =>
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(res => {
-        console.log(res, 'resss');
         payload.map(u => {
-          console.log(u.id, 'iduser');
           firestore()
             .collection('user')
             .doc(u.id)
             .get()
             .then(resUSer => {
-              console.log(resUSer.data());
               firestore()
                 .collection('user')
                 .doc(u.id)
@@ -82,16 +73,12 @@ export const createConversation = payload =>
 
 export const sendMes = payload =>
   new Promise((resolve, reject) => {
-    console.log(payload.messages, 'sendMes');
     firestore()
       .collection('room-chat')
       .doc(payload.roomId)
       .update({
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      // .get()
-      .then(() => {
-        console.log('data');
       });
+    // .get()
   });

@@ -27,7 +27,6 @@ function* getUserByNameSaga({payload}) {
 function* getConversationSaga({payload}) {
   try {
     const res = yield call(getConversation, payload);
-    console.log(res, 'get - room');
     yield put({type: GET_CONVERSATION_SUCCESS, payload: res});
   } catch (e) {
     yield put({type: GET_CONVERSATION_FAILURE, payload: {}});

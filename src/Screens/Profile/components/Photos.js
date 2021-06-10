@@ -53,7 +53,6 @@ const Photos = () => {
         }
       });
       imagesClone.splice(index, 1);
-      console.log(imagesClone);
       setImages(imagesClone);
     },
     [images.length],

@@ -14,7 +14,6 @@ import auth from '@react-native-firebase/auth';
 import Loading from '../../Components/Loading/index.js';
 const Profile = ({navigation, route}) => {
   const id = route?.params?.id;
-  console.log('iduser', id);
   const [tab, setTab] = useState(1);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,9 +23,6 @@ const Profile = ({navigation, route}) => {
       let uid = auth().currentUser.uid;
       dispatch({type: GET_ME, payload: uid});
     }
-    // return () => {
-    //   dispatch({type: GET_ME, payload: auth().currentUser.uid});
-    // };
   }, []);
   const profile = useSelector(state => state.profile);
   const {role, user: me, profile: other, loading} = profile;
@@ -47,7 +43,7 @@ const Profile = ({navigation, route}) => {
       <View style={styles.body}>
         <View style={styles.image}>
           <View style={styles.wrapperCover}>
-            {user.background.length > 0 && (
+            {user.background?.length > 0 && (
               <Image
                 style={styles.cover}
                 source={{
@@ -58,7 +54,10 @@ const Profile = ({navigation, route}) => {
             {role === 0 && (
               <SetImage
                 setImage={setBackground}
-                style={{right: 20, bottom: 150}}
+                style={{
+                  right: 20,
+                  bottom: user.background?.length > 0 ? 180 : -100,
+                }}
               />
             )}
           </View>
@@ -132,10 +131,6 @@ const Profile = ({navigation, route}) => {
             <View style={{marginVertical: 8}}>
               {role === 0 && <PostArticle />}
             </View>
-            <Article />
-            <Article />
-            <Article />
-            <Article />
           </View>
         ) : tab === 2 ? (
           <View style={styles.viewContent}>
