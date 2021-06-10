@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -20,27 +20,6 @@ const ImageCarousel = [
   {image: require('./assets/4.jpg')},
 ];
 
-const Recharge = () => {
-  return (
-    <View>
-      <Text>Nạp tiền</Text>
-    </View>
-  );
-};
-const Transfers = () => {
-  return (
-    <View>
-      <Text>Chuyển tiền</Text>
-    </View>
-  );
-};
-const WithdrawMoney = () => {
-  return (
-    <View>
-      <Text>Rút tiền</Text>
-    </View>
-  );
-};
 const Pay = () => {
   return (
     <View style={styles.container}>
@@ -52,23 +31,23 @@ const Pay = () => {
         <Divider />
         <View style={styles.header2}>
           <TouchableOpacity style={styles.touchOpacityHeader}>
-            <AntDesign name="scan1" size={60} color={'white'} />
+            <AntDesign name="scan1" size={50} color={'white'} />
             <Text style={styles.textHeader}>Quét mã</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchOpacityHeader}>
             <MaterialCommunityIcons
               name="wallet-plus-outline"
-              size={60}
+              size={50}
               color={'white'}
             />
             <Text style={styles.textHeader}>Nạp tiền</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchOpacityHeader}>
-            <FontAwesome name="exchange" size={60} color={'white'} />
+            <FontAwesome name="exchange" size={50} color={'white'} />
             <Text style={styles.textHeader}>Chuyển tiền</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touchOpacityHeader}>
-            <AntDesign name="wallet" size={60} color={'white'} />
+            <AntDesign name="wallet" size={50} color={'white'} />
             <Text style={styles.textHeader}>Rút tiền</Text>
           </TouchableOpacity>
         </View>
@@ -129,14 +108,4 @@ const Pay = () => {
     </View>
   );
 };
-// // const Stack = createStackNavigator();
-// // const Pay = () => {
-// //   return (
-// //     <NavigationContainer>
-// //       <Stack.Navigator initialRouteName="Home">
-// //         <Stack.Screen name="Home" component={PayHomeScreen} />
-// //       </Stack.Navigator>
-// //     </NavigationContainer>
-// //   );
-// };
 export default Pay;

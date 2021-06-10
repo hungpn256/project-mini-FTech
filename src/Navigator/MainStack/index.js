@@ -12,6 +12,9 @@ import Messenger from '@Screens/ChatRoom/components/Messenger';
 import Profile from '@Screens/Profile';
 import ChatRoom from '@Screens/ChatRoom';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
+import Pay from '@Screens/Pay/index';
+import Wallet from '@Screens/Pay/wallet';
+import PayNotification from '@Screens/Pay/notification';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -130,7 +133,7 @@ const TabNavigatorPay = () => {
         inactiveTintColor: '#777',
         showLabel: false,
       }}>
-      <Tab.Screen name="Home" component={PayHomeScreen} />
+      <Tab.Screen name="Home" component={Pay} />
       <Tab.Screen name="Notification" component={PayNotification} />
       <Tab.Screen name="Wallet" component={Wallet} />
     </Tab.Navigator>
@@ -154,6 +157,13 @@ export default function AppNavigator() {
           }}
         />
         <Stack.Screen name="Profile-o" component={Profile} />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="Pay"
+          component={TabNavigatorPay}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
