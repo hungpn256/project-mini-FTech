@@ -101,17 +101,8 @@ export const register = async ({email, pass, name}) => {
         return saveUser(firebase.auth().currentUser.uid);
       }
     }
-<<<<<<< HEAD
-} catch (error) { 
-    CatchErr(error.code)
-    return false
-}
-}
-
-=======
   } catch (error) {
     CatchErr(error.code);
     return null;
   }
 };
->>>>>>> 01451bcd3915947a9c0cf2646b6950f8565ed02d

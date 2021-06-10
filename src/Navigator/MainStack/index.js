@@ -11,23 +11,13 @@ import Menu from '@Screens/Menu';
 import Messenger from '@Screens/ChatRoom/components/Messenger';
 import Profile from '@Screens/Profile';
 import ChatRoom from '@Screens/ChatRoom';
+import Search from '@Screens/SearchHome';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import Pay from '@Screens/Pay/index';
 import Wallet from '@Screens/Pay/wallet';
 import PayNotification from '@Screens/Pay/notification';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-<<<<<<< HEAD
-export default function index() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          
-        </Stack.Navigator>
-      </NavigationContainer>
-    )
-=======
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -159,6 +149,11 @@ export default function AppNavigator() {
           name="#"
           component={TabNavigator}
         />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Search"
+          component={Search}
+        />
         <Stack.Screen name="Messenger" component={Messenger} />
         <Stack.Screen
           name="ChatRoom"
@@ -178,7 +173,6 @@ export default function AppNavigator() {
       </Stack.Navigator>
     </NavigationContainer>
   );
->>>>>>> 01451bcd3915947a9c0cf2646b6950f8565ed02d
 }
 const styles = StyleSheet.create({
   tabBottom: {
