@@ -42,7 +42,6 @@ export default function PostArticle({editable}) {
           icon="camera"
           color="#777"
           onPress={async e => {
-            console.log('Camera');
             try {
               const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -62,7 +61,6 @@ export default function PostArticle({editable}) {
                   }
                 });
               } else {
-                console.log('Camera permission denied');
               }
             } catch (err) {
               console.warn(err);
@@ -75,7 +73,6 @@ export default function PostArticle({editable}) {
           icon="folder-image"
           color="#777"
           onPress={() => {
-            console.log('image');
             launchImageLibrary({mediaType: 'photo'}, props => {
               if (props.type === 'image/jpeg') {
                 setImage(props);

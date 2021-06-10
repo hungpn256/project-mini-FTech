@@ -22,7 +22,6 @@ function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
     const res = yield call(uploadPost, payload);
-    console.log('DATAAAAAAAAAAadadasdsadsad' + res);
     yield put({type: UPLOAD_POST, payload: {new: res}});
     yield delay(100);
   } catch (err) {

@@ -31,7 +31,6 @@ const Article = ({text, image, time, uid}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(documentSnapshot => {
-            console.log(documentSnapshot.data().name);
             setId(documentSnapshot.data().id);
             setName(documentSnapshot.data().name);
             setAvatar(documentSnapshot.data().avatar);
@@ -40,7 +39,6 @@ const Article = ({text, image, time, uid}) => {
     };
     userInfo();
   });
-  console.log(uid);
   return (
     <Card mode="outlined" style={styles.container}>
       <Card.Title

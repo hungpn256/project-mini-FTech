@@ -18,13 +18,7 @@ export const getMore = async ({item}) => {
     .limit(6)
     .get()
     .then(querySnapshot => {
-      console.log('Total users: ', querySnapshot.size);
       querySnapshot.forEach(documentSnapshot => {
-        console.log(
-          'post_id: ',
-          documentSnapshot.id,
-          documentSnapshot.data().content,
-        );
         data.push({postId: documentSnapshot.id, ...documentSnapshot.data()});
       });
     });
@@ -53,7 +47,6 @@ export const uploadPost = async ({text, image}) => {
   const img = await uploadImg(image);
   const likes = '';
   const id = firebase.auth().currentUser.uid;
-  console.log('IMGGGGGGGGG' + img);
   try {
     const data = await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -64,7 +57,6 @@ export const uploadPost = async ({text, image}) => {
     });
     const postDataId = data.id;
     const post = getPost(postDataId);
-    console.log('POST SUCCESS' + post.content, postDataId);
     return {postId: postDataId, ...post};
   } catch (error) {
     console.log(error);
@@ -85,7 +77,6 @@ const uploadImg = async image => {
     } catch (error) {
       console.log(error);
     }
-    console.log(image.uri);
   } else {
     return '';
   }

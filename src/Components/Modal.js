@@ -88,7 +88,6 @@ export default function Post({type, src, closeModal, closeImg}) {
                 icon="camera"
                 color="#777"
                 onPress={async e => {
-                  console.log('Camera');
                   try {
                     const granted = await PermissionsAndroid.request(
                       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -107,7 +106,6 @@ export default function Post({type, src, closeModal, closeImg}) {
                         }
                       });
                     } else {
-                      console.log('Camera permission denied');
                     }
                   } catch (err) {
                     console.warn(err);
@@ -120,7 +118,6 @@ export default function Post({type, src, closeModal, closeImg}) {
                 icon="folder-image"
                 color="#777"
                 onPress={() => {
-                  console.log('image');
                   launchImageLibrary({mediaType: 'photo'}, props => {
                     if (props.type === 'image/jpeg') {
                       setImage(props);

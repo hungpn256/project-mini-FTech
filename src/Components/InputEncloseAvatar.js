@@ -24,9 +24,7 @@ export default function InputEncloseAvatar({
         placeholder={placeholder}
         editable={!!editable}
         multiline={true}
-        onPress={() => {
-          console.log('heloo');
-        }}
+        onPress={() => {}}
         // onPress={onPresss}
       />
     </View>
