@@ -1,4 +1,5 @@
 import {call, put, takeLatest, takeEvery} from '@redux-saga/core/effects';
+import {uploadImg} from '../../Helper/function';
 import {
   CREATE_CONVERSATION,
   GET_CONVERSATION,
@@ -45,6 +46,10 @@ function* createConversationSaga({payload}) {
 
 function* sendMesSaga({payload}) {
   try {
+    if (payload.messages[0].image) {
+      const url = yield call(uploadImg, payload.messages[0].image);
+      payload.messages[0].image = url;
+    }
     const res = yield call(sendMes, payload);
   } catch (e) {
     console.log('err send mes', e);

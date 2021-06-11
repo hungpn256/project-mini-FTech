@@ -21,17 +21,17 @@ const styles = StyleSheet.create({
   },
   wrapperAvatar: {
     position: 'absolute',
-    borderRadius: 50,
+    borderRadius: 999,
     borderColor: '#fff',
     borderWidth: 5,
     left: '50%',
     bottom: 0,
-    transform: [{translateX: -80}],
+    transform: [{translateX: -90}],
   },
   avatar: {
-    height: 160,
-    width: 160,
-    borderRadius: 50,
+    height: 180,
+    width: 180,
+    borderRadius: 999,
   },
   name: {
     color: '#000',

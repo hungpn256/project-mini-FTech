@@ -28,13 +28,18 @@ const NewMessenger = () => {
   const dispatch = useDispatch();
   const [txtSearch, setTxtSearch] = useState('');
   useEffect(() => {
-    if (visibleModal) {
+    dispatch({
+      type: GET_USER_BY_NAME,
+      payload: txtSearch,
+    });
+  }, [txtSearch]);
+  useEffect(() => {
+    if (!visibleModal)
       dispatch({
         type: GET_USER_BY_NAME,
-        payload: txtSearch,
+        payload: '',
       });
-    }
-  }, [txtSearch, visibleModal]);
+  }, [visibleModal]);
   return (
     <View>
       <TouchableOpacity

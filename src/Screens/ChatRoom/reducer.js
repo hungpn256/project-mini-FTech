@@ -21,7 +21,10 @@ const reducer = (state = initialState, action) => {
     case GET_CONVERSATION_SUCCESS: {
       return {
         ...state,
-        conversation: action.payload,
+        conversation: {
+          ...state.conversation,
+          ...action.payload,
+        },
       };
     }
     case GET_CONVERSATION_FAILURE: {

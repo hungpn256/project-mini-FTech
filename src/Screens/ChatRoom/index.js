@@ -1,32 +1,41 @@
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import {orderBy} from 'lodash';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Avatar, Card, List} from 'react-native-paper';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import {useSelector} from 'react-redux';
+import {commonRoom} from '../../Helper/function';
+import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
+import {createConversation} from './service';
 import styles from './styles';
-import {orderBy} from 'lodash';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
   const userId = auth().currentUser.uid;
-  const conversation = useSelector(state => state.chat.conversation);
+  const user = useSelector(state => state.auth.user);
+  const chat = useSelector(state => state.chat);
+  const {conversation, userSearch} = chat;
   useEffect(() => {
     const x = async () => {
-      const user = await firestore().collection('user').doc(userId).get();
-      const roomList = await user.data().roomChatList;
-      let tmp = [];
-      for (let i = 0; i < roomList.length; i++) {
-        const x = await firestore()
-          .collection('room-chat')
-          .doc(roomList[i])
-          .get();
-        tmp.push({id: roomList[i], ...x.data()});
+      let conversationOrdered = [];
+      for (const i in conversation) {
+        conversationOrdered.push({id: i, ...conversation[i]});
       }
-      tmp = orderBy(tmp, ['updatedAt'], ['desc']);
-      setRoomList(tmp);
+      conversationOrdered = orderBy(
+        conversationOrdered,
+        ['updatedAt'],
+        ['desc'],
+      );
+      console.log(conversationOrdered, 'roomlist');
+      setRoomList(conversationOrdered);
     };
     x();
   }, [conversation]);
@@ -42,48 +51,36 @@ export default function ChatRoom({navigation}) {
             horizontal={true}
             style={styles.friendWrapper}
             showsHorizontalScrollIndicator={false}>
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
-            <Avatar.Image
-              style={styles.avatar}
-              source={{
-                uri: 'https://scontent.fhan4-1.fna.fbcdn.net/v/t1.6435-1/p160x160/69198146_1346843938816773_7149406761399615488_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=7206a8&_nc_ohc=T2HIPc3q7xIAX_ZdU2e&_nc_ht=scontent.fhan4-1.fna&tp=6&oh=1d695792abaf91545e01681f2983b0f6&oe=60C319FF',
-              }}
-              size={70}
-            />
+            {userSearch &&
+              userSearch.map(item => {
+                return (
+                  <Pressable
+                    key={item.id}
+                    style={styles.wrapperAvatar}
+                    onPress={async () => {
+                      let room = commonRoom(item, user);
+                      if (room.length === 0) {
+                        const res = await createConversation([user, item]);
+                        room.push(res.id);
+                      }
+                      navigation.navigate('Messenger', {
+                        roomId: room[0],
+                      });
+                    }}>
+                    <Avatar.Image
+                      source={{
+                        uri:
+                          item.avatar.length > 0 ? item.avatar : avatarDefault,
+                      }}
+                      style={styles.avatar}
+                      size={70}
+                    />
+                    <Text style={[styles.name, {fontSize: 16}]}>
+                      {item.name}
+                    </Text>
+                  </Pressable>
+                );
+              })}
           </ScrollView>
         </View>
         <View>
