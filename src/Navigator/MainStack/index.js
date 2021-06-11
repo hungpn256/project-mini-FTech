@@ -19,7 +19,7 @@ import PayNotification from '@Screens/Pay/notification';
 import {useDispatch, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
-import {AUTH_GET_ME, USER_INFO} from '../../Screens/Auth/constants';
+import {AUTH_GET_ME, USER_INFO, USER_SET} from '../../Screens/Auth/constants';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -149,6 +149,15 @@ export default function AppNavigator() {
   const dispatch = useDispatch();
   const {roomChatList} = user;
   useEffect(() => {
+    firestore()
+      .collection('user')
+      .doc(user.id)
+      .onSnapshot(() => {
+        dispatch({type: USER_SET});
+      });
+  }, []);
+
+  useEffect(() => {
     const connectChat = async () => {
       roomChatList.forEach(item => {
         firestore()
@@ -170,7 +179,7 @@ export default function AppNavigator() {
         dispatch({type: USER_INFO, payload: {...user, ...res.data()}});
       });
     connectChat();
-  }, []);
+  }, [roomChatList.length]);
   return (
     <NavigationContainer>
       <Stack.Navigator>
