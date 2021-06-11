@@ -30,6 +30,8 @@ const Article = ({text, image, time, uid}) => {
   const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
   const [status, setStatus] = useState(false);
+  const [cmt, setCmt] = useState('');
+
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
@@ -47,6 +49,7 @@ const Article = ({text, image, time, uid}) => {
     };
     userInfo();
   });
+  console.log(cmt);
   return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
@@ -55,12 +58,14 @@ const Article = ({text, image, time, uid}) => {
         subtitle={time}
         left={() => LeftContent(avatar)}
       />
-      <Card.Content style={styles.content}>
-        <Paragraph>{text}</Paragraph>
-      </Card.Content>
+      {text ? (
+        <Card.Content style={styles.content}>
+          <Paragraph>{text}</Paragraph>
+        </Card.Content>
+      ) : null}
       {image ? <Card.Cover source={{uri: image}} /> : null}
       <Card.Actions style={styles.cardAction}>
-        <Pressable onPress={() => setLike(like => !like)}>
+        <Pressable style={styles.Icon} onPress={() => setLike(like => !like)}>
           <View style={styles.actionBtn}>
             <AntDesignIcon
               color={like ? '#4169e1' : '#696969'}
@@ -76,13 +81,13 @@ const Article = ({text, image, time, uid}) => {
             </Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => inputRef.current.focus()}>
+        <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
             <FontistoIcon color="#696969" name="comment" size={20} />
             <Text style={[styles.actionText, {color: '#696969'}]}>Comment</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => inputRef.current.focus()}>
+        <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
             <SimpleLineIcons name="share" color="#696969" size={20} />
             <Text style={[styles.actionText, {color: '#696969'}]}>Share</Text>
@@ -94,6 +99,8 @@ const Article = ({text, image, time, uid}) => {
           inputRef={inputRef}
           editable={true}
           placeholder="Write your comment..."
+          change={e => setCmt(e)}
+          content={cmt}
         />
       </Card.Actions>
     </Card>
@@ -106,6 +113,10 @@ const styles = StyleSheet.create({
   actionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  Icon: {
+    flex: 1,
   },
   //#A4A4A4
   //#4169e1
@@ -124,7 +135,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
     paddingVertical: 10,
-    paddingHorizontal: -10,
   },
 });
 export default Article;

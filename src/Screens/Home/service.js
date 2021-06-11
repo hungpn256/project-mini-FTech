@@ -49,6 +49,7 @@ export const uploadPost = async ({text, image}) => {
   const img = await uploadImg(image);
   const likes = '';
   const id = firebase.auth().currentUser.uid;
+  console.log('textttttttttttt' + text);
   try {
     const data = await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),

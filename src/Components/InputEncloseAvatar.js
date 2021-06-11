@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {log} from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
+import SendIcon from 'react-native-vector-icons/FontAwesome';
 export default function InputEncloseAvatar({
   editable,
   placeholder,
   inputRef,
-  onPresss,
+  change,
+  content,
 }) {
   const userData = useSelector(state => state.auth.user);
   return (
@@ -27,22 +29,31 @@ export default function InputEncloseAvatar({
         ref={inputRef}
         style={styles.input}
         placeholder={placeholder}
-        editable={!!editable}
+        editable={editable}
         multiline={true}
-        onPress={() => {}}
+        onChangeText={change}
+        value={content}
         // onPress={onPresss}
       />
+      {content.length > 0 ? (
+        <SendIcon
+          style={{marginLeft: 10}}
+          name="send"
+          color="#4169e1"
+          size={20}
+        />
+      ) : null}
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 8,
     padding: 8,
   },
   inputWrapper: {
     flexDirection: 'row',
+    paddingHorizontal: 10,
     alignItems: 'center',
   },
   input: {
