@@ -91,7 +91,7 @@ const Profile = ({navigation, route}) => {
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>
-            <Text style={styles.inforItemNumber}>10</Text>
+            <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
           </View>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Followers</Text>

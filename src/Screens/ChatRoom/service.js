@@ -73,6 +73,7 @@ export const createConversation = payload =>
 
 export const sendMes = payload =>
   new Promise((resolve, reject) => {
+    console.log(payload.messages[0], 'mess');
     firestore()
       .collection('room-chat')
       .doc(payload.roomId)
