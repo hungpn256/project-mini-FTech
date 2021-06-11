@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -16,6 +16,10 @@ import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import Pay from '@Screens/Pay/index';
 import Wallet from '@Screens/Pay/wallet';
 import PayNotification from '@Screens/Pay/notification';
+import {useDispatch, useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
+import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
+import {AUTH_GET_ME, USER_INFO} from '../../Screens/Auth/constants';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -141,6 +145,32 @@ const TabNavigatorPay = () => {
   );
 };
 export default function AppNavigator() {
+  const user = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
+  const {roomChatList} = user;
+  useEffect(() => {
+    const connectChat = async () => {
+      roomChatList.forEach(item => {
+        firestore()
+          .collection('room-chat')
+          .doc(item)
+          .onSnapshot(res => {
+            console.log(res, 'data');
+            dispatch({
+              type: GET_CONVERSATION_SUCCESS,
+              payload: {[item]: res.data()},
+            });
+          });
+      });
+    };
+    firestore()
+      .collection('user')
+      .doc(user.id)
+      .onSnapshot(res => {
+        dispatch({type: USER_INFO, payload: {...user, ...res.data()}});
+      });
+    connectChat();
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import Article from '../../Components/Article.js';
 import PostArticle from '@Components/PostArticle.js';
@@ -9,25 +9,36 @@ import styles from './styles';
 import {useDispatch, useSelector} from 'react-redux';
 import SetImage from './components/SetImage.js';
 import {avatarDefault} from '../../index_Constant.js';
-import {GET_ME, GET_PROFILE, UPDATE_ME} from './constants.js';
+import {GET_ME, GET_POST_PROFILE, GET_PROFILE, UPDATE_ME} from './constants.js';
 import auth from '@react-native-firebase/auth';
 import Loading from '../../Components/Loading/index.js';
+import moment from 'moment';
 const Profile = ({navigation, route}) => {
   const id = route?.params?.id;
   const [tab, setTab] = useState(1);
   const dispatch = useDispatch();
-  useEffect(() => {
+  const onRefresh = useCallback(() => {
     if (id) {
       dispatch({type: GET_PROFILE, payload: id});
     } else {
       let uid = auth().currentUser.uid;
       dispatch({type: GET_ME, payload: uid});
     }
-  }, []);
+  }, [id]);
+  useEffect(() => {
+    onRefresh();
+  }, [onRefresh]);
   const profile = useSelector(state => state.profile);
-  const {role, user: me, profile: other, loading} = profile;
+  const {
+    role,
+    user: me,
+    profile: other,
+    loading,
+    posts: postsMe,
+    postsProfile,
+  } = profile;
   const user = id ? other : me;
-  console.log(user, 'user');
+  const posts = id ? postsProfile : postsMe;
   const setAvatar = image => {
     dispatch({type: UPDATE_ME, payload: {avatar: image}});
   };
@@ -38,7 +49,11 @@ const Profile = ({navigation, route}) => {
     return <Loading loading={loading} />;
   }
   return (
-    <ScrollView style={styles.background}>
+    <ScrollView
+      style={styles.background}
+      refreshControl={
+        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+      }>
       <Loading loading={loading} />
       <View style={styles.body}>
         <View style={styles.image}>
@@ -76,7 +91,7 @@ const Profile = ({navigation, route}) => {
         <View style={styles.infor}>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Posts</Text>
-            <Text style={styles.inforItemNumber}>10</Text>
+            <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
           </View>
           <View style={styles.inforItem}>
             <Text style={styles.inforItemTitle}>Followers</Text>
@@ -129,7 +144,23 @@ const Profile = ({navigation, route}) => {
         {tab === 1 ? (
           <View style={styles.viewContent}>
             <View style={{marginVertical: 8}}>
-              {role === 0 && <PostArticle />}
+              {role === 0 && (
+                <>
+                  <PostArticle />
+                  {posts &&
+                    posts.map(item => {
+                      return (
+                        <Article
+                          time={moment(item.createAt?.toDate()).fromNow()}
+                          key={item.id}
+                          text={item.content}
+                          image={item.imageUrl}
+                          uid={item.userId}
+                        />
+                      );
+                    })}
+                </>
+              )}
             </View>
           </View>
         ) : tab === 2 ? (
