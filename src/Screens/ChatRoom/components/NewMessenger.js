@@ -92,7 +92,10 @@ const NewMessenger = () => {
                       setVisibleModal(false);
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
-                        const res = await createConversation([user, item]);
+                        const res = await createConversation([
+                          user.id,
+                          item.id,
+                        ]);
                         room.push(res.id);
                       }
                       navigation.navigate('Messenger', {
