@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
   },
   wrapperIcon: {
     position: 'absolute',
-    bottom: 10,
-    right: -5,
+    bottom: 15,
+    right: 5,
     backgroundColor: '#fff',
     paddingVertical: 6,
     paddingHorizontal: 6,

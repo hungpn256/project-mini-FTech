@@ -80,5 +80,4 @@ export const sendMes = payload =>
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
-    // .get()
   });
