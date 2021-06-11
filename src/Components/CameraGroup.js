@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   actionBtn: {
-    paddingTop: 8,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 10,
+    elevation: 4,
     backgroundColor: 'white',
     marginHorizontal: 5,
+    paddingVertical: 5,
   },
 });
