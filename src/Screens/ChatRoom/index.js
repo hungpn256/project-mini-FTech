@@ -39,6 +39,7 @@ export default function ChatRoom({navigation}) {
     };
     x();
   }, [conversation]);
+
   return (
     <GestureRecognizer
       onSwipeRight={() => {
@@ -60,7 +61,10 @@ export default function ChatRoom({navigation}) {
                     onPress={async () => {
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
-                        const res = await createConversation([user, item]);
+                        const res = await createConversation([
+                          user.id,
+                          item.id,
+                        ]);
                         room.push(res.id);
                       }
                       navigation.navigate('Messenger', {
@@ -114,9 +118,7 @@ export default function ChatRoom({navigation}) {
                         left={() => (
                           <Avatar.Image
                             source={{
-                              uri:
-                                userOther.avatar ||
-                                'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+                              uri: userOther.avatar || avatarDefault,
                             }}
                             size={55}
                           />

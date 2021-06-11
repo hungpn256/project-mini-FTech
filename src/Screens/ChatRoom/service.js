@@ -44,7 +44,9 @@ export const createConversation = payload =>
     firestore()
       .collection('room-chat')
       .add({
-        users: payload,
+        users: payload.map(i => {
+          return firestore().collection('user').doc(i);
+        }),
         isTyping: false,
         messages: [],
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -53,18 +55,14 @@ export const createConversation = payload =>
         payload.map(u => {
           firestore()
             .collection('user')
-            .doc(u.id)
-            .get()
-            .then(resUSer => {
-              firestore()
-                .collection('user')
-                .doc(u.id)
-                .update({
-                  roomChatList: [...resUSer.data().roomChatList, res.id],
-                });
+            .doc(u)
+            .update({
+              roomChatList: firestore.FieldValue.arrayUnion(res.id),
+            })
+            .then(() => {
+              resolve({id: res.id});
             });
         });
-        resolve({id: res.id});
       })
       .catch(e => {
         reject(e);
@@ -80,5 +78,11 @@ export const sendMes = payload =>
       .update({
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        resolve();
+      })
+      .catch(e => {
+        reject(e);
       });
   });
