@@ -164,10 +164,17 @@ export default function AppNavigator() {
           .collection('room-chat')
           .doc(item)
           .onSnapshot(res => {
-            console.log(res, 'data');
-            dispatch({
-              type: GET_CONVERSATION_SUCCESS,
-              payload: {[item]: res.data()},
+            let data = res.data();
+            let users = [];
+            data.users[0].get().then(res1 => {
+              users.push({id: res1.id, ...res1.data()});
+            });
+            data.users[1].get().then(res2 => {
+              users.push({id: res2.id, ...res2.data()});
+              dispatch({
+                type: GET_CONVERSATION_SUCCESS,
+                payload: {[item]: {...res.data(), users}},
+              });
             });
           });
       });
