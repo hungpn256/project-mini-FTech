@@ -19,8 +19,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   avatar: {
+    margin: 0,
+  },
+  wrapperAvatar: {
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 10,
-    marginVertical: 15,
   },
   friendWrapper: {
     backgroundColor: '#fff',

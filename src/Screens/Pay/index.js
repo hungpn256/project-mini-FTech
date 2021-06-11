@@ -12,6 +12,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import {Divider} from 'react-native-paper';
+import {useSelector} from 'react-redux';
 
 const ImageCarousel = [
   {image: require('./assets/1.jpg')},
@@ -21,6 +22,12 @@ const ImageCarousel = [
 ];
 
 const Pay = () => {
+  const wallet = useSelector(state => state.auth.user.wallet);
+  const x = async () => {
+    const a = await wallet.get();
+    console.log(a.data(), 'wl');
+  };
+  x();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
