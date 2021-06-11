@@ -1,18 +1,18 @@
+import PostArticle from '@Components/PostArticle.js';
+import auth from '@react-native-firebase/auth';
+import moment from 'moment';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Image, RefreshControl, ScrollView, Text, View} from 'react-native';
 import {Button} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
-import PostArticle from '@Components/PostArticle.js';
+import Loading from '../../Components/Loading/index.js';
+import {avatarDefault} from '../../index_Constant.js';
 import About from './components/About.js';
 import Photos from './components/Photos.js';
-import styles from './styles';
-import {useDispatch, useSelector} from 'react-redux';
 import SetImage from './components/SetImage.js';
-import {avatarDefault} from '../../index_Constant.js';
-import {GET_ME, GET_POST_PROFILE, GET_PROFILE, UPDATE_ME} from './constants.js';
-import auth from '@react-native-firebase/auth';
-import Loading from '../../Components/Loading/index.js';
-import moment from 'moment';
+import {GET_ME, GET_PROFILE, UPDATE_ME} from './constants.js';
+import styles from './styles';
 const Profile = ({navigation, route}) => {
   const id = route?.params?.id;
   const [tab, setTab] = useState(1);
