@@ -13,5 +13,11 @@ const styles = StyleSheet.create({
   groupBtn: {
     flexDirection: 'row',
   },
+  viewModal: {
+    flex: 1,
+    backgroundColor: 'rgb(255,255,255)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 export default styles;

@@ -24,15 +24,20 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
         <View style={styles.groupBtn}>
           <Fontisto
-            style={{marginRight: 13}}
+            style={{marginRight: 15}}
             name="search"
             color="#4169e1"
             size={21}
+            onPress={() => {
+              navigation.navigate('Search');
+            }}
           />
           <Fontisto
             onPress={() => {
