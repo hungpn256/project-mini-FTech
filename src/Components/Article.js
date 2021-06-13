@@ -4,13 +4,17 @@ import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import InputEncloseAvatar from './InputEncloseAvatar';
-import firestore from '@react-native-firebase/firestore';
 import avatarImg from '../../assets/Img/avatar.png';
 import {Text} from 'react-native';
 import {View} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import {Pressable} from 'react-native';
+import auth, {firebase} from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import {CMT} from '@Screens/Home/constants';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 const LeftContent = img => (
   <>
     {img ? (
@@ -23,7 +27,8 @@ const LeftContent = img => (
 
 const RighContent = () => {};
 
-const Article = ({text, image, time, uid}) => {
+const Article = ({text, image, time, uid, postid}) => {
+  const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
   const [id, setId] = useState('');
@@ -31,7 +36,7 @@ const Article = ({text, image, time, uid}) => {
   const [avatar, setAvatar] = useState('');
   const [status, setStatus] = useState(false);
   const [cmt, setCmt] = useState('');
-
+  const [imgCmt, setImgCmt] = useState('');
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
@@ -49,7 +54,31 @@ const Article = ({text, image, time, uid}) => {
     };
     userInfo();
   });
-  console.log(cmt);
+
+  const gallery = () => {
+    console.log('image');
+    launchImageLibrary({mediaType: 'photo'}, props => {
+      if (props.type === 'image/jpeg') {
+        setImgCmt(props);
+      }
+    });
+  };
+
+  const handleCmt = async () => {
+    // await firestore().collection('comments').add({
+    //   content: cmt,
+    //   userId: uid,
+    //   postId: postid,
+    //   createAt: firebase.firestore.FieldValue.serverTimestamp(),
+    // });
+    // dispatch({
+    //   type: CMT,
+    //   payload: {text: cmt, uid: id, postId: postid, imageCmt: imgCmt},
+    // });
+    // setCmt('');
+    // setImgCmt('');
+  };
+
   return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
@@ -94,13 +123,16 @@ const Article = ({text, image, time, uid}) => {
           </View>
         </Pressable>
       </Card.Actions>
-      <Card.Actions style={{marginBottom: 8}}>
+      <Card.Actions style={{marginVertical: 8}}>
         <InputEncloseAvatar
           inputRef={inputRef}
           editable={true}
           placeholder="Write your comment..."
           change={e => setCmt(e)}
           content={cmt}
+          postCmt={handleCmt}
+          gallery={gallery}
+          image={imgCmt}
         />
       </Card.Actions>
     </Card>
@@ -114,6 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 4,
   },
   Icon: {
     flex: 1,

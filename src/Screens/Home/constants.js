@@ -6,4 +6,7 @@ export const CREATE_POST = 'CREATE_POST';
 export const UPLOAD_POST = 'UPLOAD_POST';
 export const MORE_POST = 'MORE_POST';
 
+export const CMT = 'CMT';
+export const CREATE_CMT = 'CREATE_CMT';
+
 export const POST_LOADING = 'POST_LOADING';

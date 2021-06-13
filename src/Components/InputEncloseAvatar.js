@@ -5,12 +5,17 @@ import {log} from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
 import SendIcon from 'react-native-vector-icons/FontAwesome';
+import GalleryIcon from 'react-native-vector-icons/Entypo';
+
 export default function InputEncloseAvatar({
   editable,
   placeholder,
   inputRef,
   change,
   content,
+  postCmt,
+  gallery,
+  image,
 }) {
   const userData = useSelector(state => state.auth.user);
   return (
@@ -25,24 +30,38 @@ export default function InputEncloseAvatar({
       ) : (
         <Avatar.Image size={40} source={avatarImg} />
       )}
-      <TextInput
-        ref={inputRef}
-        style={styles.input}
-        placeholder={placeholder}
-        editable={editable}
-        multiline={true}
-        onChangeText={change}
-        value={content}
-        // onPress={onPresss}
-      />
-      {content.length > 0 ? (
-        <SendIcon
-          style={{marginLeft: 10}}
-          name="send"
-          color="#4169e1"
-          size={20}
-        />
-      ) : null}
+      <View style={styles.groupCmt}>
+        <View style={styles.inputCmt}>
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            placeholder={placeholder}
+            editable={editable}
+            multiline={true}
+            onChangeText={change}
+            value={content}
+            // onPress={onPresss}
+          />
+
+          <View style={styles.gallery}>
+            <GalleryIcon
+              onPress={gallery}
+              name="folder-images"
+              size={20}
+              color="#696969"
+            />
+          </View>
+        </View>
+        {content.length > 0 || image ? (
+          <SendIcon
+            style={{marginLeft: 10}}
+            name="send"
+            color="#4169e1"
+            size={20}
+            onPress={postCmt}
+          />
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -51,17 +70,35 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 8,
   },
+  inputCmt: {
+    flex: 1,
+    position: 'relative',
+  },
+  gallery: {
+    position: 'absolute',
+    top: 0,
+    right: 15,
+    bottom: 0,
+    justifyContent: 'center',
+  },
+  groupCmt: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   inputWrapper: {
     flexDirection: 'row',
     paddingHorizontal: 10,
     alignItems: 'center',
+    flex: 1,
   },
   input: {
     flex: 1,
     borderRadius: 20,
     backgroundColor: '#f0f0f0',
     marginLeft: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 7,
+    paddingHorizontal: 20,
   },
 });
