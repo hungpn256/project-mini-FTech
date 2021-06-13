@@ -1,7 +1,8 @@
-import {ALL_POST, UPLOAD_POST, POST_LOADING, MORE_POST} from './constants';
+import {ALL_POST, UPLOAD_POST, POST_LOADING, CREATE_CMT} from './constants';
 const initialState = {
   post: [],
   postLoad: false,
+  comments: [],
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -13,6 +14,8 @@ const reducer = (state = initialState, action) => {
       return {...state, post: [...state.post, action.payload.new]};
     case POST_LOADING:
       return {...state, postLoad: action.payload.loading};
+    case CREATE_CMT:
+      return {...state, comments: [...state.comments, action.payload.newCmt]};
     default:
       return state;
   }
