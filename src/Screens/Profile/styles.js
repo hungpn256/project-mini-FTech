@@ -38,14 +38,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
-    borderBottomColor: 'rgba(0,0,0,0.2)',
-    borderBottomWidth: 1,
-    paddingBottom: 5,
+    paddingBottom: 15,
   },
   infor: {
     flexDirection: 'row',
-
-    borderBottomColor: 'rgba(0,0,0,0.4)',
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderTopWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
     borderBottomWidth: 1,
   },
   inforItem: {
@@ -75,17 +74,16 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#777',
+    color: '#333',
     padding: 8,
   },
   txtActive: {
-    color: '#333',
+    color: 'rgb(64,159,255)',
   },
   btnActive: {
     backgroundColor: '#D6EAF8',
     borderRadius: 999,
     padding: 0,
-    marginVertical: 5,
   },
   photosImages: {
     width: '100%',

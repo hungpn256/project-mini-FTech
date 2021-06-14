@@ -13,6 +13,14 @@ const styles = StyleSheet.create({
   groupBtn: {
     flexDirection: 'row',
   },
+  icon: {
+    padding: 10,
+  },
+  wrapperIcon: {
+    backgroundColor: '#eee',
+    borderRadius: 999,
+    marginHorizontal: 6,
+  },
   viewModal: {
     flex: 1,
     backgroundColor: 'rgb(255,255,255)',
