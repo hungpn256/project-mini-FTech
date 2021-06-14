@@ -1,18 +1,26 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Image, RefreshControl, ScrollView, Text, View} from 'react-native';
-import {Button} from 'react-native-paper';
-import Article from '../../Components/Article.js';
 import PostArticle from '@Components/PostArticle.js';
-import About from './components/About.js';
-import Photos from './components/Photos.js';
-import styles from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import SetImage from './components/SetImage.js';
-import {avatarDefault} from '../../index_Constant.js';
-import {GET_ME, GET_POST_PROFILE, GET_PROFILE, UPDATE_ME} from './constants.js';
 import auth from '@react-native-firebase/auth';
-import Loading from '../../Components/Loading/index.js';
 import moment from 'moment';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  Image,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import Article from '../../Components/Article.js';
+import Loading from '../../Components/Loading/index.js';
+import {avatarDefault} from '../../index_Constant.js';
+import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
+import About from './components/About.js';
+import SetImage from './components/SetImage.js';
+import {GET_ME, GET_PROFILE, UPDATE_ME} from './constants.js';
+import ImageComponent from './components/Image';
+import styles from './styles';
 const Profile = ({navigation, route}) => {
   const id = route?.params?.id;
   const [tab, setTab] = useState(1);
@@ -59,14 +67,22 @@ const Profile = ({navigation, route}) => {
         <View style={styles.image}>
           <View style={styles.wrapperCover}>
             {user.background?.length > 0 && (
-              <Image
-                style={styles.cover}
-                source={{
-                  uri: user.background,
-                }}
-              />
+              <Pressable
+                onPress={() => {
+                  dispatch({
+                    type: MODAL_CHANGE_STATE,
+                    payload: {image: user.background},
+                  });
+                }}>
+                <Image
+                  style={styles.cover}
+                  source={{
+                    uri: user.background,
+                  }}
+                />
+              </Pressable>
             )}
-            {role === 0 && (
+            {!id && (
               <SetImage
                 setImage={setBackground}
                 style={{
@@ -78,13 +94,21 @@ const Profile = ({navigation, route}) => {
           </View>
 
           <View style={styles.wrapperAvatar}>
-            <Image
-              style={styles.avatar}
-              source={{
-                uri: user.avatar || avatarDefault,
-              }}
-            />
-            {role === 0 && <SetImage setImage={setAvatar} />}
+            <Pressable
+              onPress={() => {
+                dispatch({
+                  type: MODAL_CHANGE_STATE,
+                  payload: {image: user.avatar},
+                });
+              }}>
+              <Image
+                style={styles.avatar}
+                source={{
+                  uri: user.avatar || avatarDefault,
+                }}
+              />
+            </Pressable>
+            {!id && <SetImage setImage={setAvatar} />}
           </View>
         </View>
         <Text style={styles.name}>{user.name}</Text>
@@ -106,7 +130,12 @@ const Profile = ({navigation, route}) => {
         <View style={styles.selectorTab}>
           <Button
             mode="text"
-            style={[tab === 1 && styles.btnActive]}
+            style={[
+              {
+                marginVertical: 5,
+              },
+              tab === 1 && styles.btnActive,
+            ]}
             uppercase={false}
             color="#3498DB"
             onPress={() => {
@@ -118,7 +147,12 @@ const Profile = ({navigation, route}) => {
           </Button>
           <Button
             mode="text"
-            style={[tab === 2 && styles.btnActive]}
+            style={[
+              {
+                marginVertical: 5,
+              },
+              tab === 2 && styles.btnActive,
+            ]}
             uppercase={false}
             color="#3498DB"
             onPress={() => {
@@ -130,7 +164,12 @@ const Profile = ({navigation, route}) => {
           </Button>
           <Button
             mode="text"
-            style={[tab === 3 && styles.btnActive]}
+            style={[
+              {
+                marginVertical: 5,
+              },
+              tab === 3 && styles.btnActive,
+            ]}
             uppercase={false}
             color="#3498DB"
             onPress={() => {
@@ -144,28 +183,29 @@ const Profile = ({navigation, route}) => {
         {tab === 1 ? (
           <View style={styles.viewContent}>
             <View style={{marginVertical: 8}}>
-              {role === 0 && (
-                <>
-                  <PostArticle />
-                  {posts &&
-                    posts.map(item => {
-                      return (
-                        <Article
-                          time={moment(item.createAt?.toDate()).fromNow()}
-                          key={item.id}
-                          text={item.content}
-                          image={item.imageUrl}
-                          uid={item.userId}
-                        />
-                      );
-                    })}
-                </>
-              )}
+              {!id && <PostArticle />}
+              {posts &&
+                posts.map(item => {
+                  return (
+                    <Article
+                      time={moment(item.createAt?.toDate()).fromNow()}
+                      key={item.id}
+                      text={item.content}
+                      image={item.imageUrl}
+                      uid={item.userId}
+                    />
+                  );
+                })}
             </View>
           </View>
         ) : tab === 2 ? (
           <View style={styles.viewContent}>
-            <Photos />
+            <View style={styles.photosImages}>
+              {posts &&
+                posts.map(item => {
+                  if (item.imageUrl) return <ImageComponent item={item} />;
+                })}
+            </View>
           </View>
         ) : (
           <View style={styles.viewContent}>

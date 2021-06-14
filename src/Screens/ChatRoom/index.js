@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import {Avatar, Card, List} from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../Helper/function';
 import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
+import {MARK_READ} from './constants';
 import {createConversation} from './service';
 import styles from './styles';
 export default function ChatRoom({navigation}) {
@@ -22,6 +23,7 @@ export default function ChatRoom({navigation}) {
   const userId = auth().currentUser.uid;
   const user = useSelector(state => state.auth.user);
   const chat = useSelector(state => state.chat);
+  const dispatch = useDispatch();
   const {conversation, userSearch} = chat;
   useEffect(() => {
     const x = async () => {
@@ -34,11 +36,11 @@ export default function ChatRoom({navigation}) {
         ['updatedAt'],
         ['desc'],
       );
-      console.log(conversationOrdered, 'roomlist');
       setRoomList(conversationOrdered);
     };
     x();
   }, [conversation]);
+
   return (
     <GestureRecognizer
       onSwipeRight={() => {
@@ -60,7 +62,10 @@ export default function ChatRoom({navigation}) {
                     onPress={async () => {
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
-                        const res = await createConversation([user, item]);
+                        const res = await createConversation([
+                          user.id,
+                          item.id,
+                        ]);
                         room.push(res.id);
                       }
                       navigation.navigate('Messenger', {
@@ -87,6 +92,7 @@ export default function ChatRoom({navigation}) {
           {roomList &&
             roomList.map((i, index) => {
               const userOther = i.users.find(i => i.id !== userId);
+              const unread = i.unread.indexOf(userId) !== -1;
               const {messages} = i;
               if (messages.length)
                 return (
@@ -94,6 +100,7 @@ export default function ChatRoom({navigation}) {
                     key={index}
                     activeOpacity={0.7}
                     onPress={() => {
+                      dispatch({type: MARK_READ, payload: {roomId: i.id}});
                       navigation.navigate('Messenger', {roomId: i.id});
                     }}>
                     <Card style={styles.card}>
@@ -110,13 +117,12 @@ export default function ChatRoom({navigation}) {
                           </View>
                         }
                         description={messages[messages.length - 1].text}
+                        descriptionStyle={unread && styles.textUnread}
                         titleStyle={styles.titleStyle}
                         left={() => (
                           <Avatar.Image
                             source={{
-                              uri:
-                                userOther.avatar ||
-                                'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png',
+                              uri: userOther.avatar || avatarDefault,
                             }}
                             size={55}
                           />
