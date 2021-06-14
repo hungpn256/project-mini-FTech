@@ -1,17 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, View, FlatList} from 'react-native';
-import {Button} from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+import React, {useEffect} from 'react';
+import {ScrollView, Text, View} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article';
 import PostArticle from '../../Components/PostArticle';
-import styles from './styles';
-import firestore from '@react-native-firebase/firestore';
 import {GET_POST} from './constants';
-import moment from 'moment';
-import {set} from 'lodash';
+import auth from '@react-native-firebase/auth';
+import styles from './styles';
+import {Badge} from 'react-native-paper';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
+  const conversation = useSelector(state => state.chat.conversation);
+  let unread = 0;
+  for (let i in conversation) {
+    if (conversation[i].unread.indexOf(auth().currentUser.uid) !== -1) {
+      unread++;
+    }
+  }
+  console.log(unread, 'home unread');
   const dispatch = useDispatch();
   useEffect(() => {
     firestore()
@@ -30,23 +38,31 @@ const Home = ({navigation}) => {
       <View style={styles.header}>
         <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
         <View style={styles.groupBtn}>
-          <Fontisto
-            style={{marginRight: 15}}
-            name="search"
-            color="#4169e1"
-            size={21}
-            onPress={() => {
-              navigation.navigate('Search');
-            }}
-          />
-          <Fontisto
-            onPress={() => {
-              navigation.navigate('ChatRoom');
-            }}
-            name="messenger"
-            color="#4169e1"
-            size={21}
-          />
+          <View style={styles.wrapperIcon}>
+            <Fontisto
+              style={styles.icon}
+              name="search"
+              color="rgb(64,159,255)"
+              size={21}
+              onPress={() => {
+                navigation.navigate('Search');
+              }}
+            />
+          </View>
+          <View style={styles.wrapperIcon}>
+            <Fontisto
+              style={styles.icon}
+              onPress={() => {
+                navigation.navigate('ChatRoom');
+              }}
+              name="messenger"
+              color="rgb(64,159,255)"
+              size={21}
+            />
+            {unread !== 0 && (
+              <Badge style={{position: 'absolute'}}>{unread}</Badge>
+            )}
+          </View>
         </View>
       </View>
       <PostArticle />
