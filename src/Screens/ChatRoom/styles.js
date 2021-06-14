@@ -33,5 +33,10 @@ const styles = StyleSheet.create({
   titleStyle: {
     width: '100%',
   },
+  textUnread: {
+    fontWeight: 'bold',
+    color: '#000',
+    fontSize: 15,
+  },
 });
 export default styles;

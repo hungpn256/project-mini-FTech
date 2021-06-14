@@ -46,7 +46,7 @@ const Article = ({text, image, time, uid}) => {
       }
     };
     userInfo();
-  });
+  }, []);
   return status ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title

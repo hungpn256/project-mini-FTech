@@ -51,7 +51,10 @@ export default function Menu({navigation}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Game');
+          }}>
           <List.Item
             style={styles.item}
             title="Game"

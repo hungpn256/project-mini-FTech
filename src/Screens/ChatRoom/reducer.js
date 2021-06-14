@@ -9,6 +9,7 @@ const initialState = {
   search: '',
   userSearch: [],
   conversation: {},
+  unread: [],
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
