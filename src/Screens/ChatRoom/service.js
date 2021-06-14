@@ -49,6 +49,7 @@ export const createConversation = payload =>
         }),
         isTyping: false,
         messages: [],
+        unread: [],
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(res => {
@@ -71,18 +72,38 @@ export const createConversation = payload =>
 
 export const sendMes = payload =>
   new Promise((resolve, reject) => {
-    console.log(payload.messages[0], 'mess');
     firestore()
       .collection('room-chat')
       .doc(payload.roomId)
       .update({
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
-        resolve();
+        resolve(true);
       })
       .catch(e => {
         reject(e);
       });
   });
+export const markUnread = async payload => {
+  console.log(payload, 'mark unread');
+  const doc = await firestore().collection('room-chat').doc(payload.roomId);
+  const res = await doc.get();
+  console.log(res.data().unread.indexOf(payload.uid));
+  if (res.data().unread.indexOf(payload.uid) === -1) {
+    doc.update({
+      unread: firestore.FieldValue.arrayUnion(payload.uid),
+    });
+  }
+};
+
+export const markRead = async payload => {
+  const doc = await firestore().collection('room-chat').doc(payload.roomId);
+  const res = await doc.get();
+  if (res.data().unread.indexOf(payload.uid) !== -1) {
+    doc.update({
+      unread: firestore.FieldValue.arrayRemove(payload.uid),
+    });
+  }
+};
