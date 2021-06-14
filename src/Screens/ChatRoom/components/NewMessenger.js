@@ -47,7 +47,7 @@ const NewMessenger = () => {
         onPress={() => {
           setVisibleModal(true);
         }}>
-        <Entypo name="new-message" size={30} />
+        <Entypo name="new-message" size={30} color="rgb(64,159,255)" />
       </TouchableOpacity>
       <Modal
         animationType="slide"
