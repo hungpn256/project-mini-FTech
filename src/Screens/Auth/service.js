@@ -47,10 +47,8 @@ export async function loginGoogle() {
 
 export const login = async ({email, pass}) => {
   try {
-    const res = await auth().signInWithEmailAndPassword(email, pass);
-    if (res) {
-      return saveUser(firebase.auth().currentUser.uid);
-    }
+    await auth().signInWithEmailAndPassword(email, pass);
+    return saveUser(firebase.auth().currentUser.uid);
   } catch (error) {
     CatchErr(error.code);
     return null;
@@ -76,6 +74,10 @@ const addUser = async (uid, fullName) => {
   let id = uid;
   let userName = fullName;
   let money = 0;
+  let dob = '';
+  let phoneNumber = '';
+  let gender = -1;
+  let messenger = '';
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: userName,
@@ -85,6 +87,10 @@ const addUser = async (uid, fullName) => {
       friends: friend,
       roomChatList: roomChat,
       money: money,
+      gender: gender,
+      dateOfBirth: dob,
+      phoneNumber: phoneNumber,
+      messenger: messenger,
     });
   } catch (error) {
     console.log(error);
@@ -93,14 +99,10 @@ const addUser = async (uid, fullName) => {
 
 export const register = async ({email, pass, name}) => {
   try {
-    const res = await auth().createUserWithEmailAndPassword(email, pass);
-    if (res) {
-      const uid = firebase.auth().currentUser.uid;
-      const add = addUser(uid, name);
-      if (add) {
-        return saveUser(firebase.auth().currentUser.uid);
-      }
-    }
+    await auth().createUserWithEmailAndPassword(email, pass);
+    const uid = firebase.auth().currentUser.uid;
+    await addUser(uid, name);
+    return saveUser(firebase.auth().currentUser.uid);
   } catch (error) {
     CatchErr(error.code);
     return null;
