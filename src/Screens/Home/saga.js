@@ -16,9 +16,11 @@ import {
   MORE_POST,
   CMT,
   CREATE_CMT,
+  GET_CMT,
+  GET_ALL_CMT,
 } from './constants';
 
-import {uploadPost, getAll, getMore, createCmt} from './service';
+import {uploadPost, getAll, getMore, createCmt, getAllCmt} from './service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -47,7 +49,16 @@ function* handleCmt({payload}) {
     const res = yield call(createCmt, payload);
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
   } catch (error) {
-    console.log(err);
+    console.log(error);
+  }
+}
+
+function* handleAllCmt() {
+  try {
+    const res = yield call(getAllCmt);
+    yield put({type: GET_ALL_CMT, payload: {data: res}});
+  } catch (error) {
+    console.log(error);
   }
 }
 // function* handleGetMore() {
@@ -61,5 +72,6 @@ function* watchPostSaga() {
   yield takeLatest(GET_POST, handleGetPost);
   // yield takeLatest(GET_MORE, handleGetMore);
   yield takeLatest(CMT, handleCmt);
+  yield takeLatest(GET_CMT, handleAllCmt);
 }
 export default watchPostSaga;

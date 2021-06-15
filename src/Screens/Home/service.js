@@ -49,16 +49,16 @@ export const createCmt = async ({text, uid, postId, imageCmt}) => {
   }
 };
 
-export const getAll = async () => {
+export const getAllCmt = async () => {
   const data = [];
   try {
-    const post = await firestore()
-      .collection('post')
-      .orderBy('createAt', 'desc')
+    const cmt = await firestore()
+      .collection('comments')
+      .orderBy('createAt', 'asc')
       .get();
-    post.forEach(documentSnapshot => {
+    cmt.forEach(documentSnapshot => {
       data.push({
-        postId: documentSnapshot.id,
+        id: documentSnapshot.id,
         ...documentSnapshot.data(),
       });
     });
@@ -68,11 +68,28 @@ export const getAll = async () => {
   }
 };
 
-export const uploadPost = async ({text, image}) => {
+export const getAll = async () => {
+  const data = [];
+  try {
+    const post = await firestore()
+      .collection('post')
+      .orderBy('createAt', 'desc')
+      .get();
+    post.forEach(documentSnapshot => {
+      data.push({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data(),
+      });
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const uploadPost = async ({text, image, id}) => {
   const img = await uploadImg(image);
   const likes = '';
-  const id = firebase.auth().currentUser.uid;
-  console.log('textttttttttttt' + text);
   try {
     const data = await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -83,7 +100,7 @@ export const uploadPost = async ({text, image}) => {
     });
     const postDataId = data.id;
     const post = getPost(postDataId);
-    return {postId: postDataId, ...post};
+    return {id: postDataId, ...post};
   } catch (error) {
     console.log(error);
     return false;
