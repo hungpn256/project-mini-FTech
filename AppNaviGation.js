@@ -6,7 +6,6 @@ import Loading from './src/Components/Loading';
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';
 import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
-import ModalComponent from './src/Screens/Modal';
 
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
@@ -46,15 +45,6 @@ export default function AppNavigator() {
       <Loading />
     </>
   ) : (
-    <>
-      {userData ? (
-        <>
-          <MainStack />
-          <ModalComponent />
-        </>
-      ) : (
-        <AuthStack />
-      )}
-    </>
+    <>{userData ? <MainStack /> : <AuthStack />}</>
   );
 }
