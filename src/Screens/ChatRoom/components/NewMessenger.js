@@ -15,7 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
 import {avatarDefault} from '../../../index_Constant';
-import {GET_USER_BY_NAME} from '../constants';
+import {GET_USER_BY_NAME, MARK_READ} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
 const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
@@ -47,7 +47,7 @@ const NewMessenger = () => {
         onPress={() => {
           setVisibleModal(true);
         }}>
-        <Entypo name="new-message" size={30} color="rgb(64,159,255)" />
+        <Entypo name="new-message" size={30} color="#1777F2" />
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -98,6 +98,7 @@ const NewMessenger = () => {
                         ]);
                         room.push(res.id);
                       }
+                      dispatch({type: MARK_READ, payload: {roomId: room[0]}});
                       navigation.navigate('Messenger', {
                         roomId: room[0],
                       });

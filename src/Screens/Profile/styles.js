@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   txtActive: {
-    color: 'rgb(64,159,255)',
+    color: '#1777F2',
   },
   btnActive: {
     backgroundColor: '#D6EAF8',
@@ -121,6 +121,38 @@ const styles = StyleSheet.create({
   },
   viewContent: {
     backgroundColor: '#f0f2f5',
+  },
+  btnGroup: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  btn: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: '#1777F2',
+    height: 43,
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
+  },
+  titleEditModal: {
+    fontWeight: '500',
+    fontSize: 24,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  formItem: {
+    paddingHorizontal: 8,
+  },
+  label: {
+    fontSize: 18,
+    marginTop: 24,
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginHorizontal: 10,
+    borderBottomColor: 'rgba(0,0,0,0.5)',
   },
 });
 export default styles;
