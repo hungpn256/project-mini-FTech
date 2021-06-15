@@ -19,8 +19,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   avatar: {
+    margin: 0,
+  },
+  wrapperAvatar: {
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 10,
-    marginVertical: 15,
   },
   friendWrapper: {
     backgroundColor: '#fff',
@@ -28,6 +32,11 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     width: '100%',
+  },
+  textUnread: {
+    fontWeight: 'bold',
+    color: '#000',
+    fontSize: 15,
   },
 });
 export default styles;

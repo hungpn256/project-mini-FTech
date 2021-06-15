@@ -28,13 +28,18 @@ const NewMessenger = () => {
   const dispatch = useDispatch();
   const [txtSearch, setTxtSearch] = useState('');
   useEffect(() => {
-    if (visibleModal) {
+    dispatch({
+      type: GET_USER_BY_NAME,
+      payload: txtSearch,
+    });
+  }, [txtSearch]);
+  useEffect(() => {
+    if (!visibleModal)
       dispatch({
         type: GET_USER_BY_NAME,
-        payload: txtSearch,
+        payload: '',
       });
-    }
-  }, [txtSearch, visibleModal]);
+  }, [visibleModal]);
   return (
     <View>
       <TouchableOpacity
@@ -42,7 +47,7 @@ const NewMessenger = () => {
         onPress={() => {
           setVisibleModal(true);
         }}>
-        <Entypo name="new-message" size={30} />
+        <Entypo name="new-message" size={30} color="rgb(64,159,255)" />
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -87,7 +92,10 @@ const NewMessenger = () => {
                       setVisibleModal(false);
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
-                        const res = await createConversation([user, item]);
+                        const res = await createConversation([
+                          user.id,
+                          item.id,
+                        ]);
                         room.push(res.id);
                       }
                       navigation.navigate('Messenger', {

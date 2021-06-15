@@ -44,27 +44,26 @@ export const createConversation = payload =>
     firestore()
       .collection('room-chat')
       .add({
-        users: payload,
+        users: payload.map(i => {
+          return firestore().collection('user').doc(i);
+        }),
         isTyping: false,
         messages: [],
+        unread: [],
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(res => {
         payload.map(u => {
           firestore()
             .collection('user')
-            .doc(u.id)
-            .get()
-            .then(resUSer => {
-              firestore()
-                .collection('user')
-                .doc(u.id)
-                .update({
-                  roomChatList: [...resUSer.data().roomChatList, res.id],
-                });
+            .doc(u)
+            .update({
+              roomChatList: firestore.FieldValue.arrayUnion(res.id),
+            })
+            .then(() => {
+              resolve({id: res.id});
             });
         });
-        resolve({id: res.id});
       })
       .catch(e => {
         reject(e);
@@ -78,7 +77,33 @@ export const sendMes = payload =>
       .doc(payload.roomId)
       .update({
         messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        resolve(true);
+      })
+      .catch(e => {
+        reject(e);
       });
-    // .get()
   });
+export const markUnread = async payload => {
+  console.log(payload, 'mark unread');
+  const doc = await firestore().collection('room-chat').doc(payload.roomId);
+  const res = await doc.get();
+  console.log(res.data().unread.indexOf(payload.uid));
+  if (res.data().unread.indexOf(payload.uid) === -1) {
+    doc.update({
+      unread: firestore.FieldValue.arrayUnion(payload.uid),
+    });
+  }
+};
+
+export const markRead = async payload => {
+  const doc = await firestore().collection('room-chat').doc(payload.roomId);
+  const res = await doc.get();
+  if (res.data().unread.indexOf(payload.uid) !== -1) {
+    doc.update({
+      unread: firestore.FieldValue.arrayRemove(payload.uid),
+    });
+  }
+};
