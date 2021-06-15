@@ -68,6 +68,7 @@ export default function ChatRoom({navigation}) {
                         ]);
                         room.push(res.id);
                       }
+                      dispatch({type: MARK_READ, payload: {roomId: room[0]}});
                       navigation.navigate('Messenger', {
                         roomId: room[0],
                       });
@@ -101,7 +102,10 @@ export default function ChatRoom({navigation}) {
                     activeOpacity={0.7}
                     onPress={() => {
                       dispatch({type: MARK_READ, payload: {roomId: i.id}});
-                      navigation.navigate('Messenger', {roomId: i.id});
+                      navigation.navigate('Messenger', {
+                        roomId: i.id,
+                        name: userOther.name,
+                      });
                     }}>
                     <Card style={styles.card}>
                       <List.Item

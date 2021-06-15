@@ -79,7 +79,7 @@ const TabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'rgb(64,159,255)',
+        activeTintColor: '#1777F2',
         inactiveTintColor: '#777',
         showLabel: false,
       }}>
@@ -195,7 +195,11 @@ export default function AppNavigator() {
           name="Search"
           component={Search}
         />
-        <Stack.Screen name="Messenger" component={Messenger} />
+        <Stack.Screen
+          name="Messenger"
+          component={Messenger}
+          options={({route}) => ({title: route.params.name})}
+        />
         <Stack.Screen
           name="ChatRoom"
           component={ChatRoom}
