@@ -21,3 +21,21 @@ export const updateMe = payload =>
         resolve();
       });
   });
+export const getPostMe = payload =>
+  new Promise((resolve, reject) => {
+    firestore()
+      .collection('post')
+      .where('userId', '==', payload)
+      .orderBy('createAt', 'desc')
+      .get()
+      .then(res => {
+        console.log('res', res.docs);
+        const tmp = res.docs.map(item => {
+          return {id: item.id, ...item.data()};
+        });
+        resolve(tmp);
+      })
+      .catch(e => {
+        reject(e);
+      });
+  });
