@@ -113,7 +113,11 @@ export default function ChatRoom({navigation}) {
                         title={
                           <View style={styles.wrapperTitle}>
                             <Text style={styles.name}>{userOther.name}</Text>
-                            <Text style={styles.time}>
+                            <Text
+                              style={[
+                                styles.time,
+                                unread && styles.textUnread,
+                              ]}>
                               {moment(
                                 i.updatedAt?.toDate() ?? new Date(),
                               ).fromNow()}

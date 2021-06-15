@@ -20,9 +20,26 @@ import {useDispatch, useSelector} from 'react-redux';
 import {USER_INFO, USER_SET} from '../../Screens/Auth/constants';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
+import EditProfile from '@Screens/Profile/components/FormEdit';
 import GameNavigator from './game';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const StackNavigatorProfile = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ProfileMain"
+        component={Profile}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="EditProfile"
+        component={EditProfile}
+      />
+    </Stack.Navigator>
+  );
+};
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -85,7 +102,7 @@ const TabNavigator = () => {
       }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Notification" component={Profile} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Profile" component={StackNavigatorProfile} />
       <Tab.Screen name="Menu" component={Menu} />
     </Tab.Navigator>
   );
