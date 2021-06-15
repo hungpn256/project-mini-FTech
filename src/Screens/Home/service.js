@@ -2,7 +2,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import auth, {firebase} from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-
+import {uploadImg} from '../../Helper/function';
 const getPost = async id => {
   const post = await firestore().collection('post').doc(id).get();
   return post.data();
@@ -25,6 +25,48 @@ const getPost = async id => {
 //     });
 //   return data;
 // };
+const getCmt = async id => {
+  const cmt = await firestore().collection('comments').doc(id).get();
+  return cmt.data();
+};
+
+export const createCmt = async ({text, uid, postId, imageCmt}) => {
+  const img = imageCmt ? await uploadImg(imageCmt) : '';
+  try {
+    const cmt = await firestore().collection('comments').add({
+      content: text,
+      userId: uid,
+      postId: postId,
+      image: img,
+      createAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    const cmtId = cmt.id;
+    const cmtData = getCmt(cmtId);
+    return {id: cmtId, ...cmtData};
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
+export const getAllCmt = async () => {
+  const data = [];
+  try {
+    const cmt = await firestore()
+      .collection('comments')
+      .orderBy('createAt', 'asc')
+      .get();
+    cmt.forEach(documentSnapshot => {
+      data.push({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data(),
+      });
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getAll = async () => {
   const data = [];
@@ -35,7 +77,7 @@ export const getAll = async () => {
       .get();
     post.forEach(documentSnapshot => {
       data.push({
-        postId: documentSnapshot.id,
+        id: documentSnapshot.id,
         ...documentSnapshot.data(),
       });
     });
@@ -45,10 +87,9 @@ export const getAll = async () => {
   }
 };
 
-export const uploadPost = async ({text, image}) => {
+export const uploadPost = async ({text, image, id}) => {
   const img = await uploadImg(image);
   const likes = '';
-  const id = firebase.auth().currentUser.uid;
   try {
     const data = await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -59,27 +100,9 @@ export const uploadPost = async ({text, image}) => {
     });
     const postDataId = data.id;
     const post = getPost(postDataId);
-    return {postId: postDataId, ...post};
+    return {id: postDataId, ...post};
   } catch (error) {
     console.log(error);
     return false;
-  }
-};
-
-const uploadImg = async image => {
-  if (image) {
-    const fileName = image.fileName;
-    const ref = storage().ref('PostImg/' + fileName);
-    try {
-      await ref.putFile(image.uri);
-      const url = await storage()
-        .ref('PostImg/' + fileName)
-        .getDownloadURL();
-      return url;
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    return '';
   }
 };

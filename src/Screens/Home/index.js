@@ -29,7 +29,7 @@ const Home = ({navigation}) => {
           dispatch({type: GET_POST});
         });
       });
-  }, []);
+  }, [postData.length]);
 
   return (
     <ScrollView
@@ -66,17 +66,20 @@ const Home = ({navigation}) => {
         </View>
       </View>
       <PostArticle />
-      {postData.map(item => {
-        return (
-          <Article
-            time={moment(item.createAt?.toDate()).fromNow()}
-            key={item.postId}
-            text={item.content}
-            image={item.imageUrl}
-            uid={item.userId}
-          />
-        );
-      })}
+      {postData &&
+        postData.map(item => {
+          console.log(item);
+          return (
+            <Article
+              time={moment(item.createAt?.toDate()).fromNow()}
+              key={item.id}
+              text={item.content}
+              image={item.imageUrl}
+              uid={item.userId}
+              postid={item.id}
+            />
+          );
+        })}
     </ScrollView>
   );
 };
