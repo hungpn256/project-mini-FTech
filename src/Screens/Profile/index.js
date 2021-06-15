@@ -133,10 +133,7 @@ const Profile = ({navigation, route}) => {
                 style={styles.btn}
                 mode="contained"
                 onPress={() => {
-                  dispatch({
-                    type: PROFILE_CHANGE_STATE,
-                    payload: {visibleModal: true},
-                  });
+                  navigation.navigate('EditProfile');
                 }}>
                 <AntDesign name="edit" size={16} color="#fff" />
                 <Text style={styles.btnText}> Edit profile</Text>
@@ -241,23 +238,11 @@ const Profile = ({navigation, route}) => {
             </View>
           ) : (
             <View style={styles.viewContent}>
-              <About />
-              <About />
-              <About />
+              <About user={user} />
             </View>
           )}
         </View>
       </ScrollView>
-      <Modal
-        visible={visibleModal}
-        onRequestClose={() => {
-          dispatch({
-            type: PROFILE_CHANGE_STATE,
-            payload: {visibleModal: false},
-          });
-        }}>
-        <FormEdit />
-      </Modal>
     </>
   );
 };
