@@ -186,6 +186,7 @@ const Profile = ({navigation, route}) => {
               {!id && <PostArticle />}
               {posts &&
                 posts.map(item => {
+                  console.log(item);
                   return (
                     <Article
                       time={moment(item.createAt?.toDate()).fromNow()}
@@ -193,6 +194,7 @@ const Profile = ({navigation, route}) => {
                       text={item.content}
                       image={item.imageUrl}
                       uid={item.userId}
+                      postid={item.id}
                     />
                   );
                 })}

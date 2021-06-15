@@ -21,6 +21,7 @@ import {USER_INFO, USER_SET} from '../../Screens/Auth/constants';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
 import GameNavigator from './game';
+import PostDetail from '@Screens/PostDetail';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const TabNavigator = () => {
@@ -217,6 +218,11 @@ export default function AppNavigator() {
           }}
           name="Game"
           component={GameNavigator}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="PostDetail"
+          component={PostDetail}
         />
       </Stack.Navigator>
     </NavigationContainer>

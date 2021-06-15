@@ -23,16 +23,18 @@ import {useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
 import CameraGroup from './CameraGroup';
 import {set} from 'lodash';
+import auth, {firebase} from '@react-native-firebase/auth';
 export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
   const [text, setText] = useState('');
   const loading = useSelector(state => state.home.postLoad);
   const userData = useSelector(state => state.auth.user);
+  const id = userData.id;
   const dispatch = useDispatch();
   const handlePost = () => {
     dispatch({
       type: CREATE_POST,
-      payload: {text, image},
+      payload: {text, image, id},
     });
     setImage(null);
     setText(null);
