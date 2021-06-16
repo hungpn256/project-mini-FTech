@@ -12,8 +12,10 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useRoute} from '@react-navigation/native';
 import {CMT, GET_CMT} from '@Screens/Home/constants';
+import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useSelector, useDispatch} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 const LeftContent = img => (
   <>
@@ -33,6 +35,7 @@ export default function index() {
   const [cmt, setCmt] = useState('');
   const [imgCmt, setImgCmt] = useState('');
   const dispatch = useDispatch();
+  const [size, setSize] = useState('');
   const comments = useSelector(state => state.home.comments);
   const gallery = () => {
     console.log('image');
@@ -45,6 +48,16 @@ export default function index() {
 
   useEffect(() => {
     dispatch({type: GET_CMT});
+    const cmtSize = async () => {
+      if (route.params.postid) {
+        const size = await firestore()
+          .collection('comments')
+          .where('postId', '==', route.params.postid)
+          .get();
+        setSize(size.size);
+      }
+    };
+    cmtSize();
   }, [comments.length]);
 
   const handleCmt = async () => {
@@ -89,11 +102,38 @@ export default function index() {
             </Card.Content>
           ) : null}
           {route.params.image ? (
-            <Card.Cover
-              style={styles.cover}
-              source={{uri: route.params.image}}
-            />
+            <Pressable
+              onPress={() => {
+                console.log('sdas');
+                dispatch({
+                  type: MODAL_CHANGE_STATE,
+                  payload: {image: route.params.image},
+                });
+              }}>
+              <Card.Cover
+                style={styles.cover}
+                source={{uri: route.params.image}}
+              />
+            </Pressable>
           ) : null}
+          <View style={styles.infoPost}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <AntDesignIcon
+                style={{
+                  padding: 4,
+                  backgroundColor: '#1777F2',
+                  borderRadius: 999,
+                }}
+                color="white"
+                name="like1"
+                size={12}
+              />
+              <Text style={styles.like}>1 </Text>
+            </View>
+            <Text style={styles.cmts}>
+              {size > 1 ? size + '' + ' Comments' : size + '' + ' Comment'}
+            </Text>
+          </View>
           <Card.Actions style={styles.cardAction}>
             <Pressable
               style={styles.Icon}
@@ -156,6 +196,8 @@ export default function index() {
                     key={item.id}
                     time={moment(item.createAt?.toDate()).fromNow()}
                     content={item.content}
+                    image={item.image}
+                    userId={item.userId}
                   />
                 );
               })}

@@ -22,13 +22,7 @@ const Home = ({navigation}) => {
   console.log(unread, 'home unread');
   const dispatch = useDispatch();
   useEffect(() => {
-    firestore()
-      .collection('post')
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(() => {
-          dispatch({type: GET_POST});
-        });
-      });
+    dispatch({type: GET_POST});
   }, [postData.length]);
 
   return (
