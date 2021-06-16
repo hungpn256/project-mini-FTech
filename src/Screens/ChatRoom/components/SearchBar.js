@@ -11,7 +11,7 @@ const SearchBar = ({txtSearch, setTxtSearch}) => {
       placeholder="Search"
       style={{
         marginTop: 10,
-        backgroundColor: '#ddd',
+        backgroundColor: '#dcdcdc',
         marginHorizontal: 15,
         borderRadius: 20,
       }}

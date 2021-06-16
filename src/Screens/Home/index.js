@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
             <Fontisto
               style={styles.icon}
               name="search"
-              color="rgb(64,159,255)"
+              color="#1777F2"
               size={21}
               onPress={() => {
                 navigation.navigate('Search');
@@ -56,7 +56,7 @@ const Home = ({navigation}) => {
                 navigation.navigate('ChatRoom');
               }}
               name="messenger"
-              color="rgb(64,159,255)"
+              color="#1777F2"
               size={21}
             />
             {unread !== 0 && (

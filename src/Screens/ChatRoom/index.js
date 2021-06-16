@@ -101,7 +101,10 @@ export default function ChatRoom({navigation}) {
                     activeOpacity={0.7}
                     onPress={() => {
                       dispatch({type: MARK_READ, payload: {roomId: i.id}});
-                      navigation.navigate('Messenger', {roomId: i.id});
+                      navigation.navigate('Messenger', {
+                        roomId: i.id,
+                        name: userOther.name,
+                      });
                     }}>
                     <Card style={styles.card}>
                       <List.Item
@@ -109,14 +112,23 @@ export default function ChatRoom({navigation}) {
                         title={
                           <View style={styles.wrapperTitle}>
                             <Text style={styles.name}>{userOther.name}</Text>
-                            <Text style={styles.time}>
+                            <Text
+                              style={[
+                                styles.time,
+                                unread && styles.textUnread,
+                              ]}>
                               {moment(
                                 i.updatedAt?.toDate() ?? new Date(),
                               ).fromNow()}
                             </Text>
                           </View>
                         }
-                        description={messages[messages.length - 1].text}
+                        description={
+                          messages[messages.length - 1].text.length === 0 &&
+                          messages[messages.length - 1].image
+                            ? 'bạn đã gửi một ảnh'
+                            : messages[messages.length - 1].text
+                        }
                         descriptionStyle={unread && styles.textUnread}
                         titleStyle={styles.titleStyle}
                         left={() => (
