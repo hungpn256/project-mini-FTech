@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {UPDATE_ME} from '../constants';
 import styles from '../styles';
 export default function FormEdit({navigation}) {
-  const user = useSelector(state => state.profile.user);
+  const user = useSelector(state => state.auth.user);
   const [name, setName] = useState(user.name);
   const [gender, setGender] = useState(user?.gender ?? 0);
   const [dateOfBirth, setDateOfBirth] = useState(
@@ -30,17 +30,9 @@ export default function FormEdit({navigation}) {
         <TouchableOpacity
           style={[styles.arrowBack, {left: 10}]}
           onPress={() => {
-            console.log('sd');
             navigation.goBack();
           }}>
-          <Ionicons
-            onPress={() => {
-              console.log('sd');
-              navigation.goBack();
-            }}
-            name="arrow-back"
-            size={30}
-          />
+          <Ionicons name="chevron-back" size={30} />
         </TouchableOpacity>
         <Text style={styles.titleEditModal}>Edit profile</Text>
         <Pressable
