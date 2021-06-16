@@ -68,7 +68,6 @@ export default function ChatRoom({navigation}) {
                         ]);
                         room.push(res.id);
                       }
-                      dispatch({type: MARK_READ, payload: {roomId: room[0]}});
                       navigation.navigate('Messenger', {
                         roomId: room[0],
                       });
@@ -124,7 +123,12 @@ export default function ChatRoom({navigation}) {
                             </Text>
                           </View>
                         }
-                        description={messages[messages.length - 1].text}
+                        description={
+                          messages[messages.length - 1].text.length === 0 &&
+                          messages[messages.length - 1].image
+                            ? 'bạn đã gửi một ảnh'
+                            : messages[messages.length - 1].text
+                        }
                         descriptionStyle={unread && styles.textUnread}
                         titleStyle={styles.titleStyle}
                         left={() => (
