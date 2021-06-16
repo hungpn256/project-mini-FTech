@@ -1,6 +1,13 @@
 import {uploadImg} from '*/Helper/function';
 import auth from '@react-native-firebase/auth';
-import {all, call, put, select, takeEvery} from '@redux-saga/core/effects';
+import {
+  all,
+  call,
+  put,
+  select,
+  takeEvery,
+  delay,
+} from '@redux-saga/core/effects';
 import {CREATE_POST} from '../Home/constants';
 import {
   GET_ME,
@@ -57,7 +64,15 @@ function* updateMeSaga({payload}) {
     yield put({type: GET_ME, payload: auth().currentUser.uid});
   } catch (e) {
   } finally {
-    yield put({type: PROFILE_CHANGE_STATE, payload: {loading: false}});
+    yield put({
+      type: PROFILE_CHANGE_STATE,
+      payload: {visibleModal: false},
+    });
+    yield delay(100);
+    yield put({
+      type: PROFILE_CHANGE_STATE,
+      payload: {loading: false},
+    });
   }
 }
 

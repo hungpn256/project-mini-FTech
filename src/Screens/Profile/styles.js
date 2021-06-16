@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   txtActive: {
-    color: 'rgb(64,159,255)',
+    color: '#1777F2',
   },
   btnActive: {
     backgroundColor: '#D6EAF8',
@@ -121,6 +121,72 @@ const styles = StyleSheet.create({
   },
   viewContent: {
     backgroundColor: '#f0f2f5',
+  },
+  btnGroup: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  btn: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: '#1777F2',
+    height: 43,
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
+  },
+  titleEditModal: {
+    fontWeight: '500',
+    fontSize: 24,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  formItem: {
+    paddingHorizontal: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginTop: 16,
+    fontWeight: '700',
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginHorizontal: 10,
+    borderBottomColor: 'rgba(0,0,0,0.5)',
+    fontSize: 16,
+    paddingVertical: 4,
+    color: 'rgba(0,0,0,0.7)',
+  },
+  textDate: {
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 4,
+    width: 50,
+    height: 30,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    paddingHorizontal: 5,
+    fontSize: 16,
+    marginHorizontal: 2,
+    color: 'rgba(0,0,0,0.7)',
+  },
+  textDone: {
+    color: '#1777F2',
+    fontWeight: 'bold',
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  arrowBack: {
+    position: 'absolute',
+    top: 10,
+    padding: 10,
+    zIndex: 999,
+  },
+  picker: {
+    marginBottom: -16,
+    marginTop: -5,
   },
 });
 export default styles;
