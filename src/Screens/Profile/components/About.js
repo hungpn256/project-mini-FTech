@@ -33,7 +33,7 @@ export default function About({user}) {
       )}
       {user.phoneNumber.length > 0 && (
         <List.Item
-          title="Số điện thoại"
+          title="Phone number"
           description="0584051516"
           left={() => (
             <List.Icon
@@ -46,7 +46,7 @@ export default function About({user}) {
       )}
       {user.dateOfBirth.length > 0 && (
         <List.Item
-          title="Date Of Birth"
+          title="Date of birth"
           description={moment(user.dateOfBirth).format('DD/mm/yyyy')}
           left={() => (
             <List.Icon

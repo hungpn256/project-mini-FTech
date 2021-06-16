@@ -4,7 +4,6 @@ import moment from 'moment';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
-  Modal,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -13,23 +12,27 @@ import {
 } from 'react-native';
 import {Button} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
 import Loading from '../../Components/Loading/index.js';
 import {avatarDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
 import About from './components/About.js';
-import FormEdit from './components/FormEdit.js';
 import ImageComponent from './components/Image';
 import SetImage from './components/SetImage.js';
 import {
+  ACCEPT_FRIEND,
+  ADD_FRIEND,
   GET_ME,
   GET_PROFILE,
-  PROFILE_CHANGE_STATE,
+  REMOVE_FRIEND,
   UPDATE_ME,
 } from './constants.js';
 import styles from './styles';
 const Profile = ({navigation, route}) => {
+  //1 chưa gửi lời mời, 2 chưa được chấp thuận, 3 chờ mình chấp thuận, 4 đã chấp thuận
+  const [roleFriend, setRoleFriend] = useState(1);
   const id = route?.params?.id;
   const [tab, setTab] = useState(1);
   const dispatch = useDispatch();
@@ -37,23 +40,18 @@ const Profile = ({navigation, route}) => {
     if (id) {
       dispatch({type: GET_PROFILE, payload: id});
     } else {
-      let uid = auth().currentUser.uid;
-      dispatch({type: GET_ME, payload: uid});
+      dispatch({type: GET_ME, payload: auth().currentUser.uid});
     }
   }, [id]);
+  const me = useSelector(state => state.auth.user);
   useEffect(() => {
     onRefresh();
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
-  const {
-    role,
-    user: me,
-    profile: other,
-    loading,
-    posts: postsMe,
-    postsProfile,
-    visibleModal,
-  } = profile;
+  const {profile: other, loading, posts: postsMe, postsProfile, role} = profile;
+  useEffect(() => {
+    setRoleFriend(role);
+  }, [role]);
   const user = id ? other : me;
   const posts = id ? postsProfile : postsMe;
   const setAvatar = image => {
@@ -124,9 +122,71 @@ const Profile = ({navigation, route}) => {
           <Text style={styles.name}>{user.name}</Text>
           <View style={styles.btnGroup}>
             {id ? (
-              <Button style={styles.btn} mode="contained">
-                <AntDesign name="pluscircle" size={16} color="#fff" />
-                <Text style={styles.btnText}> Add friend</Text>
+              <Button
+                style={styles.btn}
+                mode="contained"
+                onPress={() => {
+                  if (roleFriend === 4) {
+                    setRoleFriend(1);
+                    dispatch({
+                      type: REMOVE_FRIEND,
+                      payload: {
+                        friendIdPartner: user.friend.id,
+                        friendId: me.friend.id,
+                        id,
+                      },
+                    });
+                  } else if (roleFriend === 3) {
+                    setRoleFriend(4);
+                    dispatch({
+                      type: ACCEPT_FRIEND,
+                      payload: {
+                        friendIdPartner: user.friend.id,
+                        friendId: me.friend.id,
+                        id,
+                      },
+                    });
+                  } else if (roleFriend === 2) {
+                    setRoleFriend(1);
+                    dispatch({
+                      type: REMOVE_FRIEND,
+                      payload: {
+                        friendIdPartner: user.friend.id,
+                        friendId: me.friend.id,
+                        id,
+                      },
+                    });
+                  } else {
+                    setRoleFriend(2);
+                    dispatch({
+                      type: ADD_FRIEND,
+                      payload: {
+                        friendIdPartner: user.friend.id,
+                        friendId: me.friend.id,
+                        id,
+                      },
+                    });
+                  }
+                }}>
+                {roleFriend === 4 ? (
+                  <Ionicons name="trash" size={16} color="#fff" />
+                ) : roleFriend === 3 ? (
+                  <AntDesign name="checkcircle" size={16} color="#fff" />
+                ) : roleFriend === 2 ? (
+                  <Ionicons name="remove-circle" size={16} color="#fff" />
+                ) : (
+                  <AntDesign name="pluscircle" size={16} color="#fff" />
+                )}
+
+                <Text style={styles.btnText}>
+                  {roleFriend === 4
+                    ? ' Remove friend'
+                    : roleFriend === 3
+                    ? ' Accept'
+                    : roleFriend === 2
+                    ? ' Involke'
+                    : ' Add friend'}
+                </Text>
               </Button>
             ) : (
               <Button

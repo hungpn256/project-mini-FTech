@@ -39,3 +39,42 @@ export const getPostMe = payload =>
         reject(e);
       });
   });
+export const addFriend = async payload => {
+  console.log(payload, 'payload');
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      pending: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+    });
+};
+export const removeFriend = async payload => {
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      pending: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
+      accepted: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
+    });
+  firestore()
+    .collection('friend')
+    .doc(payload.friendId)
+    .update({
+      accepted: firestore.FieldValue.arrayRemove(payload.id),
+    });
+};
+export const acceptFriend = async payload => {
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      accepted: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+    });
+  firestore()
+    .collection('friend')
+    .doc(payload.friendId)
+    .update({
+      accepted: firestore.FieldValue.arrayUnion(payload.id),
+      pending: firestore.FieldValue.arrayRemove(payload.id),
+    });
+};
