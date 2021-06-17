@@ -100,7 +100,7 @@ function* getProfileSaga({payload}) {
     });
     yield put({type: GET_PROFILE_SUCCESS, payload: {profile: res, role}});
   } catch (e) {
-    console.log(e);
+    console.log(e, 'prfi');
   } finally {
     yield put({type: PROFILE_CHANGE_STATE, payload: {loading: false}});
   }
