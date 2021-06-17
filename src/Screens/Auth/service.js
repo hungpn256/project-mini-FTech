@@ -75,13 +75,18 @@ const addUser = async (uid, fullName) => {
   let phoneNumber = '';
   let gender = -1;
   let messenger = '';
+  const friendTmp = await firebase.firestore().collection('friend').add({
+    accepted: friend,
+    pending: friend,
+  });
+
   try {
     return await firebase.firestore().collection('user').doc(uid).set({
       name: userName,
       id: id,
       avatar: '',
       background: '',
-      friends: friend,
+      friends: friendTmp,
       roomChatList: roomChat,
       money: money,
       gender: gender,

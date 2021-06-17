@@ -57,7 +57,7 @@ export default function Menu({navigation}) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
-                  navigation.navigate('Friend');
+                  navigation.navigate('Friends');
                 }}
                 style={styles.item}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
