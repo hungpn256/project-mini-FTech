@@ -23,6 +23,7 @@ import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
 import EditProfile from '@Screens/Profile/components/FormEdit';
 import GameNavigator from './game';
 import PostDetail from '@Screens/PostDetail';
+import Friend from '../../Screens/Friend';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -33,10 +34,27 @@ const StackNavigatorProfile = () => {
         name="ProfileMain"
         component={Profile}
       />
+
       <Stack.Screen
         options={{headerShown: false}}
         name="EditProfile"
         component={EditProfile}
+      />
+    </Stack.Navigator>
+  );
+};
+const StackNavigatorMenu = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="EditProfile"
+        component={Menu}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Friends"
+        component={Friend}
       />
     </Stack.Navigator>
   );
@@ -104,7 +122,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Notification" component={Profile} />
       <Tab.Screen name="Profile" component={StackNavigatorProfile} />
-      <Tab.Screen name="Menu" component={Menu} />
+      <Tab.Screen name="Menu" component={StackNavigatorMenu} />
     </Tab.Navigator>
   );
 };

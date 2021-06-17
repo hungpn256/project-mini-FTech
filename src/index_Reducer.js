@@ -5,6 +5,15 @@ import chat from './Screens/ChatRoom/reducer';
 import profile from './Screens/Profile/reducer';
 import search from './Screens/SearchHome/reducer';
 import modal from './Screens/Modal/reducer';
-const rootReducer = combineReducers({home, auth, profile, chat, search, modal});
+import friend from './Screens/Friend/reducer';
+const rootReducer = combineReducers({
+  home,
+  auth,
+  profile,
+  chat,
+  search,
+  modal,
+  friend,
+});
 
 export default rootReducer;
