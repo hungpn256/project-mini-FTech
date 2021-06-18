@@ -5,14 +5,19 @@ import {
   View,
   StyleSheet,
   Dimensions,
+  Image,
+  ImageBackground,
+  Text,
 } from 'react-native';
 import {Avatar, Card, Divider, List} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {LOGOUT} from '../Auth/constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {avatarDefault} from '../../index_Constant';
-const heightWindow = Dimensions.get('window').height;
+import styles from './styles';
+
 export default function Menu({navigation}) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
@@ -23,95 +28,100 @@ export default function Menu({navigation}) {
   };
   return (
     <ScrollView>
-      <Card style={styles.container}>
-        <List.Item
-          onPress={() => {
-            navigation.navigate('Profile');
-          }}
-          title={user.name}
-          description="trang cá nhân"
-          titleStyle={styles.name}
-          left={props => (
+      <View style={styles.container}>
+        <View style={styles.wrapperBackground}>
+          <ImageBackground
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/mini-project-a64a1.appspot.com/o/seamless-gold-rhombus-grid-pattern-black-background_53876-97589.jpg?alt=media&token=d6de4415-db4e-4b00-a67a-8c8c4045e399',
+            }}
+            style={styles.background}
+          />
+        </View>
+        <View style={styles.menu}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.navigate('Profile');
+            }}
+            style={styles.wrapperAvatar}>
             <Avatar.Image
               source={{uri: user.avatar || avatarDefault}}
-              size={65}
+              size={140}
+              style={styles.avatar}
             />
-          )}
-        />
-        <Divider />
-        <TouchableOpacity>
-          <List.Item
-            style={styles.item}
-            title="Friend"
-            left={props => (
-              <View style={styles.iconLeft}>
-                <FontAwesome name={'users'} size={25} style={{margin: 9}} />
-              </View>
-            )}
-          />
-        </TouchableOpacity>
-        <Divider />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Game');
-          }}>
-          <List.Item
-            style={styles.item}
-            title="Game"
-            left={props => (
-              <View style={styles.iconLeft}>
-                <FontAwesome name={'gamepad'} size={30} style={{margin: 6}} />
-              </View>
-            )}
-          />
-        </TouchableOpacity>
-        <Divider />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Pay');
-          }}>
-          <List.Item
-            style={styles.item}
-            title="Pay"
-            left={props => (
-              <View style={styles.iconLeft}>
-                <Fontisto name="wallet" size={25} style={{margin: 9}} />
-              </View>
-            )}
-          />
-        </TouchableOpacity>
-        <Divider />
-        <TouchableOpacity onPress={handleLogout}>
-          <List.Item
-            style={styles.item}
-            title="Log out"
-            left={props => (
-              <View style={styles.iconLeft}>
-                <List.Icon icon="logout" style={{margin: 3}} />
-              </View>
-            )}
-          />
-        </TouchableOpacity>
-        <Divider />
-      </Card>
+          </TouchableOpacity>
+          <View style={styles.main}>
+            <Text style={styles.name}>{user.name}</Text>
+            <Divider />
+            <View style={{marginTop: 15}}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  navigation.navigate('Friends');
+                }}
+                style={styles.item}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <FontAwesome name="users" size={22} color={'#1777f2'} />
+                  <Text style={styles.itemTitle}>Friend</Text>
+                </View>
+                <MaterialIcons
+                  name="navigate-next"
+                  size={30}
+                  color={'#717D7E'}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  navigation.navigate('Game');
+                }}
+                style={styles.item}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <FontAwesome name="gamepad" size={22} color={'#1777f2'} />
+                  <Text style={styles.itemTitle}>Game</Text>
+                </View>
+                <MaterialIcons
+                  name="navigate-next"
+                  size={30}
+                  color={'#717D7E'}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  navigation.navigate('Pay');
+                }}
+                style={styles.item}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Entypo name="wallet" size={22} color={'#1777f2'} />
+                  <Text style={styles.itemTitle}>Pay</Text>
+                </View>
+                <MaterialIcons
+                  name="navigate-next"
+                  size={30}
+                  color={'#717D7E'}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  dispatch({type: LOGOUT});
+                }}
+                style={styles.item}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Entypo name="log-out" size={22} color={'#1777f2'} />
+                  <Text style={styles.itemTitle}>Log out</Text>
+                </View>
+                <MaterialIcons
+                  name="navigate-next"
+                  size={30}
+                  color={'#717D7E'}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 15,
-    minHeight: heightWindow,
-  },
-  item: {
-    paddingLeft: 15,
-  },
-  iconLeft: {
-    borderWidth: 1,
-    borderRadius: 999,
-    borderColor: '#aaa',
-  },
-  name: {
-    fontSize: 22,
-    fontWeight: '700',
-  },
-});

@@ -61,6 +61,7 @@ export const removeFriend = async payload => {
     .doc(payload.friendId)
     .update({
       accepted: firestore.FieldValue.arrayRemove(payload.id),
+      pending: firestore.FieldValue.arrayRemove(payload.id),
     });
 };
 export const acceptFriend = async payload => {

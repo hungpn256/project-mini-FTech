@@ -12,6 +12,10 @@ export const styles = StyleSheet.create({
     borderTopColor: '#E5E5E5',
     paddingVertical: 10,
   },
+  like: {
+    color: '#696969',
+    marginLeft: 3,
+  },
   cover: {
     height: windowHeight * 0.35,
   },
@@ -34,12 +38,21 @@ export const styles = StyleSheet.create({
   },
   wrapper: {
     backgroundColor: 'white',
+    flex: 1,
   },
   textHeader: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     letterSpacing: 0.7,
+  },
+  cmts: {
+    color: '#696969',
+  },
+  infoPost: {
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   iconHeader: {
     position: 'absolute',
