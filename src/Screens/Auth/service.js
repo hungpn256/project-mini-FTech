@@ -46,9 +46,12 @@ export async function loginGoogle() {
 }
 
 export const login = async ({email, pass}) => {
-  const res = await auth().signInWithEmailAndPassword(email, pass);
-  if (res) {
+  try {
+    await auth().signInWithEmailAndPassword(email, pass);
     return saveUser(firebase.auth().currentUser.uid);
+  } catch (error) {
+    CatchErr(error.code);
+    return null;
   }
 };
 

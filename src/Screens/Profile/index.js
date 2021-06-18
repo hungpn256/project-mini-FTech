@@ -281,6 +281,7 @@ const Profile = ({navigation, route}) => {
                         text={item.content}
                         image={item.imageUrl}
                         uid={item.userId}
+                        postid={item.id}
                       />
                     );
                   })}

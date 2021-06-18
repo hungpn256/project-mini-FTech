@@ -5,6 +5,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector, useDispatch} from 'react-redux';
+
 import InputEncloseAvatar from './InputEncloseAvatar';
 import avatarImg from '../../assets/Img/avatar.png';
 import {Text} from 'react-native';
@@ -17,12 +18,16 @@ import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
-const LeftContent = img => (
+const LeftContent = (img, navi) => (
   <>
     {img ? (
-      <Avatar.Image source={{uri: img}} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={{uri: img}} size={40} />
+      </Pressable>
     ) : (
-      <Avatar.Image source={avatarImg} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={avatarImg} size={40} />
+      </Pressable>
     )}
   </>
 );
@@ -41,6 +46,8 @@ const Article = ({text, image, time, uid, postid}) => {
   const navigate = useNavigation();
   const [user, setUser] = useState('');
   const [size, setSize] = useState('');
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
@@ -50,6 +57,28 @@ const Article = ({text, image, time, uid, postid}) => {
     };
     userInfo();
   });
+  useEffect(() => {
+    const post = async () => {
+      if (postid) {
+        const post = await firestore().collection('post').doc(postid).get();
+        const check = await post.data().like.includes(currentUser);
+        setTotal(post.data().like.length);
+        if (check) {
+          setLike(true);
+        } else {
+          setLike(false);
+        }
+      }
+    };
+
+    const likeupdate = firestore()
+      .collection('post')
+      .onSnapshot(() => {
+        post();
+      });
+    return likeupdate;
+  }, []);
+
   useEffect(() => {
     const lastCmt = async () => {
       if (postid) {
@@ -78,13 +107,18 @@ const Article = ({text, image, time, uid, postid}) => {
         setSize(size.size);
       }
     };
+    // firestore()
+    //   .collection('post')
+    //   .onSnapshot(() => {
+    //     post();
+    //   });
     const newLastCmt = firestore()
       .collection('comments')
       .onSnapshot(() => {
         lastCmt();
         cmtSize();
       });
-    return () => newLastCmt();
+    return newLastCmt;
   }, []);
   const gallery = () => {
     console.log('image');
@@ -104,13 +138,34 @@ const Article = ({text, image, time, uid, postid}) => {
     setImgCmt('');
   };
 
+  const handleLike = () => {
+    const likes = firestore().collection('post').doc(postid);
+    if (like) {
+      setLike(false);
+      setTotal(prev => prev - 1);
+      likes.update({like: firestore.FieldValue.arrayRemove(currentUser)});
+    } else {
+      setLike(true);
+      setTotal(prev => prev + 1);
+      likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
+    }
+  };
+
+  const handleNavi = () => {
+    if (uid === currentUser) {
+      navigate.navigate('Profile', {id: uid});
+    } else {
+      navigate.navigate('Profile-o', {id: uid});
+    }
+  };
+
   return user ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={user.name}
         subtitle={time}
-        left={() => LeftContent(user.avatar)}
+        left={() => LeftContent(user.avatar, handleNavi)}
       />
       <Pressable
         onPress={() =>
@@ -144,9 +199,9 @@ const Article = ({text, image, time, uid, postid}) => {
             }}
             color="white"
             name="like1"
-            size={12}
+            size={11}
           />
-          <Text style={styles.like}>1 </Text>
+          <Text style={styles.like}>{total < 0 ? 0 : total} </Text>
         </View>
 
         <Text
@@ -167,7 +222,7 @@ const Article = ({text, image, time, uid, postid}) => {
         </Text>
       </View>
       <Card.Actions style={styles.cardAction}>
-        <Pressable style={styles.Icon} onPress={() => setLike(like => !like)}>
+        <Pressable style={styles.Icon} onPress={handleLike}>
           <View style={styles.actionBtn}>
             <AntDesignIcon
               color={like ? '#1777F2' : '#696969'}
@@ -262,10 +317,12 @@ const styles = StyleSheet.create({
   },
   cmts: {
     color: '#696969',
+    fontSize: 13,
   },
   like: {
     color: '#696969',
     marginLeft: 3,
+    fontSize: 13,
   },
   infoPost: {
     padding: 10,
