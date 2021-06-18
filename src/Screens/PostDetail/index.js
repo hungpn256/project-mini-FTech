@@ -12,10 +12,12 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useRoute} from '@react-navigation/native';
 import {CMT, GET_CMT} from '@Screens/Home/constants';
+import Loading from '../../Components/Loading/index';
 import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
+import auth, {firebase} from '@react-native-firebase/auth';
 import moment from 'moment';
 const LeftContent = img => (
   <>
@@ -37,6 +39,8 @@ export default function index() {
   const dispatch = useDispatch();
   const [size, setSize] = useState('');
   const comments = useSelector(state => state.home.comments);
+  const [total, setTotal] = useState(0);
+  const [status, setStatus] = useState(true);
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
@@ -47,7 +51,30 @@ export default function index() {
   };
 
   useEffect(() => {
-    dispatch({type: GET_CMT});
+    const post = async () => {
+      if (route.params.postid) {
+        const post = await firestore()
+          .collection('post')
+          .doc(route.params.postid)
+          .get();
+        const check = await post.data().like.includes(auth().currentUser.uid);
+        setTotal(post.data().like.length);
+        if (check) {
+          setLike(true);
+        } else {
+          setLike(false);
+        }
+      }
+    };
+    const likeupdate = firestore()
+      .collection('post')
+      .onSnapshot(() => {
+        post();
+      });
+    return likeupdate;
+  }, []);
+
+  useEffect(() => {
     const cmtSize = async () => {
       if (route.params.postid) {
         const size = await firestore()
@@ -57,8 +84,14 @@ export default function index() {
         setSize(size.size);
       }
     };
-    cmtSize();
-  }, [comments.length]);
+    const cmtupdate = firestore()
+      .collection('comments')
+      .onSnapshot(() => {
+        dispatch({type: GET_CMT});
+        cmtSize();
+      });
+    return cmtupdate;
+  }, []);
 
   const handleCmt = async () => {
     dispatch({
@@ -72,6 +105,23 @@ export default function index() {
     });
     setCmt('');
     setImgCmt('');
+  };
+  const handleLike = async () => {
+    const likes = firestore().collection('post').doc(route.params.postid);
+    if (like) {
+      setLike(false);
+      setTotal(prev => prev - 1);
+      likes.update({
+        like: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
+      });
+    } else {
+      setLike(true);
+      setTotal(prev => prev + 1);
+
+      likes.update({
+        like: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+      });
+    }
   };
   return (
     <View style={styles.wrapper}>
@@ -128,16 +178,14 @@ export default function index() {
                 name="like1"
                 size={12}
               />
-              <Text style={styles.like}>1 </Text>
+              <Text style={styles.like}>{total} </Text>
             </View>
             <Text style={styles.cmts}>
               {size > 1 ? size + '' + ' Comments' : size + '' + ' Comment'}
             </Text>
           </View>
           <Card.Actions style={styles.cardAction}>
-            <Pressable
-              style={styles.Icon}
-              onPress={() => setLike(like => !like)}>
+            <Pressable style={styles.Icon} onPress={handleLike}>
               <View style={styles.actionBtn}>
                 <AntDesignIcon
                   color={like ? '#4169e1' : '#696969'}

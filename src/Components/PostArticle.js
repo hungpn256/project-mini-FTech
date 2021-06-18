@@ -13,9 +13,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ModalPost from './ModalPost';
 import ModalCreatePost from '@Components/Modal';
 import CameraGroup from './CameraGroup';
+import {MODAL_CREATE_POST_IMG} from '../Screens/ModalCreatePost/contants';
+import {useDispatch} from 'react-redux';
 export default function PostArticle({editable}) {
   const [image, setImage] = useState(null);
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(false);
+  const dispatch = useDispatch();
+
   const handlePress = () => {
     setStatus(false);
   };
@@ -27,8 +31,7 @@ export default function PostArticle({editable}) {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
       if (props.type === 'image/jpeg') {
-        setImage(props);
-        setStatus(true);
+        dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
       }
     });
   };
@@ -49,8 +52,7 @@ export default function PostArticle({editable}) {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
           if (props.type === 'image/jpeg') {
-            setImage(props);
-            setStatus(true);
+            dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
           }
         });
       } else {
@@ -64,14 +66,6 @@ export default function PostArticle({editable}) {
     <Card mode="outline" style={styles.container}>
       <View style={styles.inputWrapper}>
         <ModalPost />
-        {status && (
-          <ModalCreatePost
-            type={status}
-            closeImg={delImg}
-            closeModal={handlePress}
-            src={image}
-          />
-        )}
       </View>
       <CameraGroup cam={cam} gallery={gallery} />
     </Card>
