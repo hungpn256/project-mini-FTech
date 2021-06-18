@@ -5,6 +5,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector, useDispatch} from 'react-redux';
+
 import InputEncloseAvatar from './InputEncloseAvatar';
 import avatarImg from '../../assets/Img/avatar.png';
 import {Text} from 'react-native';
@@ -17,12 +18,16 @@ import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
-const LeftContent = img => (
+const LeftContent = (img, navi) => (
   <>
     {img ? (
-      <Avatar.Image source={{uri: img}} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={{uri: img}} size={40} />
+      </Pressable>
     ) : (
-      <Avatar.Image source={avatarImg} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={avatarImg} size={40} />
+      </Pressable>
     )}
   </>
 );
@@ -33,33 +38,47 @@ const Article = ({text, image, time, uid, postid}) => {
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [like, setLike] = useState(false);
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [status, setStatus] = useState(false);
   const [cmt, setCmt] = useState('');
   const [imgCmt, setImgCmt] = useState('');
   const currentUser = auth().currentUser.uid;
   const [content, setContent] = useState('');
   const [userCmt, setUserCmt] = useState('');
   const navigate = useNavigation();
+  const [user, setUser] = useState('');
+  const [size, setSize] = useState('');
+  const [total, setTotal] = useState(0);
+
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
-        const users = await firestore()
-          .collection('user')
-          .where('id', '==', uid)
-          .get();
-        users.forEach(user => {
-          setId(user.data().id);
-          setName(user.data().name);
-          setAvatar(user.data().avatar);
-          setStatus(true);
-        });
+        const users = await firestore().collection('user').doc(uid).get();
+        setUser(users.data());
       }
     };
     userInfo();
   });
+  useEffect(() => {
+    const post = async () => {
+      if (postid) {
+        const post = await firestore().collection('post').doc(postid).get();
+        const check = await post.data().like.includes(currentUser);
+        setTotal(post.data().like.length);
+        if (check) {
+          setLike(true);
+        } else {
+          setLike(false);
+        }
+      }
+    };
+
+    const likeupdate = firestore()
+      .collection('post')
+      .onSnapshot(() => {
+        post();
+      });
+    return likeupdate;
+  }, []);
+
   useEffect(() => {
     const lastCmt = async () => {
       if (postid) {
@@ -73,18 +92,33 @@ const Article = ({text, image, time, uid, postid}) => {
           setContent(comments.docs[0].data());
           const userData = await firestore()
             .collection('user')
-            .where('id', '==', comments.docs[0].data().userId)
+            .doc(comments.docs[0].data().userId)
             .get();
-          userData.forEach(snap => setUserCmt(snap.data()));
+          setUserCmt(userData.data());
         }
       }
     };
+    const cmtSize = async () => {
+      if (postid) {
+        const size = await firestore()
+          .collection('comments')
+          .where('postId', '==', postid)
+          .get();
+        setSize(size.size);
+      }
+    };
+    // firestore()
+    //   .collection('post')
+    //   .onSnapshot(() => {
+    //     post();
+    //   });
     const newLastCmt = firestore()
       .collection('comments')
       .onSnapshot(() => {
         lastCmt();
+        cmtSize();
       });
-    return () => newLastCmt();
+    return newLastCmt;
   }, []);
   const gallery = () => {
     console.log('image');
@@ -104,13 +138,34 @@ const Article = ({text, image, time, uid, postid}) => {
     setImgCmt('');
   };
 
-  return status ? (
+  const handleLike = () => {
+    const likes = firestore().collection('post').doc(postid);
+    if (like) {
+      setLike(false);
+      setTotal(prev => prev - 1);
+      likes.update({like: firestore.FieldValue.arrayRemove(currentUser)});
+    } else {
+      setLike(true);
+      setTotal(prev => prev + 1);
+      likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
+    }
+  };
+
+  const handleNavi = () => {
+    if (uid === currentUser) {
+      navigate.navigate('Profile', {id: uid});
+    } else {
+      navigate.navigate('Profile-o', {id: uid});
+    }
+  };
+
+  return user ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '400'}}
-        title={name}
+        title={user.name}
         subtitle={time}
-        left={() => LeftContent(avatar)}
+        left={() => LeftContent(user.avatar, handleNavi)}
       />
       <Pressable
         onPress={() =>
@@ -118,10 +173,11 @@ const Article = ({text, image, time, uid, postid}) => {
             text: text,
             image: image,
             currentUser: currentUser,
-            avatar: avatar,
-            name: name,
+            avatar: user.avatar,
+            name: user.name,
             time: time,
             postid: postid,
+            size: size,
           })
         }>
         {text ? (
@@ -133,9 +189,40 @@ const Article = ({text, image, time, uid, postid}) => {
           <Card.Cover style={styles.cover} source={{uri: image}} />
         ) : null}
       </Pressable>
+      <View style={styles.infoPost}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <AntDesignIcon
+            style={{
+              padding: 4,
+              backgroundColor: '#1777F2',
+              borderRadius: 999,
+            }}
+            color="white"
+            name="like1"
+            size={11}
+          />
+          <Text style={styles.like}>{total < 0 ? 0 : total} </Text>
+        </View>
 
+        <Text
+          onPress={() =>
+            navigate.navigate('PostDetail', {
+              text: text,
+              image: image,
+              currentUser: currentUser,
+              avatar: user.avatar,
+              name: user.name,
+              time: time,
+              postid: postid,
+              size: size,
+            })
+          }
+          style={styles.cmts}>
+          {size > 1 ? size + '' + ' Comments' : size + '' + ' Comment'}
+        </Text>
+      </View>
       <Card.Actions style={styles.cardAction}>
-        <Pressable style={styles.Icon} onPress={() => setLike(like => !like)}>
+        <Pressable style={styles.Icon} onPress={handleLike}>
           <View style={styles.actionBtn}>
             <AntDesignIcon
               color={like ? '#1777F2' : '#696969'}
@@ -184,10 +271,11 @@ const Article = ({text, image, time, uid, postid}) => {
               text: text,
               image: image,
               currentUser: currentUser,
-              avatar: avatar,
-              name: name,
+              avatar: user.avatar,
+              name: user.name,
               time: time,
               postid: postid,
+              size: size,
             })
           }>
           <View style={styles.cmtWrapper}>
@@ -209,7 +297,7 @@ const Article = ({text, image, time, uid, postid}) => {
                   <Image style={styles.imgCmt} source={{uri: content.image}} />
                 </>
               ) : null}
-              <Text style={{color: '#696969', fontSize: 12, marginTop: 5}}>
+              <Text style={{color: '#696969', fontSize: 12, marginLeft: 5}}>
                 {content.createAt
                   ? moment(content.createAt?.toDate()).fromNow()
                   : 'loading'}
@@ -227,19 +315,32 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 4,
   },
+  cmts: {
+    color: '#696969',
+    fontSize: 13,
+  },
+  like: {
+    color: '#696969',
+    marginLeft: 3,
+    fontSize: 13,
+  },
+  infoPost: {
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   AvatarCmt: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   cover: {
     height: windowHeight * 0.4,
   },
   imgCmt: {
-    borderRadius: 18,
-    width: windowWidth * 0.6,
-    height: windowHeight * 0.4,
+    borderRadius: 12,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.3,
   },
-  cmtGroup: {marginTop: 4, marginLeft: 50},
+  cmtGroup: {marginTop: 2, marginLeft: 50},
   userName: {
     fontWeight: 'bold',
   },
@@ -276,11 +377,11 @@ const styles = StyleSheet.create({
   },
   cardAction: {
     justifyContent: 'space-evenly',
-    borderBottomColor: '#E5E5E5',
+    borderBottomColor: '#F1F1F1',
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderTopColor: '#E5E5E5',
-    paddingVertical: 10,
+    borderTopColor: '#F1F1F1',
+    paddingVertical: 7,
   },
 });
 export default Article;

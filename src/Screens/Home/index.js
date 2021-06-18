@@ -22,14 +22,15 @@ const Home = ({navigation}) => {
   console.log(unread, 'home unread');
   const dispatch = useDispatch();
   useEffect(() => {
-    firestore()
+    const postupdate = firestore()
       .collection('post')
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(() => {
+      .onSnapshot(snap => {
+        snap.forEach(() => {
           dispatch({type: GET_POST});
         });
       });
-  }, [postData.length]);
+    return postupdate;
+  }, []);
 
   return (
     <ScrollView

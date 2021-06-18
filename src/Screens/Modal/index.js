@@ -6,6 +6,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import {MODAL_CHANGE_STATE} from './constant';
 export default function ModalComponent() {
   const image = useSelector(state => state.modal.image);
+  console.log('image', image);
   const dispatch = useDispatch();
   return (
     <Modal
@@ -25,7 +26,7 @@ export default function ModalComponent() {
             dispatch({type: MODAL_CHANGE_STATE, payload: {image: null}});
           }}
           style={styles.close}>
-          <AntDesign name="close" size={20} />
+          <AntDesign name="close" size={20} color="#fff" />
         </Pressable>
       </GestureRecognizer>
     </Modal>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
     right: 10,
     top: 10,
     padding: 3,
-    backgroundColor: '#fff',
+    backgroundColor: '#1777f2',
     borderRadius: 999,
     borderColor: 'rgba(0,0,0,0.1)',
     borderWidth: 1,
