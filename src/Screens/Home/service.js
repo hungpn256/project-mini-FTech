@@ -87,13 +87,10 @@ export const getAll = async () => {
   }
 };
 
-export const uploadPost = async ({
-  text,
-  image,
-  id = auth().currentUser.uid,
-}) => {
+export const uploadPost = async ({text, image}) => {
   const img = await uploadImg(image);
-  const likes = '';
+  const likes = [];
+  const id = auth().currentUser.uid;
   try {
     const data = await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),

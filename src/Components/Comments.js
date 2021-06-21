@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, Pressable} from 'react-native';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
 import avatarImg from '../../assets/Img/avatar.png';
 import auth, {firebase} from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
+import {useSelector, useDispatch} from 'react-redux';
+import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
 export default function Comments({userId, cmtId, time, content, image}) {
   const [user, setUser] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     const userInfo = async () => {
       if (userId) {
@@ -35,7 +38,15 @@ export default function Comments({userId, cmtId, time, content, image}) {
           </View>
           <View style={styles.cmtGroup}>
             {image ? (
-              <Image style={styles.imgCmt} source={{uri: image}} />
+              <Pressable
+                onPress={() =>
+                  dispatch({
+                    type: MODAL_CHANGE_STATE,
+                    payload: {image: image},
+                  })
+                }>
+                <Image style={styles.imgCmt} source={{uri: image}} />
+              </Pressable>
             ) : null}
             <Text style={{color: '#696969', fontSize: 12, marginLeft: 5}}>
               {time ? time : 'loading'}
