@@ -24,6 +24,7 @@ import EditProfile from '@Screens/Profile/components/FormEdit';
 import GameNavigator from './game';
 import PostDetail from '@Screens/PostDetail';
 import Friend from '../../Screens/Friend';
+import Notification from '../../Screens/Notification';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -120,7 +121,7 @@ const TabNavigator = () => {
         showLabel: false,
       }}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Notification" component={Profile} />
+      <Tab.Screen name="Notification" component={Notification} />
       <Tab.Screen name="Profile" component={StackNavigatorProfile} />
       <Tab.Screen name="Menu" component={StackNavigatorMenu} />
     </Tab.Navigator>

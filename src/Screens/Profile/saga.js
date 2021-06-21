@@ -27,6 +27,7 @@ import {
   getProfile,
   removeFriend,
   updateMe,
+  uploadPost,
 } from './service';
 function* getMeSaga({payload}) {
   try {
@@ -43,32 +44,29 @@ function* getMeSaga({payload}) {
 function* updateMeSaga({payload}) {
   let payloadtmp = payload;
   try {
-    yield put({type: PROFILE_CHANGE_STATE, payload: {loading: true}});
+    yield put({
+      type: PROFILE_CHANGE_STATE,
+      payload: {loading: true, updateSuccess: false},
+    });
     if (payload.avatar) {
       const url = yield call(uploadImg, payload.avatar);
-      yield put({
-        type: CREATE_POST,
-        payload: {image: payload.avatar, text: ''},
-      });
+      yield call(uploadPost, {image: url, text: ''});
       payloadtmp.avatar = url;
     }
     if (payload.background) {
       const url = yield call(uploadImg, payload.background);
-      yield put({
-        type: CREATE_POST,
-        payload: {image: payload.background, text: ''},
-      });
+      yield call(uploadPost, {image: url, text: ''});
       payloadtmp.background = url;
     }
     const res = yield call(updateMe, payload);
     yield put({type: GET_ME, payload: auth().currentUser.uid});
-  } catch (e) {
-  } finally {
     yield put({
       type: PROFILE_CHANGE_STATE,
-      payload: {visibleModal: false},
+      payload: {updateSuccess: true},
     });
-    yield delay(100);
+  } catch (e) {
+    console.log('update fail', e);
+  } finally {
     yield put({
       type: PROFILE_CHANGE_STATE,
       payload: {loading: false},

@@ -1,6 +1,6 @@
 import {Picker} from '@react-native-picker/picker';
 import moment from 'moment';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Pressable,
   Text,
@@ -12,18 +12,26 @@ import {
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {UPDATE_ME} from '../constants';
+import {PROFILE_CHANGE_STATE, UPDATE_ME} from '../constants';
 import styles from '../styles';
 export default function FormEdit({navigation}) {
   const user = useSelector(state => state.auth.user);
+  const updateSuccess = useSelector(state => state.profile.updateSuccess);
+  console.log(updateSuccess, 'up');
   const [name, setName] = useState(user.name);
   const [gender, setGender] = useState(user?.gender ?? 0);
   const [dateOfBirth, setDateOfBirth] = useState(
-    user?.dateOfBirth ?? new Date().toString(),
+    user.dateOfBirth || new Date().toString(),
   );
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber ?? '');
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (updateSuccess) {
+      dispatch({type: PROFILE_CHANGE_STATE, payload: {updateSuccess: false}});
+      navigation.goBack();
+    }
+  }, [updateSuccess]);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <View>
@@ -102,7 +110,8 @@ export default function FormEdit({navigation}) {
         <View style={{flex: 1}}>
           <Pressable
             style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.1)'}}
-            onPress={() => setVisibleDatePicker(false)}></Pressable>
+            onPress={() => setVisibleDatePicker(false)}
+          />
           <View
             style={{
               backgroundColor: '#fff',
