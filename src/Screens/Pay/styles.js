@@ -85,6 +85,13 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     borderRadius: 5,
   },
+  modalView: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width: windowWidth,
+  },
 });
 
 export default styles;

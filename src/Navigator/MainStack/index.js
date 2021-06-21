@@ -8,6 +8,9 @@ import Home from '@Screens/Home';
 import Menu from '@Screens/Menu';
 import Pay from '@Screens/Pay/index';
 import PayNotification from '@Screens/Pay/notification';
+import Recharge from '@Screens/Pay/subScreens/recharge';
+import Transfers from '@Screens/Pay/subScreens/transfers';
+import WithDraw from '@Screens/Pay/subScreens/withdraw';
 import Wallet from '@Screens/Pay/wallet';
 import Profile from '@Screens/Profile';
 import Search from '@Screens/SearchHome';
@@ -167,7 +170,6 @@ const TabNavigatorPay = () => {
               </View>
             );
           }
-
           // You can return any component that you like here!
         },
       })}
@@ -252,6 +254,9 @@ export default function AppNavigator() {
           name="Pay"
           component={TabNavigatorPay}
         />
+        <Stack.Screen name="Recharge" component={Recharge} />
+        <Stack.Screen name="Transfers" component={Transfers} />
+        <Stack.Screen name="WithDraw" component={WithDraw} />
         <Stack.Screen
           options={{
             headerShown: false,
