@@ -79,3 +79,19 @@ export const acceptFriend = async payload => {
       pending: firestore.FieldValue.arrayRemove(payload.id),
     });
 };
+
+export const uploadPost = async ({
+  text,
+  image,
+  id = auth().currentUser.uid,
+}) => {
+  const likes = '';
+  const data = await firestore().collection('post').add({
+    createAt: firestore.FieldValue.serverTimestamp(),
+    content: text,
+    imageUrl: image,
+    like: likes,
+    userId: id,
+  });
+  return data.id;
+};

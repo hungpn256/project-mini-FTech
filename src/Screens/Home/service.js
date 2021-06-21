@@ -87,7 +87,11 @@ export const getAll = async () => {
   }
 };
 
-export const uploadPost = async ({text, image, id}) => {
+export const uploadPost = async ({
+  text,
+  image,
+  id = auth().currentUser.uid,
+}) => {
   const img = await uploadImg(image);
   const likes = '';
   try {
