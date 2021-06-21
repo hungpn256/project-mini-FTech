@@ -22,13 +22,14 @@ const Home = ({navigation}) => {
   console.log(unread, 'home unread');
   const dispatch = useDispatch();
   useEffect(() => {
-    firestore()
+    const postupdate = firestore()
       .collection('post')
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(() => {
+      .onSnapshot(snap => {
+        snap.forEach(() => {
           dispatch({type: GET_POST});
         });
       });
+    return postupdate;
   }, []);
 
   return (
@@ -42,7 +43,7 @@ const Home = ({navigation}) => {
             <Fontisto
               style={styles.icon}
               name="search"
-              color="rgb(64,159,255)"
+              color="#1777F2"
               size={21}
               onPress={() => {
                 navigation.navigate('Search');
@@ -56,7 +57,7 @@ const Home = ({navigation}) => {
                 navigation.navigate('ChatRoom');
               }}
               name="messenger"
-              color="rgb(64,159,255)"
+              color="#1777F2"
               size={21}
             />
             {unread !== 0 && (
@@ -66,17 +67,20 @@ const Home = ({navigation}) => {
         </View>
       </View>
       <PostArticle />
-      {postData.map(item => {
-        return (
-          <Article
-            time={moment(item.createAt?.toDate()).fromNow()}
-            key={item.postId}
-            text={item.content}
-            image={item.imageUrl}
-            uid={item.userId}
-          />
-        );
-      })}
+      {postData &&
+        postData.map(item => {
+          console.log(item);
+          return (
+            <Article
+              time={moment(item.createAt?.toDate()).fromNow()}
+              key={item.id}
+              text={item.content}
+              image={item.imageUrl}
+              uid={item.userId}
+              postid={item.id}
+            />
+          );
+        })}
     </ScrollView>
   );
 };

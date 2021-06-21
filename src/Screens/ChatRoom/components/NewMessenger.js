@@ -1,7 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
-  Dimensions,
   FlatList,
   Modal,
   StyleSheet,
@@ -18,7 +17,6 @@ import {avatarDefault} from '../../../index_Constant';
 import {GET_USER_BY_NAME} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
-const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
   const navigation = useNavigation();
@@ -47,7 +45,7 @@ const NewMessenger = () => {
         onPress={() => {
           setVisibleModal(true);
         }}>
-        <Entypo name="new-message" size={30} color="rgb(64,159,255)" />
+        <Entypo name="new-message" size={30} color="#1777F2" />
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -130,7 +128,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    marginHorizontal: 8,
     marginTop: 50,
     backgroundColor: '#fff',
     height: '100%',

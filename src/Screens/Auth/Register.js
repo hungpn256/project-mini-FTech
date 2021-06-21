@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import BG from '../../../assets/Img/BG.jpg';
+import Loading from '../../Components/Loading';
 import Logo from '../../../assets/Img/logo.png';
 import TextInput from '../../Components/TextInput/index';
 import FButton from '../../Components/TouchOpacity/index';
@@ -43,11 +44,7 @@ const Register = () => {
     <View style={styles.container}>
       <ScrollView>
         <ImageBackground style={styles.background} source={BG}>
-          <Modal visible={loading} transparent={true}>
-            <View style={styles.viewModal}>
-              <ActivityIndicator size="large" color="#232B2B" />
-            </View>
-          </Modal>
+          <Loading loading={loading} />
           <View style={styles.overlay}>
             <View style={styles.LogoStyle}>
               <Image source={Logo} style={styles.LogoSize} />
