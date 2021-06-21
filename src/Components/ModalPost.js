@@ -4,17 +4,19 @@ import {
   View,
   StyleSheet,
   Text,
-  Modal,
   ActivityIndicator,
   Pressable,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Post from './Modal';
 import avatarImg from '../../assets/Img/avatar.png';
+import Modal from '@Screens/ModalCreatePost';
+import {MODAL_CREATE_POST} from '../Screens/ModalCreatePost/contants';
 export default function ModalPost() {
   const [modal, setModal] = useState(false);
   const userData = useSelector(state => state.auth.user);
+  const dispatch = useDispatch();
   const handlePress = () => {
     setModal(true);
   };
@@ -34,10 +36,11 @@ export default function ModalPost() {
       ) : (
         <Avatar.Image size={40} source={avatarImg} />
       )}
-      <Pressable style={{flex: 1}} onPress={handlePress}>
+      <Pressable
+        style={{flex: 1}}
+        onPress={() => dispatch({type: MODAL_CREATE_POST})}>
         <View style={styles.input}>
           <Text style={styles.text}>What's on your mind ?</Text>
-          <Post type={modal} closeModal={close} />
         </View>
       </Pressable>
     </View>

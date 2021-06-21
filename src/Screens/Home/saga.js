@@ -19,7 +19,7 @@ import {
   GET_CMT,
   GET_ALL_CMT,
 } from './constants';
-
+import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
 import {uploadPost, getAll, getMore, createCmt, getAllCmt} from './service';
 
 function* handleCreatePost({payload}) {
@@ -32,6 +32,7 @@ function* handleCreatePost({payload}) {
     console.log(err);
   } finally {
     yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_MODAL_POST});
   }
 }
 

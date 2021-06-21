@@ -22,8 +22,15 @@ const Home = ({navigation}) => {
   console.log(unread, 'home unread');
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({type: GET_POST});
-  }, [postData.length]);
+    const postupdate = firestore()
+      .collection('post')
+      .onSnapshot(snap => {
+        snap.forEach(() => {
+          dispatch({type: GET_POST});
+        });
+      });
+    return postupdate;
+  }, []);
 
   return (
     <ScrollView
