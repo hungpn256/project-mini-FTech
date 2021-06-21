@@ -4,6 +4,7 @@ import watchChatSaga from './Screens/ChatRoom/saga';
 import watchFriendSaga from './Screens/Friend/saga';
 import watchPostSaga from './Screens/Home/saga';
 import watchProfileSaga from './Screens/Profile/saga';
+import rechargeMoneySaga from './Screens/Pay/saga';
 import watchSearchSaga from './Screens/SearchHome/saga';
 function* rootSaga() {
   yield all([
@@ -11,6 +12,7 @@ function* rootSaga() {
     watchChatSaga(),
     watchPostSaga(),
     watchProfileSaga(),
+    rechargeMoneySaga(),
     watchSearchSaga(),
     watchFriendSaga(),
   ]);

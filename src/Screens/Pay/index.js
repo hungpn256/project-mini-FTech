@@ -1,7 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -21,19 +19,18 @@ const ImageCarousel = [
   {image: require('./assets/4.jpg')},
 ];
 
-const Pay = () => {
-  const wallet = useSelector(state => state.auth.user.wallet);
-  const x = async () => {
-    const a = await wallet.get();
-    console.log(a.data(), 'wl');
-  };
-  x();
+// Pay = () => {
+export default function Pay({navigation}) {
+  const userMoney = useSelector(state => state.auth.user);
+  console.log('====================================');
+  console.log(userMoney);
+  console.log('====================================');
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header1}>
-          <Text style={styles.textHeader1}>Số dư :</Text>
-          <Text style={styles.textHeader1}>10000000</Text>
+          <Text style={styles.textHeader1}>Số dư : </Text>
+          <Text style={styles.textHeader1}>{userMoney.money} đ</Text>
         </View>
         <Divider />
         <View style={styles.header2}>
@@ -41,7 +38,11 @@ const Pay = () => {
             <AntDesign name="scan1" size={50} color={'white'} />
             <Text style={styles.textHeader}>Quét mã</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchOpacityHeader}>
+          <TouchableOpacity
+            style={styles.touchOpacityHeader}
+            onPress={() => {
+              navigation.navigate('Recharge');
+            }}>
             <MaterialCommunityIcons
               name="wallet-plus-outline"
               size={50}
@@ -49,11 +50,19 @@ const Pay = () => {
             />
             <Text style={styles.textHeader}>Nạp tiền</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchOpacityHeader}>
+          <TouchableOpacity
+            style={styles.touchOpacityHeader}
+            onPress={() => {
+              navigation.navigate('Transfers');
+            }}>
             <FontAwesome name="exchange" size={50} color={'white'} />
             <Text style={styles.textHeader}>Chuyển tiền</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.touchOpacityHeader}>
+          <TouchableOpacity
+            style={styles.touchOpacityHeader}
+            onPress={() => {
+              navigation.navigate('WithDraw');
+            }}>
             <AntDesign name="wallet" size={50} color={'white'} />
             <Text style={styles.textHeader}>Rút tiền</Text>
           </TouchableOpacity>
@@ -114,5 +123,5 @@ const Pay = () => {
       </View>
     </View>
   );
-};
-export default Pay;
+}
+// export default Pay;

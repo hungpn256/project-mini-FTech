@@ -7,3 +7,4 @@ const Transfers = () => {
     </View>
   );
 };
+export default Transfers;
