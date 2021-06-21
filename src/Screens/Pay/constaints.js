@@ -1,1 +1,2 @@
 export const RECHARGE_MONEY = 'RECHARGE_MONEY';
+export const WITHDRAW_MONEY = 'WITHDRAW_MONEY';

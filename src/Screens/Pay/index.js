@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -68,40 +75,77 @@ export default function Pay({navigation}) {
           </TouchableOpacity>
         </View>
       </View>
+      <ScrollView></ScrollView>
       <View style={styles.body}>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <Ionicons name="game-controller" size={40} color={'#EC7063'} />
           <Text>Thẻ game</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <FontAwesome name="mobile" size={40} color={'orange'} />
           <Text>Thẻ điện thoại</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <Fontisto name="film" size={40} color={'black'} />
           <Text>Cinema</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <FontAwesome name="plane" size={40} color={'#45B39D'} />
           <Text>Vé máy bay</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <FontAwesome5 name="money-bill" size={40} color={'#F7DC6F'} />
           <Text>Hoá đơn</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <FontAwesome name="coffee" size={40} color={'#7B241C'} />
           <Text>Cafe</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <Ionicons name="fast-food" size={40} color={'#AF7AC5'} />
           <Text>Đồ ăn</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <FontAwesome name="balance-scale" size={40} color={'#839192'} />
           <Text>Tỉ giá</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchOpacityBody}>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            Alert.alert('Chức năng đang phát triển');
+          }}>
           <Feather name="shopping-cart" size={40} color={'#27AE60'} />
           <Text>Dịch vụ khác</Text>
         </TouchableOpacity>

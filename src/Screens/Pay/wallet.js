@@ -5,9 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from 'react-native';
 import {Divider} from 'react-native-paper';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {useSelector} from 'react-redux';
+
 const windowWidth = Dimensions.get('window').width;
 const ItemMenu = props => {
   return (
@@ -20,20 +22,20 @@ const ItemMenu = props => {
   );
 };
 const Wallet = () => {
+  const userWallet = useSelector(state => state.auth.user);
+  const avatar = userWallet.avatar;
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.touchOpacityHeader}>
-          <View style={styles.viewAvata}>
-            <Text>Avatar</Text>
-            {/* <Image
-              style={styles.avata}
-              source={require('./assets/naruto.png')}
-            /> */}
-          </View>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri: userWallet.avatar,
+            }}
+          />
           <View style={styles.viewInfo}>
-            <Text>Họ Và Tên</Text>
-            <Text>0966666666</Text>
+            <Text style={styles.textName}>{userWallet.name}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -48,7 +50,7 @@ const Wallet = () => {
 };
 const styles = StyleSheet.create({
   container: {flex: 1},
-  header: {flex: 2, backgroundColor: '#5499C7'},
+  header: {flex: 2, backgroundColor: '#4169e1'},
   touchOpacityHeader: {flex: 1, flexDirection: 'row', alignItems: 'center'},
   viewAvata: {
     width: windowWidth / 5,
@@ -56,17 +58,27 @@ const styles = StyleSheet.create({
     margin: '1%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#AEB6BF',
     borderRadius: windowWidth / 10,
   },
   viewInfo: {
     paddingLeft: '2%',
     flex: 1,
   },
-  avatar: {},
+  avatar: {
+    width: 50,
+    height: 50,
+    margin: '1%',
+    borderRadius: 25,
+    flex: 1,
+  },
   body: {flex: 11},
   viewTouchopacityBody: {
     height: '8%',
+  },
+  textName: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: 'white',
   },
   touchOpacityBody: {flex: 1, justifyContent: 'center', padding: '2%'},
 });
