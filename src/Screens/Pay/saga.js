@@ -1,17 +1,24 @@
 import {takeLatest, call} from 'redux-saga/effects';
-import {RECHARGE_MONEY} from './constaints';
-import {rechargeMoney} from './service';
+import {RECHARGE_MONEY, WITHDRAW_MONEY} from './constaints';
+import {rechargeMoney, withdrawMoney} from './service';
 
 function* rechargeMoneySaga({payload}) {
   try {
-    console.log('sdasd');
     const res = yield call(rechargeMoney, payload);
   } catch (e) {
     console.log(e);
   }
 }
-
-function* watchPostSaga() {
-  yield takeLatest(RECHARGE_MONEY, rechargeMoneySaga);
+function* withdrawMoneySaga({payload}) {
+  try {
+    const res = yield call(withdrawMoney, payload);
+  } catch (e) {
+    console.log(e);
+  }
 }
-export default watchPostSaga;
+
+function* paySaga() {
+  yield takeLatest(RECHARGE_MONEY, rechargeMoneySaga);
+  yield takeLatest(WITHDRAW_MONEY, withdrawMoneySaga);
+}
+export default paySaga;

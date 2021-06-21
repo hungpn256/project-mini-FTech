@@ -9,10 +9,11 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {RECHARGE_MONEY} from '../constaints';
+import {Alert} from 'react-native';
 const Recharge = () => {
   const userMoney = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
-  const [money, setMoney] = useState(0);
+  const [money, setMoney] = useState('');
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -21,7 +22,7 @@ const Recharge = () => {
           placeholder="Nhập số tiền cần nạp"
           keyboardType="numeric"
           style={styles.input}
-          value={'' + money}
+          value={Number(money)}
           onChangeText={text => {
             setMoney(parseInt(text));
           }}
@@ -29,7 +30,12 @@ const Recharge = () => {
         <View style={styles.viewTouchableOpacity}>
           <TouchableOpacity
             onPress={() => {
-              dispatch({type: RECHARGE_MONEY, payload: money});
+              if (isNaN(money) === true || money < 0) {
+                Alert.alert('Bạn nhập không đúng');
+              } else {
+                dispatch({type: RECHARGE_MONEY, payload: money});
+              }
+              // dispatch({type: WITHDRAW_MONEY, payload: money});
             }}>
             <Text style={styles.text}>Xác nhận</Text>
           </TouchableOpacity>
