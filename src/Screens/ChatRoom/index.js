@@ -100,7 +100,6 @@ export default function ChatRoom({navigation}) {
                     key={index}
                     activeOpacity={0.7}
                     onPress={() => {
-                      dispatch({type: MARK_READ, payload: {roomId: i.id}});
                       navigation.navigate('Messenger', {
                         roomId: i.id,
                         name: userOther.name,

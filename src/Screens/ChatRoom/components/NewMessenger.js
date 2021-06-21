@@ -1,7 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
-  Dimensions,
   FlatList,
   Modal,
   StyleSheet,
@@ -15,10 +14,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
 import {avatarDefault} from '../../../index_Constant';
-import {GET_USER_BY_NAME, MARK_READ} from '../constants';
+import {GET_USER_BY_NAME} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
-const {width: windowWidth, height: windowHeight} = Dimensions.get('window');
 
 const NewMessenger = () => {
   const navigation = useNavigation();
@@ -98,7 +96,6 @@ const NewMessenger = () => {
                         ]);
                         room.push(res.id);
                       }
-                      dispatch({type: MARK_READ, payload: {roomId: room[0]}});
                       navigation.navigate('Messenger', {
                         roomId: room[0],
                       });
@@ -131,7 +128,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    marginHorizontal: 8,
     marginTop: 50,
     backgroundColor: '#fff',
     height: '100%',
