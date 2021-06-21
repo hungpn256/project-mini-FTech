@@ -5,9 +5,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loading from './src/Components/Loading';
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';
-import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
+import {LOGOUT, USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
-
+import ModalCreatePost from './src/Screens/ModalCreatePost';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
@@ -39,6 +39,7 @@ export default function AppNavigator() {
         dispatch({type: USER_DEL});
       }
     };
+    // dispatch({type: LOGOUT});
     check();
   }, []);
   return load ? (
@@ -49,6 +50,7 @@ export default function AppNavigator() {
     <>
       {userData ? (
         <>
+          <ModalCreatePost />
           <MainStack />
           <ModalComponent />
         </>

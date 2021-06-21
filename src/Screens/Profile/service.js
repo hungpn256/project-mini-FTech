@@ -39,3 +39,59 @@ export const getPostMe = payload =>
         reject(e);
       });
   });
+export const addFriend = async payload => {
+  console.log(payload, 'payload');
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      pending: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+    });
+};
+export const removeFriend = async payload => {
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      pending: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
+      accepted: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
+    });
+  firestore()
+    .collection('friend')
+    .doc(payload.friendId)
+    .update({
+      accepted: firestore.FieldValue.arrayRemove(payload.id),
+      pending: firestore.FieldValue.arrayRemove(payload.id),
+    });
+};
+export const acceptFriend = async payload => {
+  firestore()
+    .collection('friend')
+    .doc(payload.friendIdPartner)
+    .update({
+      accepted: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+    });
+  firestore()
+    .collection('friend')
+    .doc(payload.friendId)
+    .update({
+      accepted: firestore.FieldValue.arrayUnion(payload.id),
+      pending: firestore.FieldValue.arrayRemove(payload.id),
+    });
+};
+
+export const uploadPost = async ({
+  text,
+  image,
+  id = auth().currentUser.uid,
+}) => {
+  const likes = '';
+  const data = await firestore().collection('post').add({
+    createAt: firestore.FieldValue.serverTimestamp(),
+    content: text,
+    imageUrl: image,
+    like: likes,
+    userId: id,
+  });
+  return data.id;
+};

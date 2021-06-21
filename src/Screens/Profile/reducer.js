@@ -12,6 +12,8 @@ const initialState = {
   posts: [],
   postsProfile: [],
   role: 3,
+  editing: false,
+  visibleModal: false,
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
