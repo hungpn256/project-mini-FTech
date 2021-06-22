@@ -5,7 +5,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useSelector, useDispatch} from 'react-redux';
-
+import ThreeDot from 'react-native-vector-icons/Entypo';
 import InputEncloseAvatar from './InputEncloseAvatar';
 import avatarImg from '../../assets/Img/avatar.png';
 import {Text} from 'react-native';
@@ -18,6 +18,7 @@ import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
+import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -31,8 +32,6 @@ const LeftContent = (img, navi) => (
     )}
   </>
 );
-
-const RighContent = () => {};
 
 const Article = ({text, image, time, uid, postid}) => {
   const dispatch = useDispatch();
@@ -159,6 +158,10 @@ const Article = ({text, image, time, uid, postid}) => {
     }
   };
 
+  const handleConfig = () => {
+    dispatch({type: OPEN_POST_CONFIG, payload: {postId: postid}});
+  };
+
   return user ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
@@ -166,6 +169,20 @@ const Article = ({text, image, time, uid, postid}) => {
         title={user.name}
         subtitle={time}
         left={() => LeftContent(user.avatar, handleNavi)}
+        right={() => (
+          <View style={{paddingRight: 10}}>
+            {auth().currentUser.uid === uid ? (
+              <ThreeDot
+                size={19}
+                name="dots-three-horizontal"
+                color="#696969"
+                onPress={handleConfig}
+              />
+            ) : (
+              <Text></Text>
+            )}
+          </View>
+        )}
       />
       <Pressable
         onPress={() =>
@@ -384,4 +401,4 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
 });
-export default Article;
+export default React.memo(Article);

@@ -8,6 +8,7 @@ import MainStack from './src/Navigator/MainStack';
 import {LOGOUT, USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
+import ModalPostConfig from './src/Screens/ModalPostConfig';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export default function AppNavigator() {
       {userData ? (
         <>
           <ModalCreatePost />
+          <ModalPostConfig />
           <MainStack />
           <ModalComponent />
         </>
