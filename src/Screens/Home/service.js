@@ -87,6 +87,19 @@ export const getAll = async () => {
   }
 };
 
+export const deletePost = async ({postId}) => {
+  await firestore().collection('post').doc(postId).delete();
+  const cmt = await firestore()
+    .collection('comment')
+    .where('postId', '==', postId)
+    .get();
+  if (cmt.size !== 0) {
+    cmt.forEach(documentSnapshot => {
+      documentSnapshot.ref.delete();
+    });
+  }
+};
+
 export const uploadPost = async ({text, image}) => {
   const img = await uploadImg(image);
   const likes = [];
