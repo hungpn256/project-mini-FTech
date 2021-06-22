@@ -1,0 +1,4 @@
+export const OPEN_POST_CONFIG = 'OPEN_POST_CONFIG';
+export const CLOSE_POST_CONFIG = 'CLOSE_POST_CONFIG';
+export const OPEN_CONFIRM = 'OPEN_CONFIRM';
+export const CLOSE_CONFIRM = 'CLOSE_CONFIRM';

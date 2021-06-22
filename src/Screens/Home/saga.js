@@ -18,9 +18,18 @@ import {
   CREATE_CMT,
   GET_CMT,
   GET_ALL_CMT,
+  DELETE_POST,
+  CONFIRM_DELETE_POST,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
-import {uploadPost, getAll, getMore, createCmt, getAllCmt} from './service';
+import {
+  uploadPost,
+  getAll,
+  getMore,
+  createCmt,
+  getAllCmt,
+  deletePost,
+} from './service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -62,6 +71,16 @@ function* handleAllCmt() {
     console.log(error);
   }
 }
+function* handleDeletePost({payload}) {
+  try {
+    yield call(deletePost, payload);
+    yield put({type: CONFIRM_DELETE_POST});
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put({type: POST_LOADING, payload: {loading: false}});
+  }
+}
 // function* handleGetMore() {
 //   try {
 //     const res = yield call(getMore);
@@ -74,5 +93,6 @@ function* watchPostSaga() {
   // yield takeLatest(GET_MORE, handleGetMore);
   yield takeLatest(CMT, handleCmt);
   yield takeLatest(GET_CMT, handleAllCmt);
+  yield takeLatest(DELETE_POST, handleDeletePost);
 }
 export default watchPostSaga;

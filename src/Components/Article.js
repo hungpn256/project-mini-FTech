@@ -1,23 +1,27 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {StyleSheet, TextInput, Image, Dimensions} from 'react-native';
-import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useSelector, useDispatch} from 'react-redux';
-
-import InputEncloseAvatar from './InputEncloseAvatar';
-import avatarImg from '../../assets/Img/avatar.png';
-import {Text} from 'react-native';
-import {View} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Pressable} from 'react-native';
-import auth, {firebase} from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
+import {useNavigation} from '@react-navigation/native';
 import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Avatar, Card, Paragraph} from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import ThreeDot from 'react-native-vector-icons/Entypo';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {useDispatch} from 'react-redux';
+import avatarImg from '../../assets/Img/avatar.png';
+import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
+import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -31,8 +35,6 @@ const LeftContent = (img, navi) => (
     )}
   </>
 );
-
-const RighContent = () => {};
 
 const Article = ({text, image, time, uid, postid}) => {
   const dispatch = useDispatch();
@@ -159,6 +161,10 @@ const Article = ({text, image, time, uid, postid}) => {
     }
   };
 
+  const handleConfig = () => {
+    dispatch({type: OPEN_POST_CONFIG, payload: {postId: postid}});
+  };
+
   return user ? (
     <Card mode="outlined" style={styles.container}>
       <Card.Title
@@ -166,6 +172,20 @@ const Article = ({text, image, time, uid, postid}) => {
         title={user.name}
         subtitle={time}
         left={() => LeftContent(user.avatar, handleNavi)}
+        right={() => (
+          <View style={{paddingRight: 10}}>
+            {auth().currentUser.uid === uid ? (
+              <ThreeDot
+                size={19}
+                name="dots-three-horizontal"
+                color="#696969"
+                onPress={handleConfig}
+              />
+            ) : (
+              <Text></Text>
+            )}
+          </View>
+        )}
       />
       <Pressable
         onPress={() =>
@@ -384,4 +404,4 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
 });
-export default Article;
+export default React.memo(Article);
