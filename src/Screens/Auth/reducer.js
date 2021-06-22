@@ -5,6 +5,7 @@ const initialState = {
   user: null,
 };
 import {CREATE_CONVERSATION_SUCCESS} from '../ChatRoom/constants';
+import {RECHARGE_MONEY_SUCCESS} from '../Pay/constaints';
 import {
   AUTH_CHANGE_STATE,
   LOGIN_SUCCESS,
@@ -41,6 +42,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.status,
+      };
+    case RECHARGE_MONEY_SUCCESS:
+      return {
+        ...state,
+        user: {...state.user, money: state.user.money + action.payload},
       };
     default:
       return state;
