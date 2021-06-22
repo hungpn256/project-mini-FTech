@@ -1,13 +1,14 @@
 import React from 'react';
 import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
   Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {Divider} from 'react-native-paper';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {Avatar, Divider} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import {avatarDefault} from '../../index_Constant';
 const windowWidth = Dimensions.get('window').width;
 const ItemMenu = props => {
   return (
@@ -20,20 +21,22 @@ const ItemMenu = props => {
   );
 };
 const Wallet = () => {
+  const user = useSelector(state => state.auth.user);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.touchOpacityHeader}>
           <View style={styles.viewAvata}>
-            <Text>Avatar</Text>
-            {/* <Image
+            <Avatar.Image
               style={styles.avata}
-              source={require('./assets/naruto.png')}
-            /> */}
+              source={{uri: user.avatar || avatarDefault}}
+              size={80}
+            />
           </View>
           <View style={styles.viewInfo}>
-            <Text>Họ Và Tên</Text>
-            <Text>0966666666</Text>
+            <Text style={{fontSize: 18, fontWeight: '700', paddingBottom: 10}}>
+              {user.name}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -29,8 +36,16 @@ export default function Pay({navigation}) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header1}>
-          <Text style={styles.textHeader1}>Số dư : </Text>
-          <Text style={styles.textHeader1}>{userMoney.money} đ</Text>
+          <Pressable
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => {
+              console.log('sda');
+              navigation.navigate('#');
+            }}>
+            <Ionicons name="chevron-back" color="#fff" size={40} />
+            <Text style={styles.textHeader1}>Home</Text>
+          </Pressable>
+          <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>
         </View>
         <Divider />
         <View style={styles.header2}>

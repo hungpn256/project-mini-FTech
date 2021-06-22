@@ -89,21 +89,14 @@ export const sendMes = payload =>
 export const markUnread = async payload => {
   console.log(payload, 'mark unread');
   const doc = await firestore().collection('room-chat').doc(payload.roomId);
-  const res = await doc.get();
-  console.log(res.data().unread.indexOf(payload.uid));
-  if (res.data().unread.indexOf(payload.uid) === -1) {
-    doc.update({
-      unread: firestore.FieldValue.arrayUnion(payload.uid),
-    });
-  }
+  doc.update({
+    unread: firestore.FieldValue.arrayUnion(payload.uid),
+  });
 };
 
 export const markRead = async payload => {
   const doc = await firestore().collection('room-chat').doc(payload.roomId);
-  const res = await doc.get();
-  if (res.data().unread.indexOf(payload.uid) !== -1) {
-    doc.update({
-      unread: firestore.FieldValue.arrayRemove(payload.uid),
-    });
-  }
+  doc.update({
+    unread: firestore.FieldValue.arrayRemove(payload.uid),
+  });
 };
