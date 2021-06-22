@@ -13,4 +13,7 @@ export const GET_CMT = 'GET_CMT';
 export const LAST_CMT = 'LAST_CMT';
 export const GET_LAST_CMT = 'GET_CMT';
 
+export const DELETE_POST = 'DELETE_POST';
+export const CONFIRM_DELETE_POST = 'CONFIRM_DELETE_POST';
+
 export const POST_LOADING = 'POST_LOADING';
