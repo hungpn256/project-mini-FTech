@@ -40,8 +40,7 @@ export const getPostMe = payload =>
       });
   });
 export const addFriend = async payload => {
-  console.log(payload, 'payload');
-  firestore()
+  return await firestore()
     .collection('friend')
     .doc(payload.friendIdPartner)
     .update({
@@ -49,35 +48,38 @@ export const addFriend = async payload => {
     });
 };
 export const removeFriend = async payload => {
-  firestore()
+  await firestore()
     .collection('friend')
     .doc(payload.friendIdPartner)
     .update({
       pending: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
       accepted: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
     });
-  firestore()
+  await firestore()
     .collection('friend')
     .doc(payload.friendId)
     .update({
       accepted: firestore.FieldValue.arrayRemove(payload.id),
       pending: firestore.FieldValue.arrayRemove(payload.id),
     });
+  return true;
 };
 export const acceptFriend = async payload => {
-  firestore()
+  await firestore()
     .collection('friend')
     .doc(payload.friendIdPartner)
     .update({
       accepted: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
+      pending: firestore.FieldValue.arrayRemove(auth().currentUser.uid),
     });
-  firestore()
+  await firestore()
     .collection('friend')
     .doc(payload.friendId)
     .update({
       accepted: firestore.FieldValue.arrayUnion(payload.id),
       pending: firestore.FieldValue.arrayRemove(payload.id),
     });
+  return true;
 };
 
 export const uploadPost = async ({

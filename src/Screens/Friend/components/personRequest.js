@@ -1,13 +1,20 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 import {avatarDefault} from '../../../index_Constant';
 import styles from '../styles';
-const PersonRequest = ({item, accept, deleteFriend}) => {
-  const [accepted, setAccepted] = useState(0);
+const PersonRequest = ({item, accept, deleteFriend, isFriend}) => {
+  const [accepted, setAccepted] = useState(isFriend || 0);
+  const navigation = useNavigation();
   return (
     <View style={styles.wrapperUser}>
-      <Avatar.Image source={{uri: item.avatar || avatarDefault}} size={80} />
+      <Pressable
+        onPress={() => {
+          navigation.navigate('Profile-o', {id: item.id, name: item.name});
+        }}>
+        <Avatar.Image source={{uri: item.avatar || avatarDefault}} size={80} />
+      </Pressable>
       <View>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.action}>
@@ -30,7 +37,7 @@ const PersonRequest = ({item, accept, deleteFriend}) => {
                 color="#1454FF"
                 onPress={() => {
                   accept(item);
-                  setAccepted(true);
+                  setAccepted(1);
                 }}>
                 Comfirm
               </Button>

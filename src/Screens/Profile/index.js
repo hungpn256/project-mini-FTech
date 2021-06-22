@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   RefreshControl,
@@ -48,7 +49,14 @@ const Profile = ({navigation, route}) => {
     onRefresh();
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
-  const {profile: other, loading, posts: postsMe, postsProfile, role} = profile;
+  const {
+    profile: other,
+    loading,
+    posts: postsMe,
+    postsProfile,
+    role,
+    loadingPost,
+  } = profile;
   useEffect(() => {
     setRoleFriend(role);
   }, [role]);
@@ -70,7 +78,6 @@ const Profile = ({navigation, route}) => {
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
-        <Loading loading={loading} />
         <View style={styles.body}>
           <View style={styles.image}>
             <View style={styles.wrapperCover}>
@@ -272,7 +279,13 @@ const Profile = ({navigation, route}) => {
             <View style={styles.viewContent}>
               <View style={{marginVertical: 8}}>
                 {!id && <PostArticle />}
-                {posts &&
+                {loadingPost ? (
+                  <View>
+                    <ActivityIndicator size="large" />
+                    <Text>sda</Text>
+                  </View>
+                ) : (
+                  posts &&
                   posts.map(item => {
                     return (
                       <Article
@@ -284,7 +297,8 @@ const Profile = ({navigation, route}) => {
                         postid={item.id}
                       />
                     );
-                  })}
+                  })
+                )}
               </View>
             </View>
           ) : tab === 2 ? (
