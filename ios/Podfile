@@ -16,6 +16,8 @@ target 'projectmini' do
 
   pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'projectminiTests' do
     inherit! :complete
     # Pods for testing

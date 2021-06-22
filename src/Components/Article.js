@@ -155,7 +155,7 @@ const Article = ({text, image, time, uid, postid}) => {
     if (uid === currentUser) {
       navigate.navigate('Profile', {id: uid});
     } else {
-      navigate.navigate('Profile-o', {id: uid});
+      navigate.navigate('Profile-o', {id: uid, name: user.name});
     }
   };
 
