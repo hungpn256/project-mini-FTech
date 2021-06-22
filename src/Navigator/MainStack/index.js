@@ -28,6 +28,7 @@ import GameNavigator from './game';
 import PostDetail from '@Screens/PostDetail';
 import Friend from '../../Screens/Friend';
 import Notification from '../../Screens/Notification';
+import {GET_FRIEND} from '../../Screens/Friend/constants';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -195,6 +196,7 @@ export default function AppNavigator() {
       .onSnapshot(() => {
         dispatch({type: USER_SET});
       });
+    dispatch({type: GET_FRIEND});
   }, []);
 
   useEffect(() => {
@@ -246,7 +248,11 @@ export default function AppNavigator() {
             headerRight: () => <NewMessenger />,
           }}
         />
-        <Stack.Screen name="Profile-o" component={Profile} />
+        <Stack.Screen
+          options={({route}) => ({title: route.params.name})}
+          name="Profile-o"
+          component={Profile}
+        />
         <Stack.Screen
           options={{
             headerShown: false,

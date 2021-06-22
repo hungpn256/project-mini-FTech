@@ -7,6 +7,7 @@ import search from './Screens/SearchHome/reducer';
 import modal from './Screens/Modal/reducer';
 import friend from './Screens/Friend/reducer';
 import modalCreatePost from './Screens/ModalCreatePost/reducer';
+import wallet from './Screens/Pay/reducer';
 import modalPostConfig from './Screens/ModalPostConfig/reducer';
 const rootReducer = combineReducers({
   home,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   modal,
   friend,
   modalCreatePost,
+  wallet,
   modalPostConfig,
 });
 

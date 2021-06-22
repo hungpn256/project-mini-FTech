@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../Helper/function';
 import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
-import {MARK_READ} from './constants';
+import SwipeCustom from './components/SwipeCustom';
 import {createConversation} from './service';
 import styles from './styles';
 export default function ChatRoom({navigation}) {
@@ -23,8 +23,8 @@ export default function ChatRoom({navigation}) {
   const userId = auth().currentUser.uid;
   const user = useSelector(state => state.auth.user);
   const chat = useSelector(state => state.chat);
-  const dispatch = useDispatch();
   const {conversation, userSearch} = chat;
+  console.log('re-render');
   useEffect(() => {
     const x = async () => {
       let conversationOrdered = [];
@@ -39,14 +39,15 @@ export default function ChatRoom({navigation}) {
       setRoomList(conversationOrdered);
     };
     x();
-  }, [conversation]);
+  }, [Object.keys(conversation).length]);
 
   return (
     <GestureRecognizer
       onSwipeRight={() => {
         navigation.goBack();
-      }}>
-      <ScrollView style={{backgroundColor: '#fff'}}>
+      }}
+      style={{backgroundColor: '#fff', flex: 1}}>
+      <ScrollView>
         <SearchBar />
         <View style={styles.friendWrapper}>
           <ScrollView
@@ -96,51 +97,52 @@ export default function ChatRoom({navigation}) {
               const {messages} = i;
               if (messages.length)
                 return (
-                  <TouchableOpacity
-                    key={index}
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      navigation.navigate('Messenger', {
-                        roomId: i.id,
-                        name: userOther.name,
-                      });
-                    }}>
-                    <Card style={styles.card}>
-                      <List.Item
-                        style={styles.item}
-                        title={
-                          <View style={styles.wrapperTitle}>
-                            <Text style={styles.name}>{userOther.name}</Text>
-                            <Text
-                              style={[
-                                styles.time,
-                                unread && styles.textUnread,
-                              ]}>
-                              {moment(
-                                i.updatedAt?.toDate() ?? new Date(),
-                              ).fromNow()}
-                            </Text>
-                          </View>
-                        }
-                        description={
-                          messages[messages.length - 1].text.length === 0 &&
-                          messages[messages.length - 1].image
-                            ? 'bạn đã gửi một ảnh'
-                            : messages[messages.length - 1].text
-                        }
-                        descriptionStyle={unread && styles.textUnread}
-                        titleStyle={styles.titleStyle}
-                        left={() => (
-                          <Avatar.Image
-                            source={{
-                              uri: userOther.avatar || avatarDefault,
-                            }}
-                            size={55}
-                          />
-                        )}
-                      />
-                    </Card>
-                  </TouchableOpacity>
+                  <SwipeCustom key={index} item={i}>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        navigation.navigate('Messenger', {
+                          roomId: i.id,
+                          name: userOther.name,
+                        });
+                      }}>
+                      <Card style={styles.card}>
+                        <List.Item
+                          style={styles.item}
+                          title={
+                            <View style={styles.wrapperTitle}>
+                              <Text style={styles.name}>{userOther.name}</Text>
+                              <Text
+                                style={[
+                                  styles.time,
+                                  unread && styles.textUnread,
+                                ]}>
+                                {moment(
+                                  i.updatedAt?.toDate() ?? new Date(),
+                                ).fromNow()}
+                              </Text>
+                            </View>
+                          }
+                          description={
+                            messages[messages.length - 1].text.length === 0 &&
+                            messages[messages.length - 1].image
+                              ? 'đã gửi một ảnh'
+                              : messages[messages.length - 1].text
+                          }
+                          descriptionStyle={unread && styles.textUnread}
+                          titleStyle={styles.titleStyle}
+                          left={() => (
+                            <Avatar.Image
+                              source={{
+                                uri: userOther.avatar || avatarDefault,
+                              }}
+                              size={55}
+                            />
+                          )}
+                        />
+                      </Card>
+                    </TouchableOpacity>
+                  </SwipeCustom>
                 );
             })}
         </View>
