@@ -22,7 +22,6 @@ import {
   CONFIRM_DELETE_POST,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
-imp;
 import {
   uploadPost,
   getAll,
