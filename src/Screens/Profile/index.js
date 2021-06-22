@@ -49,6 +49,7 @@ const Profile = ({navigation, route}) => {
     onRefresh();
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
+  const friend = useSelector(state => state.friend.accepted);
   const {
     profile: other,
     loading,
@@ -213,8 +214,8 @@ const Profile = ({navigation, route}) => {
               <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
             </View>
             <View style={styles.inforItem}>
-              <Text style={styles.inforItemTitle}>Followers</Text>
-              <Text style={styles.inforItemNumber}>124</Text>
+              <Text style={styles.inforItemTitle}>Friends</Text>
+              <Text style={styles.inforItemNumber}>{friend.length}</Text>
             </View>
             <View style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Following</Text>

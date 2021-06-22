@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
   },
   wrapperCover: {
     width: '100%',
-    height: 250,
+    height: 240,
   },
   cover: {
     width: '100%',
-    height: 250,
+    height: 240,
   },
   wrapperAvatar: {
     position: 'absolute',

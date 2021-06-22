@@ -68,7 +68,8 @@ function* sendMesSaga({payload}) {
       state => state.chat.conversation[payload.roomId].users,
     );
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
-    call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    console.log('send done');
   } catch (e) {
     console.log('err send mes', e);
   }
