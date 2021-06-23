@@ -32,6 +32,7 @@ import {
   UPDATE_ME,
 } from './constants.js';
 import styles from './styles';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 const Profile = ({navigation, route}) => {
   //1 chưa gửi lời mời, 2 chưa được chấp thuận, 3 chờ mình chấp thuận, 4 đã chấp thuận
   const [roleFriend, setRoleFriend] = useState(1);
@@ -71,7 +72,25 @@ const Profile = ({navigation, route}) => {
     dispatch({type: UPDATE_ME, payload: {background: image}});
   };
   if (!user || loading) {
-    return <Loading loading={loading} />;
+    return (
+      <SkeletonPlaceholder>
+        <View style={styles.image}>
+          <View style={styles.wrapperCover} />
+        </View>
+        <View style={[styles.wrapperAvatar, {height: 180, width: 180}]} />
+        <View
+          style={{width: 200, height: 50, marginTop: 20, alignSelf: 'center'}}
+        />
+        <View
+          style={{
+            width: '100%',
+            height: 50,
+            marginTop: 20,
+            marginHorizontal: 8,
+          }}
+        />
+      </SkeletonPlaceholder>
+    );
   }
   return (
     <>
