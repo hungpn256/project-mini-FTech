@@ -47,7 +47,7 @@ function* updateMeSaga({payload}) {
   try {
     yield put({
       type: PROFILE_CHANGE_STATE,
-      payload: {loading: true, updateSuccess: false},
+      payload: {editing: true, updateSuccess: false},
     });
     if (payload.avatar) {
       const url = yield call(uploadImg, payload.avatar);
@@ -70,7 +70,7 @@ function* updateMeSaga({payload}) {
   } finally {
     yield put({
       type: PROFILE_CHANGE_STATE,
-      payload: {loading: false},
+      payload: {editing: false},
     });
   }
 }
