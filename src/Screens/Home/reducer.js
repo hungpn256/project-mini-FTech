@@ -5,6 +5,7 @@ import {
   CREATE_CMT,
   GET_ALL_CMT,
   CONFIRM_DELETE_POST,
+  CONFIRM_UPDATE_POST,
 } from './constants';
 const initialState = {
   post: [],
@@ -27,6 +28,8 @@ const reducer = (state = initialState, action) => {
       return {...state, comments: [...state.comments, action.payload.newCmt]};
     case CONFIRM_DELETE_POST:
       return {...state, post: action.payload.newData};
+    case CONFIRM_UPDATE_POST:
+      return {...state};
     default:
       return state;
   }
