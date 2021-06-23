@@ -9,6 +9,7 @@ import friend from './Screens/Friend/reducer';
 import modalCreatePost from './Screens/ModalCreatePost/reducer';
 import wallet from './Screens/Pay/reducer';
 import modalPostConfig from './Screens/ModalPostConfig/reducer';
+import modalEditPost from './Screens/ModalEditPost/reducer';
 const rootReducer = combineReducers({
   home,
   auth,

@@ -79,6 +79,8 @@ const Article = ({text, image, time, uid, postid}) => {
         post();
       });
     return likeupdate;
+
+    // post();
   }, []);
 
   useEffect(() => {
@@ -162,7 +164,10 @@ const Article = ({text, image, time, uid, postid}) => {
   };
 
   const handleConfig = () => {
-    dispatch({type: OPEN_POST_CONFIG, payload: {postId: postid}});
+    dispatch({
+      type: OPEN_POST_CONFIG,
+      payload: {postId: postid, content: text, image: image},
+    });
   };
 
   return user ? (
