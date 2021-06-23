@@ -9,7 +9,7 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {CLOSE_MODAL_POST, CLOSE_IMG_CMT} from './contants';
+import {CLOSE_POST_EDIT} from './constants';
 import Icon from 'react-native-vector-icons/AntDesign';
 import CameraGroup from '../../Components/CameraGroup';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
@@ -20,18 +20,12 @@ import FButton from '../../Components/TouchOpacity/index';
 import Loading from '../../Components/Loading';
 import {CREATE_POST} from '../Home/constants';
 export default function index() {
-  const modal = useSelector(state => state.modalCreatePost.status);
-  const imageCmt = useSelector(state => state.modalCreatePost.image);
+  const modal = useSelector(state => state.modalEditPost.status);
   const userData = useSelector(state => state.auth.user);
   const loading = useSelector(state => state.home.postLoad);
-  const checkUpdate = useSelector(state => state.modalCreatePost.update);
-  const updateText = useSelector(state => state.modalPostConfig.content);
-  const updateImg = useSelector(state => state.modalPostConfig.image);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const [image, setImage] = useState('');
-  const [editText, setEditText] = useState('');
-  const [editImg, setEditImg] = useState('');
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
@@ -40,30 +34,17 @@ export default function index() {
       }
     });
   };
-  const handlePost = () => {
-    if (imageCmt !== null) {
-      let image = imageCmt;
-      dispatch({
-        type: CREATE_POST,
-        payload: {text, image},
-      });
-    } else {
-      dispatch({
-        type: CREATE_POST,
-        payload: {text, image},
-      });
-      setImage(null);
-    }
+  const handleEditPost = () => {
+    dispatch({
+      type: CREATE_POST,
+      payload: {text, image},
+    });
+    setImage(null);
     setText(null);
   };
 
   const handleClose = () => {
     setImage(null);
-  };
-
-  const handleCloseImgCmt = () => {
-    console.log(1);
-    dispatch({type: CLOSE_IMG_CMT});
   };
 
   const cam = async () => {
@@ -97,13 +78,11 @@ export default function index() {
     <Modal animationType="fade" visible={modal}>
       <Loading loading={loading} />
       <View style={styles.header}>
-        <Text style={styles.textHeader}>
-          {checkUpdate ? 'Edit post' : ' Create Post'}
-        </Text>
+        <Text style={styles.textHeader}>Edit Post</Text>
         <Icon
           name="close"
           size={22}
-          onPress={() => dispatch({type: CLOSE_MODAL_POST})}
+          onPress={() => dispatch({type: CLOSE_POST_EDIT})}
           style={styles.closeModal}
         />
       </View>
@@ -132,21 +111,6 @@ export default function index() {
             placeholder="What's on your mind ?"
           />
           <View style={styles.imgWrapper}>
-            {updateImg ? (
-              <>
-                <View style={styles.closeBtn}>
-                  <Icon
-                    onPress={handleClose}
-                    name="close"
-                    size={18}
-                    color="white"
-                  />
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image style={styles.img} source={image} />
-                </ScrollView>
-              </>
-            ) : null}
             {image ? (
               <>
                 <View style={styles.closeBtn}>
@@ -162,26 +126,11 @@ export default function index() {
                 </ScrollView>
               </>
             ) : null}
-            {imageCmt ? (
-              <>
-                <View style={styles.closeBtn}>
-                  <Icon
-                    onPress={handleCloseImgCmt}
-                    name="close"
-                    size={18}
-                    color="white"
-                  />
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image style={styles.img} source={imageCmt} />
-                </ScrollView>
-              </>
-            ) : null}
           </View>
         </View>
         <CameraGroup cam={cam} gallery={gallery} />
         <View>
-          <FButton handlePress={handlePost} Name="Post" />
+          <FButton handlePress={handleEditPost} Name="Post" />
         </View>
       </View>
     </Modal>
