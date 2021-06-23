@@ -87,17 +87,44 @@ export const getAll = async () => {
   }
 };
 
+const getAllAfterDel = async () => {
+  const data = [];
+  try {
+    const post = await firestore()
+      .collection('post')
+      .orderBy('createAt', 'desc')
+      .get();
+    post.forEach(documentSnapshot => {
+      data.push({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data(),
+      });
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePost = async ({postId, content}) => {
+  await firestore().collection('post').doc(postId).update({
+    content: content,
+  });
+};
+
 export const deletePost = async ({postId}) => {
   await firestore().collection('post').doc(postId).delete();
   const cmt = await firestore()
-    .collection('comment')
+    .collection('comments')
     .where('postId', '==', postId)
     .get();
-  if (cmt.size !== 0) {
+  if (cmt.size > 0) {
     cmt.forEach(documentSnapshot => {
       documentSnapshot.ref.delete();
     });
   }
+  const data = getAllAfterDel();
+  return data;
 };
 
 export const uploadPost = async ({text, image}) => {
