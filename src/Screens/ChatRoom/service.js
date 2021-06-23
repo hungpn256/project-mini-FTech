@@ -76,7 +76,10 @@ export const sendMes = payload =>
       .collection('room-chat')
       .doc(payload.roomId)
       .update({
-        messages: firestore.FieldValue.arrayUnion(payload.messages[0]),
+        messages: firestore.FieldValue.arrayUnion({
+          ...payload.messages[0],
+          sent: true,
+        }),
         updatedAt: firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {

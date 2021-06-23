@@ -10,6 +10,7 @@ import {GET_POST} from './constants';
 import auth from '@react-native-firebase/auth';
 import styles from './styles';
 import {Badge} from 'react-native-paper';
+import Nothing from '../../Components/Nothing';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
   const conversation = useSelector(state => state.chat.conversation);
@@ -69,7 +70,7 @@ const Home = ({navigation}) => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         <PostArticle />
-        {postData &&
+        {postData && postData.length > 0 ? (
           postData.map(item => {
             console.log(item);
             return (
@@ -82,7 +83,10 @@ const Home = ({navigation}) => {
                 postid={item.id}
               />
             );
-          })}
+          })
+        ) : (
+          <Nothing />
+        )}
       </ScrollView>
     </>
   );
