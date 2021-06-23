@@ -7,17 +7,17 @@ const styles = StyleSheet.create({
   header: {
     borderRadius: 12,
     flexDirection: 'column',
-    flex: 8,
+    flex: 10,
   },
   header1: {
-    paddingLeft: '7%',
     paddingRight: '7%',
-    flex: 3,
+    flex: 5,
     flexDirection: 'row',
     backgroundColor: '#4169e1',
     alignItems: 'center',
     marginLeft: '1.5%',
     marginRight: '1.5%',
+    justifyContent: 'space-between',
   },
   header2: {
     flexDirection: 'row',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   textHeader1: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 20,
   },
   body: {
     flex: 25,

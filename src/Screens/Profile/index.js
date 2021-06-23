@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
 import Loading from '../../Components/Loading/index.js';
+import Nothing from '../../Components/Nothing.js';
 import {avatarDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
 import About from './components/About.js';
@@ -49,6 +50,7 @@ const Profile = ({navigation, route}) => {
     onRefresh();
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
+  const friend = useSelector(state => state.friend.accepted);
   const {
     profile: other,
     loading,
@@ -213,8 +215,8 @@ const Profile = ({navigation, route}) => {
               <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
             </View>
             <View style={styles.inforItem}>
-              <Text style={styles.inforItemTitle}>Followers</Text>
-              <Text style={styles.inforItemNumber}>124</Text>
+              <Text style={styles.inforItemTitle}>Friends</Text>
+              <Text style={styles.inforItemNumber}>{friend.length}</Text>
             </View>
             <View style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Following</Text>
@@ -284,8 +286,7 @@ const Profile = ({navigation, route}) => {
                     <ActivityIndicator size="large" />
                     <Text>sda</Text>
                   </View>
-                ) : (
-                  posts &&
+                ) : posts && posts.length > 0 ? (
                   posts.map(item => {
                     return (
                       <Article
@@ -298,6 +299,8 @@ const Profile = ({navigation, route}) => {
                       />
                     );
                   })
+                ) : (
+                  <Nothing />
                 )}
               </View>
             </View>
