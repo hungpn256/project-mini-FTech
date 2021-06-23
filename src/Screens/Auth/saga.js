@@ -54,7 +54,7 @@ function* handleGoogle() {
   try {
     const res = yield call(loginGoogle);
     if (res) {
-      yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: true}});
+      yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
     }
     yield delay(200);
   } catch (err) {
