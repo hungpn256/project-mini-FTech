@@ -106,6 +106,12 @@ const getAllAfterDel = async () => {
   }
 };
 
+export const updatePost = async ({postId, content}) => {
+  await firestore().collection('post').doc(postId).update({
+    content: content,
+  });
+};
+
 export const deletePost = async ({postId}) => {
   await firestore().collection('post').doc(postId).delete();
   const cmt = await firestore()
