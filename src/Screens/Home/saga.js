@@ -30,6 +30,7 @@ import {
   getAllCmt,
   deletePost,
 } from './service';
+import {CLOSE_CONFIRM} from '../ModalPostConfig/contants';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -72,13 +73,15 @@ function* handleAllCmt() {
   }
 }
 function* handleDeletePost({payload}) {
+  yield put({type: POST_LOADING, payload: {loading: true}});
   try {
-    yield call(deletePost, payload);
-    yield put({type: CONFIRM_DELETE_POST});
+    const res = yield call(deletePost, payload);
+    yield put({type: CONFIRM_DELETE_POST, payload: {newData: res}});
   } catch (error) {
     console.log(error);
   } finally {
     yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_CONFIRM});
   }
 }
 // function* handleGetMore() {

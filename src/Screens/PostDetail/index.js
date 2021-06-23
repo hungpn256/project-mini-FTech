@@ -66,12 +66,13 @@ export default function index() {
         }
       }
     };
-    const likeupdate = firestore()
-      .collection('post')
-      .onSnapshot(() => {
-        post();
-      });
-    return likeupdate;
+    // const likeupdate = firestore()
+    //   .collection('post')
+    //   .onSnapshot(() => {
+    //     post();
+    //   });
+    // return likeupdate;
+    post();
   }, []);
 
   useEffect(() => {
