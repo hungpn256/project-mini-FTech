@@ -3,6 +3,8 @@ import {
   CLOSE_POST_CONFIG,
   CLOSE_CONFIRM,
   OPEN_CONFIRM,
+  CLOSE_UPDATE_IMG,
+  CLEAR_UPDATE_TEXT,
 } from './contants';
 const initialState = {
   status: false,
@@ -28,6 +30,10 @@ const reducer = (state = initialState, action) => {
       return {...state, confirm: true};
     case CLOSE_CONFIRM:
       return {...state, confirm: false};
+    case CLOSE_UPDATE_IMG:
+      return {...state, image: ''};
+    case CLEAR_UPDATE_TEXT:
+      return {...state, content: ''};
     default:
       return state;
   }

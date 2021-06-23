@@ -18,7 +18,8 @@ import {styles} from './styles';
 import avatarImg from '../../../assets/Img/avatar.png';
 import FButton from '../../Components/TouchOpacity/index';
 import Loading from '../../Components/Loading';
-import {CREATE_POST} from '../Home/constants';
+import {CREATE_POST, UPDATE_POST} from '../Home/constants';
+import {CLOSE_UPDATE_IMG, CLEAR_UPDATE_TEXT} from '../ModalPostConfig/contants';
 export default function index() {
   const modal = useSelector(state => state.modalCreatePost.status);
   const imageCmt = useSelector(state => state.modalCreatePost.image);
@@ -30,8 +31,7 @@ export default function index() {
   const dispatch = useDispatch();
   const [text, setText] = useState('');
   const [image, setImage] = useState('');
-  const [editText, setEditText] = useState('');
-  const [editImg, setEditImg] = useState('');
+  const postid = useSelector(state => state.modalPostConfig.postId);
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
@@ -41,20 +41,29 @@ export default function index() {
     });
   };
   const handlePost = () => {
-    if (imageCmt !== null) {
-      let image = imageCmt;
+    if (checkUpdate) {
       dispatch({
-        type: CREATE_POST,
-        payload: {text, image},
+        type: UPDATE_POST,
+        payload: {postId: postid, content: text},
       });
+      setText(null);
     } else {
-      dispatch({
-        type: CREATE_POST,
-        payload: {text, image},
-      });
-      setImage(null);
+      console.log('create');
+      if (imageCmt !== null) {
+        let image = imageCmt;
+        dispatch({
+          type: CREATE_POST,
+          payload: {text, image},
+        });
+      } else {
+        dispatch({
+          type: CREATE_POST,
+          payload: {text, image},
+        });
+        setImage(null);
+      }
+      setText(null);
     }
-    setText(null);
   };
 
   const handleClose = () => {
@@ -64,6 +73,9 @@ export default function index() {
   const handleCloseImgCmt = () => {
     console.log(1);
     dispatch({type: CLOSE_IMG_CMT});
+  };
+  const handleCloseUpdateCmt = () => {
+    dispatch({type: CLOSE_UPDATE_IMG});
   };
 
   const cam = async () => {
@@ -92,7 +104,7 @@ export default function index() {
       console.warn(err);
     }
   };
-  console.log(imageCmt + '??????????????');
+  console.log(updateImg + '??????????????');
   return (
     <Modal animationType="fade" visible={modal}>
       <Loading loading={loading} />
@@ -103,7 +115,11 @@ export default function index() {
         <Icon
           name="close"
           size={22}
-          onPress={() => dispatch({type: CLOSE_MODAL_POST})}
+          onPress={() => {
+            dispatch({type: CLOSE_MODAL_POST});
+            dispatch({type: CLOSE_UPDATE_IMG});
+            dispatch({type: CLEAR_UPDATE_TEXT});
+          }}
           style={styles.closeModal}
         />
       </View>
@@ -122,29 +138,45 @@ export default function index() {
           <Text style={styles.userName}>{userData.name}</Text>
         </View>
         <View style={styles.inputView}>
-          <TextInput
-            value={text}
-            onChangeText={e => setText(e)}
-            multiline={true}
-            numberOfLines={4}
-            style={styles.input}
-            placeholderTextColor="#808080"
-            placeholder="What's on your mind ?"
-          />
+          {updateText ? (
+            <>
+              <Text style={{color: '#696969', marginTop: 10}}>
+                Previous content: {updateText}
+              </Text>
+              <TextInput
+                value={text}
+                onChangeText={e => setText(e)}
+                multiline={true}
+                numberOfLines={4}
+                style={styles.input}
+                placeholderTextColor="#808080"
+                placeholder="What's on your mind ?"
+              />
+            </>
+          ) : (
+            <TextInput
+              value={text}
+              onChangeText={e => setText(e)}
+              multiline={true}
+              numberOfLines={4}
+              style={styles.input}
+              placeholderTextColor="#808080"
+              placeholder="What's on your mind ?"
+            />
+          )}
+
           <View style={styles.imgWrapper}>
             {updateImg ? (
               <>
-                <View style={styles.closeBtn}>
+                {/* <View style={styles.closeBtn}>
                   <Icon
-                    onPress={handleClose}
+                    onPress={handleCloseUpdateCmt}
                     name="close"
                     size={18}
                     color="white"
                   />
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image style={styles.img} source={image} />
-                </ScrollView>
+                </View> */}
+                <Image style={styles.img} source={{uri: updateImg}} />
               </>
             ) : null}
             {image ? (
@@ -157,9 +189,7 @@ export default function index() {
                     color="white"
                   />
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image style={styles.img} source={image} />
-                </ScrollView>
+                <Image style={styles.img} source={image} />
               </>
             ) : null}
             {imageCmt ? (
@@ -172,14 +202,13 @@ export default function index() {
                     color="white"
                   />
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                  <Image style={styles.img} source={imageCmt} />
-                </ScrollView>
+                <Image style={styles.img} source={imageCmt} />
               </>
             ) : null}
           </View>
         </View>
-        <CameraGroup cam={cam} gallery={gallery} />
+        {!checkUpdate ? <CameraGroup cam={cam} gallery={gallery} /> : null}
+
         <View>
           <FButton handlePress={handlePost} Name="Post" />
         </View>

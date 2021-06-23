@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
     case MODAL_CREATE_POST:
       return {...state, status: true, update: false};
     case CLOSE_MODAL_POST:
-      return {...state, status: false, image: null};
+      return {...state, status: false, image: null, update: false};
     case MODAL_CREATE_POST_IMG:
       return {...state, status: true, image: action.payload.img};
     case CLOSE_IMG_CMT:

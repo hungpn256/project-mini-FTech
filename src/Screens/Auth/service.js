@@ -111,6 +111,7 @@ const addUser = async (uid, fullName, avatar = '', phone = '') => {
         dateOfBirth: dob,
         phoneNumber: phoneNumber,
         messenger: messenger,
+        email: auth().currentUser.email,
       });
   } catch (error) {
     console.log(error);
