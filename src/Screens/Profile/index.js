@@ -65,6 +65,7 @@ const Profile = ({navigation, route}) => {
   }, [role]);
   const user = id ? other : me;
   const posts = id ? postsProfile : postsMe;
+  const postHavePhotos = posts && posts.filter(i => i.imageUrl);
   const setAvatar = image => {
     dispatch({type: UPDATE_ME, payload: {avatar: image}});
   };
@@ -326,11 +327,13 @@ const Profile = ({navigation, route}) => {
           ) : tab === 2 ? (
             <View style={styles.viewContent}>
               <View style={styles.photosImages}>
-                {posts &&
-                  posts.map(item => {
-                    if (item.imageUrl)
-                      return <ImageComponent key={item.id} item={item} />;
-                  })}
+                {posts && 0 && postHavePhotos.length > 0 ? (
+                  postHavePhotos.map(item => {
+                    return <ImageComponent key={item.id} item={item} />;
+                  })
+                ) : (
+                  <Nothing />
+                )}
               </View>
             </View>
           ) : (
