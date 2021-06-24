@@ -1,5 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 export const getUser = async payload => {
-  const user = await firestore().collection('user').doc(payload).get();
-  return {id: user.id, ...user.data()};
+  if (payload && payload.length === 0) return [];
+  const user = await firestore()
+    .collection('user')
+    .where('id', 'in', payload)
+    .get();
+  return user.docs.map(u => ({id: u.id, ...u.data()}));
 };

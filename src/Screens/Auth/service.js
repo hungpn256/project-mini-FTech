@@ -37,12 +37,23 @@ const saveUser = async uid => {
 export async function loginGoogle() {
   // Get the users ID token
   const {idToken} = await GoogleSignin.signIn();
-  // console.log(firebase.auth().currentUser.uid);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  // await AsyncStorage.setItem("USER_ID",JSON.stringify(uid))
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
+  await auth().signInWithCredential(googleCredential);
+  console.log(auth().currentUser);
+  const data = await firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .get();
+  if (!data.data()) {
+    await addUser(
+      auth().currentUser.uid,
+      auth().currentUser.displayName,
+      auth().currentUser.photoURL,
+      auth().currentUser.phoneNumber,
+    );
+  }
+  return saveUser(auth().currentUser.uid);
 }
 
 export const login = async ({email, pass}) => {
@@ -68,14 +79,14 @@ export const logout = async () => {
   }
 };
 //thêm user vào databse sau khi đki thành công
-const addUser = async (uid, fullName) => {
+const addUser = async (uid, fullName, avatar = '', phone = '') => {
   let friend = [];
   let roomChat = [];
   let id = uid;
   let userName = fullName;
   let money = 0;
   let dob = '';
-  let phoneNumber = '';
+  let phoneNumber = phone || '';
   let gender = -1;
   let messenger = '';
   const friendTmp = await firebase.firestore().collection('friend').add({
@@ -84,19 +95,24 @@ const addUser = async (uid, fullName) => {
   });
 
   try {
-    return await firebase.firestore().collection('user').doc(uid).set({
-      name: userName,
-      id: id,
-      avatar: '',
-      background: '',
-      friend: friendTmp,
-      roomChatList: roomChat,
-      money: money,
-      gender: gender,
-      dateOfBirth: dob,
-      phoneNumber: phoneNumber,
-      messenger: messenger,
-    });
+    return await firebase
+      .firestore()
+      .collection('user')
+      .doc(uid)
+      .set({
+        name: userName,
+        id: id,
+        avatar: avatar || '',
+        background: '',
+        friend: friendTmp,
+        roomChatList: roomChat,
+        money: money,
+        gender: gender,
+        dateOfBirth: dob,
+        phoneNumber: phoneNumber,
+        messenger: messenger,
+        email: auth().currentUser.email,
+      });
   } catch (error) {
     console.log(error);
   }

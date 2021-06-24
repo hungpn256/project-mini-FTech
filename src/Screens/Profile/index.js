@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   RefreshControl,
@@ -16,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
 import Loading from '../../Components/Loading/index.js';
+import Nothing from '../../Components/Nothing.js';
 import {avatarDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
 import About from './components/About.js';
@@ -30,6 +32,7 @@ import {
   UPDATE_ME,
 } from './constants.js';
 import styles from './styles';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 const Profile = ({navigation, route}) => {
   //1 chưa gửi lời mời, 2 chưa được chấp thuận, 3 chờ mình chấp thuận, 4 đã chấp thuận
   const [roleFriend, setRoleFriend] = useState(1);
@@ -48,7 +51,15 @@ const Profile = ({navigation, route}) => {
     onRefresh();
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
-  const {profile: other, loading, posts: postsMe, postsProfile, role} = profile;
+  const friend = useSelector(state => state.friend.accepted);
+  const {
+    profile: other,
+    loading,
+    posts: postsMe,
+    postsProfile,
+    role,
+    loadingPost,
+  } = profile;
   useEffect(() => {
     setRoleFriend(role);
   }, [role]);
@@ -61,7 +72,25 @@ const Profile = ({navigation, route}) => {
     dispatch({type: UPDATE_ME, payload: {background: image}});
   };
   if (!user || loading) {
-    return <Loading loading={loading} />;
+    return (
+      <SkeletonPlaceholder>
+        <View style={styles.image}>
+          <View style={styles.wrapperCover} />
+        </View>
+        <View style={[styles.wrapperAvatar, {height: 180, width: 180}]} />
+        <View
+          style={{width: 200, height: 50, marginTop: 20, alignSelf: 'center'}}
+        />
+        <View
+          style={{
+            width: '100%',
+            height: 50,
+            marginTop: 20,
+            marginHorizontal: 8,
+          }}
+        />
+      </SkeletonPlaceholder>
+    );
   }
   return (
     <>
@@ -70,7 +99,6 @@ const Profile = ({navigation, route}) => {
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
-        <Loading loading={loading} />
         <View style={styles.body}>
           <View style={styles.image}>
             <View style={styles.wrapperCover}>
@@ -206,8 +234,8 @@ const Profile = ({navigation, route}) => {
               <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
             </View>
             <View style={styles.inforItem}>
-              <Text style={styles.inforItemTitle}>Followers</Text>
-              <Text style={styles.inforItemNumber}>124</Text>
+              <Text style={styles.inforItemTitle}>Friends</Text>
+              <Text style={styles.inforItemNumber}>{friend.length}</Text>
             </View>
             <View style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Following</Text>
@@ -272,7 +300,12 @@ const Profile = ({navigation, route}) => {
             <View style={styles.viewContent}>
               <View style={{marginVertical: 8}}>
                 {!id && <PostArticle />}
-                {posts &&
+                {loadingPost ? (
+                  <View>
+                    <ActivityIndicator size="large" />
+                    <Text>sda</Text>
+                  </View>
+                ) : posts && posts.length > 0 ? (
                   posts.map(item => {
                     return (
                       <Article
@@ -284,7 +317,10 @@ const Profile = ({navigation, route}) => {
                         postid={item.id}
                       />
                     );
-                  })}
+                  })
+                ) : (
+                  <Nothing />
+                )}
               </View>
             </View>
           ) : tab === 2 ? (

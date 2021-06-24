@@ -5,7 +5,11 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+<<<<<<< HEAD
   Alert,
+=======
+  Pressable,
+>>>>>>> 38f489d66aad9839e3c3a580f7a790d01e95c93a
 } from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
@@ -36,8 +40,16 @@ export default function Pay({navigation}) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header1}>
-          <Text style={styles.textHeader1}>Số dư : </Text>
-          <Text style={styles.textHeader1}>{userMoney.money} đ</Text>
+          <Pressable
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => {
+              console.log('sda');
+              navigation.navigate('#');
+            }}>
+            <Ionicons name="chevron-back" color="#fff" size={40} />
+            <Text style={styles.textHeader1}>Home</Text>
+          </Pressable>
+          <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>
         </View>
         <Divider />
         <View style={styles.header2}>
