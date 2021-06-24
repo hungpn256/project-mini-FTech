@@ -5,11 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-<<<<<<< HEAD
-  Alert,
-=======
   Pressable,
->>>>>>> 38f489d66aad9839e3c3a580f7a790d01e95c93a
 } from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';

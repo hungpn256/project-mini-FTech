@@ -3,8 +3,9 @@ import {
   RECHARGE_MONEY,
   RECHARGE_MONEY_SUCCESS,
   WALLET_CHANGE_STATE,
+  WITHDRAW_MONEY
 } from './constaints';
-import {rechargeMoney} from './service';
+import {rechargeMoney,withdrawMoney} from './service';
 
 function* rechargeMoneySaga({payload}) {
   try {
