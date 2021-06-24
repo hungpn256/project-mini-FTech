@@ -1,17 +1,8 @@
 import React, {useState} from 'react';
-import {
-  TextInput,
-  View,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-  Pressable,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Avatar} from 'react-native-paper';
-import {useSelector, useDispatch} from 'react-redux';
-import Post from './Modal';
+import {useDispatch, useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
-import Modal from '@Screens/ModalCreatePost';
 import {MODAL_CREATE_POST} from '../Screens/ModalCreatePost/contants';
 export default function ModalPost() {
   const [modal, setModal] = useState(false);

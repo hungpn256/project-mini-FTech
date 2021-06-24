@@ -18,9 +18,26 @@ import {
   CREATE_CMT,
   GET_CMT,
   GET_ALL_CMT,
+  DELETE_POST,
+  CONFIRM_DELETE_POST,
+  CONFIRM_UPDATE_POST,
+  UPDATE_POST,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
-import {uploadPost, getAll, getMore, createCmt, getAllCmt} from './service';
+import {
+  uploadPost,
+  getAll,
+  getMore,
+  createCmt,
+  getAllCmt,
+  deletePost,
+  updatePost,
+} from './service';
+import {
+  CLEAR_UPDATE_TEXT,
+  CLOSE_CONFIRM,
+  CLOSE_UPDATE_IMG,
+} from '../ModalPostConfig/contants';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -62,17 +79,45 @@ function* handleAllCmt() {
     console.log(error);
   }
 }
+function* handleDeletePost({payload}) {
+  yield put({type: POST_LOADING, payload: {loading: true}});
+  try {
+    const res = yield call(deletePost, payload);
+    yield put({type: CONFIRM_DELETE_POST, payload: {newData: res}});
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_CONFIRM});
+  }
+}
 // function* handleGetMore() {
 //   try {
 //     const res = yield call(getMore);
 //     yield put({type: MORE_POST, payload: {more: res}});
 //   } catch (error) {}
 // }
+function* handleUpdatePost({payload}) {
+  yield put({type: POST_LOADING, payload: {loading: true}});
+  try {
+    yield call(updatePost, payload);
+    yield put({type: CONFIRM_UPDATE_POST});
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_MODAL_POST});
+    yield put({type: CLEAR_UPDATE_TEXT});
+    yield put({type: CLOSE_UPDATE_IMG});
+  }
+}
 function* watchPostSaga() {
   yield takeLatest(CREATE_POST, handleCreatePost);
   yield takeLatest(GET_POST, handleGetPost);
   // yield takeLatest(GET_MORE, handleGetMore);
   yield takeLatest(CMT, handleCmt);
   yield takeLatest(GET_CMT, handleAllCmt);
+  yield takeLatest(DELETE_POST, handleDeletePost);
+  yield takeLatest(UPDATE_POST, handleUpdatePost);
 }
 export default watchPostSaga;

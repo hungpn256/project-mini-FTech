@@ -1,6 +1,9 @@
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
-  container: {flex: 1, padding: 15},
+  container: {
+    flex: 1,
+    padding: 15,
+  },
   input: {
     backgroundColor: '#DCDCDC',
     borderRadius: 20,

@@ -16,6 +16,7 @@ import {
   CREATE_CONVERSATION_SUCCESS,
   SEND_MESSAGE,
   MARK_READ,
+  SEND_MESSAGE_SUCCESS,
 } from './constants';
 import {
   createConversation,
@@ -61,13 +62,14 @@ function* sendMesSaga({payload}) {
       const url = yield call(uploadImg, payload.messages[0].image);
       payload.messages[0].image = url;
     }
-    const res = yield call(sendMes, payload);
+    yield put({type: SEND_MESSAGE_SUCCESS, payload});
+    yield call(sendMes, payload);
     const user = yield select(
       state => state.chat.conversation[payload.roomId].users,
     );
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
-    console.log(oUser, 'o');
     yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    console.log('send done');
   } catch (e) {
     console.log('err send mes', e);
   }

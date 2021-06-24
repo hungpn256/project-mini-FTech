@@ -8,6 +8,8 @@ import MainStack from './src/Navigator/MainStack';
 import {LOGOUT, USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
+import ModalPostConfig from './src/Screens/ModalPostConfig';
+import auth from '@react-native-firebase/auth';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
@@ -23,7 +25,7 @@ export default function AppNavigator() {
 
   useEffect(() => {
     (() => {
-      firebase.auth().onAuthStateChanged(function (user) {
+      auth().onAuthStateChanged(function (user) {
         if (user) {
           saveId(user.uid);
         } else {
@@ -39,8 +41,8 @@ export default function AppNavigator() {
         dispatch({type: USER_DEL});
       }
     };
-    // dispatch({type: LOGOUT});
     check();
+    // dispatch({type: LOGOUT});
   }, []);
   return load ? (
     <>
@@ -51,6 +53,7 @@ export default function AppNavigator() {
       {userData ? (
         <>
           <ModalCreatePost />
+          <ModalPostConfig />
           <MainStack />
           <ModalComponent />
         </>

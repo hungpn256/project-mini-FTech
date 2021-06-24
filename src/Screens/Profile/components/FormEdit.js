@@ -12,12 +12,13 @@ import {
 import DatePicker from 'react-native-date-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
+import Loading from '../../../Components/Loading';
 import {PROFILE_CHANGE_STATE, UPDATE_ME} from '../constants';
 import styles from '../styles';
 export default function FormEdit({navigation}) {
   const user = useSelector(state => state.auth.user);
   const updateSuccess = useSelector(state => state.profile.updateSuccess);
-  console.log(updateSuccess, 'up');
+  const editing = useSelector(state => state.profile.editing);
   const [name, setName] = useState(user.name);
   const [gender, setGender] = useState(user?.gender ?? 0);
   const [dateOfBirth, setDateOfBirth] = useState(
@@ -32,6 +33,9 @@ export default function FormEdit({navigation}) {
       navigation.goBack();
     }
   }, [updateSuccess]);
+  if (editing) {
+    return <Loading loading={true} />;
+  }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <View>

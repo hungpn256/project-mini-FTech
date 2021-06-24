@@ -10,6 +10,7 @@ import {GET_POST} from './constants';
 import auth from '@react-native-firebase/auth';
 import styles from './styles';
 import {Badge} from 'react-native-paper';
+import Nothing from '../../Components/Nothing';
 const Home = ({navigation}) => {
   const postData = useSelector(state => state.home.post);
   const conversation = useSelector(state => state.chat.conversation);
@@ -33,9 +34,7 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}>
+    <>
       <View style={styles.header}>
         <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
         <View style={styles.groupBtn}>
@@ -66,22 +65,30 @@ const Home = ({navigation}) => {
           </View>
         </View>
       </View>
-      <PostArticle />
-      {postData &&
-        postData.map(item => {
-          console.log(item);
-          return (
-            <Article
-              time={moment(item.createAt?.toDate()).fromNow()}
-              key={item.id}
-              text={item.content}
-              image={item.imageUrl}
-              uid={item.userId}
-              postid={item.id}
-            />
-          );
-        })}
-    </ScrollView>
+
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <PostArticle />
+        {postData && postData.length > 0 ? (
+          postData.map(item => {
+            console.log(item);
+            return (
+              <Article
+                time={moment(item.createAt?.toDate()).fromNow()}
+                key={item.id}
+                text={item.content}
+                image={item.imageUrl}
+                uid={item.userId}
+                postid={item.id}
+              />
+            );
+          })
+        ) : (
+          <Nothing />
+        )}
+      </ScrollView>
+    </>
   );
 };
 

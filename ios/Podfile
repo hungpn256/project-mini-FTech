@@ -14,7 +14,9 @@ target 'projectmini' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
+  # pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
   target 'projectminiTests' do
     inherit! :complete

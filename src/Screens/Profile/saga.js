@@ -8,6 +8,7 @@ import {
   select,
   takeEvery,
 } from '@redux-saga/core/effects';
+import {GET_FRIEND} from '../Friend/constants';
 import {CREATE_POST} from '../Home/constants';
 import {
   ACCEPT_FRIEND,
@@ -31,13 +32,13 @@ import {
 } from './service';
 function* getMeSaga({payload}) {
   try {
-    yield put({type: PROFILE_CHANGE_STATE, payload: {loading: true}});
+    yield put({type: PROFILE_CHANGE_STATE, payload: {loadingPost: true}});
     const [posts] = yield all([call(getPostMe, payload)]);
     yield put({type: GET_POST_PROFILE_SUCCESS, payload: {posts}});
   } catch (e) {
     console.log(e);
   } finally {
-    yield put({type: PROFILE_CHANGE_STATE, payload: {loading: false}});
+    yield put({type: PROFILE_CHANGE_STATE, payload: {loadingPost: false}});
   }
 }
 
@@ -46,7 +47,7 @@ function* updateMeSaga({payload}) {
   try {
     yield put({
       type: PROFILE_CHANGE_STATE,
-      payload: {loading: true, updateSuccess: false},
+      payload: {editing: true, updateSuccess: false},
     });
     if (payload.avatar) {
       const url = yield call(uploadImg, payload.avatar);
@@ -69,7 +70,7 @@ function* updateMeSaga({payload}) {
   } finally {
     yield put({
       type: PROFILE_CHANGE_STATE,
-      payload: {loading: false},
+      payload: {editing: false},
     });
   }
 }
@@ -107,6 +108,7 @@ function* getProfileSaga({payload}) {
 function* addFriendSaga({payload}) {
   try {
     yield call(addFriend, payload);
+    yield put({type: GET_FRIEND});
   } catch (e) {
     console.log(e);
   }
@@ -115,6 +117,7 @@ function* addFriendSaga({payload}) {
 function* RemoveFriendSaga({payload}) {
   try {
     yield call(removeFriend, payload);
+    yield put({type: GET_FRIEND});
   } catch (e) {
     console.log(e);
   }
@@ -123,6 +126,7 @@ function* RemoveFriendSaga({payload}) {
 function* acceptFriendSaga({payload}) {
   try {
     yield call(acceptFriend, payload);
+    yield put({type: GET_FRIEND});
   } catch (e) {
     console.log(e);
   }

@@ -15,15 +15,15 @@ export default function Messenger({route}) {
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
   let {roomId} = route.params;
-  let messages = useSelector(
-    state => state.chat.conversation[roomId]?.messages ?? [],
-  );
+  const chat = useSelector(state => state.chat);
+  let messages = chat.conversation[roomId]?.messages ?? [];
   messages = messages.map(message => {
     return {
       ...message,
-      createdAt: message?.createdAt?.toDate(),
+      createdAt: message?.createdAt?.toDate?.() ?? new Date(),
     };
   });
+  console.log('messenge rerender');
   messages = messages.reverse();
   const onSend = message => {
     dispatch({
@@ -45,7 +45,7 @@ export default function Messenger({route}) {
       user={{_id: user.id, avatar: user.avatar, name: user.name}}
       isTyping={true}
       onPressAvatar={prop => {
-        navigation.navigate('Profile-o', {id: prop._id});
+        navigation.navigate('Profile-o', {id: prop._id, name: prop.name});
       }}
       renderMessageImage={props => {
         return (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,31 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
+<<<<<<< HEAD
 import {RECHARGE_MONEY} from '../constaints';
 import {Alert} from 'react-native';
+=======
+import {RECHARGE_MONEY, WALLET_CHANGE_STATE} from '../constaints';
+import {useNavigation} from '@react-navigation/native';
+>>>>>>> 38f489d66aad9839e3c3a580f7a790d01e95c93a
 const Recharge = () => {
+  const navigation = useNavigation();
   const userMoney = useSelector(state => state.auth.user);
+  const rechargeSuccess = useSelector(state => state.wallet.rechargeSuccess);
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const [money, setMoney] = useState('');
+=======
+  const [money, setMoney] = useState(0);
+  useEffect(() => {
+    if (rechargeSuccess) {
+      navigation.goBack();
+    }
+    return () => {
+      dispatch({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: false}});
+    };
+  }, [rechargeSuccess]);
+>>>>>>> 38f489d66aad9839e3c3a580f7a790d01e95c93a
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -24,7 +43,14 @@ const Recharge = () => {
           style={styles.input}
           value={Number(money)}
           onChangeText={text => {
-            setMoney(parseInt(text));
+            try {
+              if (text.length > 0) setMoney(parseInt(text));
+              else {
+                setMoney(0);
+              }
+            } catch (e) {
+              setMoney(0);
+            }
           }}
         />
         <View style={styles.viewTouchableOpacity}>
