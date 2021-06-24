@@ -12,13 +12,9 @@ function* rootSaga() {
     watchChatSaga(),
     watchPostSaga(),
     watchProfileSaga(),
-<<<<<<< HEAD
-    paySaga(),
-=======
-    rechargeMoneySaga(),
     watchSearchSaga(),
     watchFriendSaga(),
->>>>>>> e821b222cb5c48e058208f83fc8f1421e6c0f726
+    paySaga(),
   ]);
 }
 export default rootSaga;
