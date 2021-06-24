@@ -50,7 +50,9 @@ export default function PostArticle({editable}) {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+       
         launchCamera({mediaType: 'photo'}, props => {
+          console.log(11111111111111);
           if (props.type === 'image/jpeg') {
             dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
           }
