@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import {takeLatest, call} from 'redux-saga/effects';
-import {RECHARGE_MONEY, WITHDRAW_MONEY} from './constaints';
-import {rechargeMoney, withdrawMoney} from './service';
-
-function* rechargeMoneySaga({payload}) {
-  try {
-    const res = yield call(rechargeMoney, payload);
-=======
 import {takeLatest, call, put} from 'redux-saga/effects';
 import {
   RECHARGE_MONEY,
@@ -20,7 +11,6 @@ function* rechargeMoneySaga({payload}) {
     yield put({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: true}});
     yield call(rechargeMoney, payload);
     yield put({type: RECHARGE_MONEY_SUCCESS, payload});
->>>>>>> 38f489d66aad9839e3c3a580f7a790d01e95c93a
   } catch (e) {
     console.log(e);
   } finally {

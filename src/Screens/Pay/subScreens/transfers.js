@@ -51,7 +51,7 @@ const Transfers = () => {
           </TouchableOpacity>
         </View>
         <TextInput
-          placeholder="Nhập số tiền cần rút"
+          placeholder="Nhập số tiền cần chuyển"
           keyboardType="numeric"
           style={styles.input}
           value={Number(money)}
