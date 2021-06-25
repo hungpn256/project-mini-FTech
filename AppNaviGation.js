@@ -12,12 +12,15 @@ import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
+import messaging from '@react-native-firebase/messaging';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
   const load = useSelector(state => state.auth.splashScreen);
 
   const saveId = async uid => {
+    const token = await messaging().getToken();
+    console.log(token + 'TOKEN');
     await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
   };
 

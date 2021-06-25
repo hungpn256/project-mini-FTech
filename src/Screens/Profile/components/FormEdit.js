@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../../Components/Loading';
 import {PROFILE_CHANGE_STATE, UPDATE_ME} from '../constants';
 import styles from '../styles';
+import FButton from '../../../Components/TouchOpacity/index';
 export default function FormEdit({navigation}) {
   const user = useSelector(state => state.auth.user);
   const updateSuccess = useSelector(state => state.profile.updateSuccess);
@@ -60,7 +61,17 @@ export default function FormEdit({navigation}) {
     </Pressable> */}
       </View>
       <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <View style={{marginTop: 48}}>
+        <View style={{marginTop: 10}}>
+          <View style={styleEdit.input}>
+            <TextInput
+              label="Email"
+              mode="outlined"
+              outlineColor="#DCDCDC"
+              style={styleEdit.TextInput}
+              value={user.email}
+              editable={false}
+            />
+          </View>
           <View style={styleEdit.input}>
             <TextInput
               label="Name"
@@ -94,8 +105,8 @@ export default function FormEdit({navigation}) {
               <Picker.Item label="Other" value={2} />
             </Picker>
           </View>
-          <View style={styles.formItem}>
-            <Text style={styles.label}>Date of Birth:</Text>
+          <View style={styleEdit.formItem}>
+            <Text style={styleEdit.label}>Date of Birth:</Text>
             <Pressable
               style={{flexDirection: 'row', marginTop: 8, marginLeft: 8}}
               onPress={() => {
@@ -113,6 +124,18 @@ export default function FormEdit({navigation}) {
             </Pressable>
           </View>
         </View>
+        <View style={{paddingHorizontal: 15}}>
+          <FButton
+            Name="Submit"
+            handlePress={() =>
+              dispatch({
+                type: UPDATE_ME,
+                payload: {name, gender, dateOfBirth, phoneNumber},
+              })
+            }
+          />
+        </View>
+
         <Modal
           transparent={true}
           visible={visibleDatePicker}
@@ -163,15 +186,17 @@ const styleEdit = StyleSheet.create({
   },
   label: {
     color: '#696969',
-    fontSize: 16,
+    fontSize: 12,
   },
   formItem: {
+    borderColor: '#DCDCDC',
+    borderWidth: 1,
     borderRadius: 5,
-    marginTop: 6,
-    marginHorizontal: 10,
+    marginTop: 8,
+    marginHorizontal: 15,
     paddingHorizontal: 8,
     paddingVertical: 5,
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#F4F4F4',
   },
   headerText: {
     color: 'black',
@@ -187,6 +212,7 @@ const styleEdit = StyleSheet.create({
     marginLeft: 1,
   },
   TextInput: {
-    paddingHorizontal: 10,
+    marginTop: 5,
+    paddingHorizontal: 15,
   },
 });
