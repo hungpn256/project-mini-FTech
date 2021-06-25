@@ -22,6 +22,7 @@ export const addNoti = async payload => {
       .update({
         userId: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
         updateAt: firebase.firestore.FieldValue.serverTimestamp(),
+        unread: true,
       });
   } else {
     await firestore()
@@ -32,18 +33,38 @@ export const addNoti = async payload => {
         userId: [auth().currentUser.uid],
         updateAt: firebase.firestore.FieldValue.serverTimestamp(),
         received: userPost,
+        unread: true,
       });
   }
 };
 
 export const getNoti = async () => {
-  let res = await firestore()
+  let noti = await firestore()
     .collection('notification')
     .where('received', '==', auth().currentUser.uid)
+    .orderBy('updateAt', 'desc')
     .get();
-  res = res.docs.map(async item => {
-    const user = await firestore().collection('user').doc(item.userId).get();
-    return {...item, user: user.data()};
-  });
+  let res = [];
+  for (let i = 0; i < noti.size; i++) {
+    let users = [];
+    const data = noti.docs[i].data();
+    const usersFirebase = data.userId.slice(-2);
+    for (let j = usersFirebase.length - 1; j >= 0; j--) {
+      const user = await firestore()
+        .collection('user')
+        .doc(usersFirebase[j])
+        .get();
+      users.push(user.data());
+    }
+    const post = await firestore().collection('post').doc(data.postId).get();
+    res.push({id: noti.docs[i].id, ...data, users, post: post.data()});
+  }
   return res;
+};
+
+export const markReadNoti = payload => {
+  return firestore()
+    .collection('notification')
+    .doc(payload)
+    .update({unread: false});
 };
