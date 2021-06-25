@@ -31,14 +31,18 @@ export default function InputEncloseAvatar({
     <View style={{flex: 1}}>
       <View style={styles.inputWrapper}>
         {userData.avatar ? (
-          <Avatar.Image
-            size={40}
-            source={{
-              uri: userData.avatar,
-            }}
-          />
+          <View style={styles.avatar}>
+            <Avatar.Image
+              size={40}
+              source={{
+                uri: userData.avatar,
+              }}
+            />
+          </View>
         ) : (
-          <Avatar.Image size={40} source={avatarImg} />
+          <View style={styles.avatar}>
+            <Avatar.Image size={40} source={avatarImg} />
+          </View>
         )}
         <View style={styles.groupCmt}>
           <View style={styles.inputCmt}>
@@ -103,6 +107,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
   },
   icon: {
     position: 'absolute',

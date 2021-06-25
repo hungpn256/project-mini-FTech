@@ -26,11 +26,11 @@ import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
-      <Pressable onPress={navi}>
+      <Pressable style={styles.avatar} onPress={navi}>
         <Avatar.Image source={{uri: img}} size={40} />
       </Pressable>
     ) : (
-      <Pressable onPress={navi}>
+      <Pressable style={styles.avatar} onPress={navi}>
         <Avatar.Image source={avatarImg} size={40} />
       </Pressable>
     )}
@@ -324,6 +324,12 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 4,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
+    position: 'absolute',
   },
   cmts: {
     color: '#696969',
