@@ -304,7 +304,6 @@ const Profile = ({navigation, route}) => {
                 {loadingPost ? (
                   <View>
                     <ActivityIndicator size="large" />
-                    <Text>sda</Text>
                   </View>
                 ) : posts && posts.length > 0 ? (
                   posts.map(item => {
