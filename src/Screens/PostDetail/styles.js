@@ -4,6 +4,12 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 export const styles = StyleSheet.create({
   container: {},
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
+    position: 'absolute',
+  },
   cardAction: {
     justifyContent: 'space-evenly',
     borderBottomColor: '#E5E5E5',
