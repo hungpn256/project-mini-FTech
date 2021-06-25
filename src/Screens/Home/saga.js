@@ -32,13 +32,13 @@ import {
   getAllCmt,
   deletePost,
   updatePost,
-  addNoti,
 } from './service';
 import {
   CLEAR_UPDATE_TEXT,
   CLOSE_CONFIRM,
   CLOSE_UPDATE_IMG,
 } from '../ModalPostConfig/contants';
+import {addNoti} from '../Notification/service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -93,12 +93,6 @@ function* handleDeletePost({payload}) {
     yield put({type: CLOSE_CONFIRM});
   }
 }
-// function* handleGetMore() {
-//   try {
-//     const res = yield call(getMore);
-//     yield put({type: MORE_POST, payload: {more: res}});
-//   } catch (error) {}
-// }
 function* handleUpdatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
