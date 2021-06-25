@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
   },
   wrapperAvatar: {
     padding: 2,
+    borderColor: '#DCDCDC',
+    borderWidth: 1,
     backgroundColor: '#fff',
     transform: [{translateY: -80}],
     borderRadius: 999,

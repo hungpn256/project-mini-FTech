@@ -38,11 +38,15 @@ export default function Comments({userId, cmtId, time, content, image}) {
           <View style={styles.AvatarCmt}>
             {user.avatar ? (
               <Pressable onPress={handleNavi}>
-                <Avatar.Image source={{uri: user.avatar}} size={40} />
+                <View style={styles.avatar}>
+                  <Avatar.Image source={{uri: user.avatar}} size={40} />
+                </View>
               </Pressable>
             ) : (
               <Pressable onPress={handleNavi}>
-                <Avatar.Image source={avatarImg} size={40} />
+                <View style={styles.avatar}>
+                  <Avatar.Image source={avatarImg} size={40} />
+                </View>
               </Pressable>
             )}
             <View style={styles.cmt}>
@@ -99,6 +103,11 @@ export const styles = StyleSheet.create({
     borderRadius: 18,
     width: windowWidth * 0.4,
     height: windowHeight * 0.3,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
   },
   cmtGroup: {marginTop: 2, marginLeft: 50},
   AvatarCmt: {

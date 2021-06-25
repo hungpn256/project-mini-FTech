@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
   wrapperAvatar: {
     position: 'absolute',
     borderRadius: 999,
-    borderColor: '#fff',
-    borderWidth: 5,
+    borderColor: '#EEEEEE',
+    borderWidth: 1,
     left: '50%',
     bottom: 0,
     transform: [{translateX: -90}],
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     marginBottom: -16,
-    marginTop: -5,
+    marginTop: -10,
   },
 });
 export default styles;
