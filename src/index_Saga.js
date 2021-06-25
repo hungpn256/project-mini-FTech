@@ -6,6 +6,7 @@ import watchPostSaga from './Screens/Home/saga';
 import watchProfileSaga from './Screens/Profile/saga';
 import rechargeMoneySaga from './Screens/Pay/saga';
 import watchSearchSaga from './Screens/SearchHome/saga';
+import watchNotifySaga from './Screens/Notification/saga';
 function* rootSaga() {
   yield all([
     watchLoginSaga(),
@@ -15,6 +16,7 @@ function* rootSaga() {
     rechargeMoneySaga(),
     watchSearchSaga(),
     watchFriendSaga(),
+    watchNotifySaga(),
   ]);
 }
 export default rootSaga;
