@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {avatarDefault} from '../index_Constant';

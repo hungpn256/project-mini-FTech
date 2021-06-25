@@ -20,7 +20,7 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useDispatch} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
-import {addNoti} from '../Screens/Home/service';
+import {addNoti} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
