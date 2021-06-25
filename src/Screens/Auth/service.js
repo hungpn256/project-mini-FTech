@@ -31,6 +31,7 @@ export const userDocument = async () => {
 
 const saveUser = async uid => {
   const user = await firestore().collection('user').doc(uid).get();
+  saveToken();
   return user.data();
 };
 
@@ -77,18 +78,20 @@ export const login = async ({email, pass}) => {
 };
 
 export const logout = async () => {
+  const token = await messaging().getToken();
   try {
     // if (GoogleSignin.getTokens) {
-    await GoogleSignin.revokeAccess();
-    await GoogleSignin.signOut();
-    // }
-    await auth().signOut();
     firestore()
       .collection('user')
       .doc(auth().currentUser.uid)
       .update({
         token: firestore.FieldValue.arrayRemove(token),
       });
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+    // }
+
+    await auth().signOut();
   } catch (error) {
     firestore()
       .collection('user')
