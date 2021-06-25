@@ -27,6 +27,7 @@ import {
   markRead,
 } from './service';
 import auth from '@react-native-firebase/auth';
+import {notiMes} from '../Notification/service';
 
 function* getUserByNameSaga({payload}) {
   try {
@@ -69,6 +70,15 @@ function* sendMesSaga({payload}) {
     );
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
     yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    ì(oUser.token && oUser.token.length>0){
+      yield call(notiMes, {
+        title: `${oUser.name} đã gửi tin nhắn cho bạn`,
+        body: payload.messages[0].image
+          ? 'bạn đã nhận được 1 hình ảnh'
+          : payload.messages[0].text,
+        token: oUser.token,
+      });
+    }
     console.log('send done');
   } catch (e) {
     console.log('err send mes', e);
