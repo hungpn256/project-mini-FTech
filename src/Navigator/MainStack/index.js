@@ -30,6 +30,7 @@ import Friend from '../../Screens/Friend';
 import Notification from '../../Screens/Notification';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
 import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
+import {notiMes} from '../../Screens/Notification/service';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -68,6 +69,7 @@ const StackNavigatorMenu = () => {
 const TabNavigator = () => {
   const dispatch = useDispatch();
   useEffect(() => {
+    notiMes();
     dispatch({type: GET_NOTIFICATIONS});
   }, []);
   const notifications = useSelector(state => state.notification.notifications);

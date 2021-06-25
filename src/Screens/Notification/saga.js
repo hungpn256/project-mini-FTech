@@ -1,10 +1,11 @@
 import {
   GET_NOTIFICATIONS,
   GET_NOTIFICATIONS_SUCCESS,
+  MARK_READ_ALL,
   NOTIFICATION_CHANGE_STATE,
 } from './constants';
 import {call, put, takeLatest} from 'redux-saga/effects';
-import {getNoti} from './service';
+import {getNoti, markReadAll} from './service';
 
 function* getNotiSaga() {
   try {
@@ -19,7 +20,16 @@ function* getNotiSaga() {
   }
 }
 
+function* markReadAllSaga() {
+  try {
+    yield call(markReadAll);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function* watchNotifySaga() {
   yield takeLatest(GET_NOTIFICATIONS, getNotiSaga);
+  yield takeLatest(MARK_READ_ALL, markReadAllSaga);
 }
 export default watchNotifySaga;
