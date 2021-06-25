@@ -32,6 +32,7 @@ import {
   getAllCmt,
   deletePost,
   updatePost,
+  addNoti,
 } from './service';
 import {
   CLEAR_UPDATE_TEXT,
@@ -66,6 +67,7 @@ function* handleCmt({payload}) {
   try {
     const res = yield call(createCmt, payload);
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
+    yield call(addNoti, {postId: payload.postId, type: 0});
   } catch (error) {
     console.log(error);
   }
@@ -82,8 +84,8 @@ function* handleAllCmt() {
 function* handleDeletePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
-    const res = yield call(deletePost, payload);
-    yield put({type: CONFIRM_DELETE_POST, payload: {newData: res}});
+    yield call(deletePost, payload);
+    yield put({type: CONFIRM_DELETE_POST});
   } catch (error) {
     console.log(error);
   } finally {
@@ -106,9 +108,9 @@ function* handleUpdatePost({payload}) {
     console.log(error);
   } finally {
     yield put({type: POST_LOADING, payload: {loading: false}});
-    yield put({type: CLOSE_MODAL_POST});
     yield put({type: CLEAR_UPDATE_TEXT});
     yield put({type: CLOSE_UPDATE_IMG});
+    yield put({type: CLOSE_MODAL_POST});
   }
 }
 function* watchPostSaga() {

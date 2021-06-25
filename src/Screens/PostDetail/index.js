@@ -19,12 +19,16 @@ import {useSelector, useDispatch} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import auth, {firebase} from '@react-native-firebase/auth';
 import moment from 'moment';
-const LeftContent = img => (
+const LeftContent = (img, navi) => (
   <>
     {img ? (
-      <Avatar.Image source={{uri: img}} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={{uri: img}} size={40} />
+      </Pressable>
     ) : (
-      <Avatar.Image source={avatarImg} size={40} />
+      <Pressable onPress={navi}>
+        <Avatar.Image source={avatarImg} size={40} />
+      </Pressable>
     )}
   </>
 );
@@ -40,11 +44,17 @@ export default function index() {
   const [size, setSize] = useState('');
   const comments = useSelector(state => state.home.comments);
   const [total, setTotal] = useState(0);
-  const [status, setStatus] = useState(true);
+  const [postData, setPostData] = useState('');
+  const [user, setUser] = useState('');
+  const [status, setStatus] = useState('');
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (
+        props.type === 'image/jpeg' ||
+        props.type === 'image/png' ||
+        props.type === 'image/jpg'
+      ) {
         setImgCmt(props);
       }
     });
@@ -57,6 +67,11 @@ export default function index() {
           .collection('post')
           .doc(route.params.postid)
           .get();
+        const data = post.data();
+        setPostData(data);
+        const user = post.data().userId;
+        const userData = await firestore().collection('user').doc(user).get();
+        setUser(userData.data());
         const check = await post.data().like.includes(auth().currentUser.uid);
         setTotal(post.data().like.length);
         if (check) {
@@ -99,7 +114,7 @@ export default function index() {
       type: CMT,
       payload: {
         text: cmt,
-        uid: route.params.currentUser,
+        uid: auth().currentUser.uid,
         postId: route.params.postid,
         imageCmt: imgCmt,
       },
@@ -107,6 +122,15 @@ export default function index() {
     setCmt('');
     setImgCmt('');
   };
+
+  const handleNavi = () => {
+    if (user.id === auth().currentUser.uid) {
+      navigate.navigate('Profile', {id: auth().currentUser.uid});
+    } else {
+      navigate.navigate('Profile-o', {id: user.id, name: user.name});
+    }
+  };
+
   const handleLike = async () => {
     const likes = firestore().collection('post').doc(route.params.postid);
     if (like) {
@@ -130,7 +154,7 @@ export default function index() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
-          <Text style={styles.textHeader}>{route.params.name}'s post</Text>
+          <Text style={styles.textHeader}>{user.name}'s post</Text>
           <Icon
             name="chevron-back"
             size={25}
@@ -143,27 +167,27 @@ export default function index() {
         <View style={styles.container}>
           <Card.Title
             titleStyle={{fontSize: 16, fontWeight: '400'}}
-            title={route.params.name}
-            subtitle={route.params.time}
-            left={() => LeftContent(route.params.avatar)}
+            title={user.name}
+            subtitle={moment(postData.createAt?.toDate()).fromNow()}
+            left={() => LeftContent(user.avatar, handleNavi)}
           />
-          {route.params.text ? (
+          {postData.content ? (
             <Card.Content style={styles.content}>
-              <Paragraph>{route.params.text}</Paragraph>
+              <Paragraph>{postData.content}</Paragraph>
             </Card.Content>
           ) : null}
-          {route.params.image ? (
+          {postData.imageUrl ? (
             <Pressable
               onPress={() => {
                 console.log('sdas');
                 dispatch({
                   type: MODAL_CHANGE_STATE,
-                  payload: {image: route.params.image},
+                  payload: {image: postData.imageUrl},
                 });
               }}>
               <Card.Cover
                 style={styles.cover}
-                source={{uri: route.params.image}}
+                source={{uri: postData.imageUrl}}
               />
             </Pressable>
           ) : null}
