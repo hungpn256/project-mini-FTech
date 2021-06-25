@@ -68,3 +68,52 @@ export const markReadNoti = payload => {
     .doc(payload)
     .update({unread: false});
 };
+
+export const markReadAll = async () => {
+  await firestore()
+    .collection('notification')
+    .where('received', '==', auth().currentUser.uid)
+    .where('unread', '==', true)
+    .get()
+    .then(res => {
+      res.forEach(item => {
+        item.ref.update({unread: false});
+      });
+    });
+};
+export const notiMes = async payload => {
+  const token = payload.token;
+  console.log('token in sendNotification ', token);
+
+  const FIREBASE_API_KEY =
+    'AAAAC4y4wQ0:APA91bHrEX-SGW83b7acyKMgzonPl8KKcu-CMW-CvkTznv3I91_NsjFIgolCtCzTB6YQrtD1p_2d6xUGgJM6syTGs6UpSX4YSh9Yr_2ki2OBMAWIs-D9u1OGJTCmZ-7MDD06UZ8c2zQV';
+  const message = {
+    to: token,
+    notification: {
+      title: payload.title,
+      boby: payload.body,
+      vibrate: 1,
+      sound: 1,
+      show_in_foreground: true,
+      priority: 'high',
+      content_available: true,
+    },
+  };
+
+  let headers = new Headers({
+    'Content-Type': 'application/json',
+    Authorization: 'key=' + FIREBASE_API_KEY,
+  });
+
+  try {
+    let response = await fetch('https://fcm.googleapis.com/fcm/send', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(message),
+    });
+    response = await response.json();
+    console.log('response asd ', response);
+  } catch (error) {
+    console.log('error ', error);
+  }
+};

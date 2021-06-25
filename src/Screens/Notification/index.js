@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect} from 'react';
-import {FlatList, RefreshControl, Text, View} from 'react-native';
+import {FlatList, Pressable, RefreshControl, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Nothing from '../../Components/Nothing';
 import Notification from '../../Components/Notification';
-import {GET_NOTIFICATIONS} from './constants';
+import {GET_NOTIFICATIONS, MARK_READ_ALL} from './constants';
 import styles from './styles';
 export default function NotificationScreen() {
   const dispatch = useDispatch();
@@ -31,18 +31,25 @@ export default function NotificationScreen() {
         data={notifications}
         ListHeaderComponent={() => {
           return (
-            <View>
-              <Text style={styles.headerNoti}>New</Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={styles.headerNoti}>News</Text>
+              <Pressable
+                onPress={() => {
+                  dispatch({type: MARK_READ_ALL});
+                }}>
+                <Text style={styles.headerNoti}>Mark read</Text>
+              </Pressable>
             </View>
           );
         }}
+        ListEmptyComponent={() => <Nothing />}
         renderItem={({item}) => <Notification item={item} />}
         keyExtractor={item => item.id}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={getNoti} />
         }
       />
-      {/* <Nothing /> */}
     </View>
   );
 }
