@@ -1,8 +1,9 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import Nothing from '../../Components/Nothing';
+import Notification from '../../Components/Notification';
 
-export default function Notification() {
+export default function NotificationScreen() {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Text
@@ -15,7 +16,8 @@ export default function Notification() {
         }}>
         Notification
       </Text>
-      <Nothing />
+      {/* <Nothing /> */}
+      <Notification />
     </View>
   );
 }
