@@ -35,7 +35,11 @@ export default function index() {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (
+        props.type === 'image/jpeg' ||
+        props.type === 'image/png' ||
+        props.type === 'image/jpg'
+      ) {
         setImage(props);
       }
     });
@@ -93,7 +97,11 @@ export default function index() {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.type === 'image/jpeg') {
+          if (
+            props.type === 'image/jpeg' ||
+            props.type === 'image/png' ||
+            props.type === 'image/jpg'
+          ) {
             setImage(props);
           }
         });

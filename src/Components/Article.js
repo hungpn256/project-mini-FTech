@@ -20,6 +20,7 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useDispatch} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
+import {addNoti} from '../Screens/Home/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
@@ -127,7 +128,11 @@ const Article = ({text, image, time, uid, postid}) => {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (
+        props.type === 'image/jpeg' ||
+        props.type === 'image/png' ||
+        props.type === 'image/jpg'
+      ) {
         setImgCmt(props);
       }
     });
@@ -152,6 +157,7 @@ const Article = ({text, image, time, uid, postid}) => {
       setLike(true);
       setTotal(prev => prev + 1);
       likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
+      addNoti({postId: postid, type: 1});
     }
   };
 
@@ -195,14 +201,7 @@ const Article = ({text, image, time, uid, postid}) => {
       <Pressable
         onPress={() =>
           navigate.navigate('PostDetail', {
-            text: text,
-            image: image,
-            currentUser: currentUser,
-            avatar: user.avatar,
-            name: user.name,
-            time: time,
             postid: postid,
-            size: size,
           })
         }>
         {text ? (
@@ -232,14 +231,7 @@ const Article = ({text, image, time, uid, postid}) => {
         <Text
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }
           style={styles.cmts}>
@@ -293,14 +285,7 @@ const Article = ({text, image, time, uid, postid}) => {
         <Pressable
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }>
           <View style={styles.cmtWrapper}>
