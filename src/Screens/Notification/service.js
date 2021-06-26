@@ -1,5 +1,6 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {FIREBASE_API_KEY} from '../../index_Constant';
 
 export const addNoti = async payload => {
   const check = firestore()
@@ -85,8 +86,6 @@ export const notiMes = async payload => {
   const token = payload.token;
   console.log('token in sendNotification ', token);
 
-  const FIREBASE_API_KEY =
-    'AAAAC4y4wQ0:APA91bHrEX-SGW83b7acyKMgzonPl8KKcu-CMW-CvkTznv3I91_NsjFIgolCtCzTB6YQrtD1p_2d6xUGgJM6syTGs6UpSX4YSh9Yr_2ki2OBMAWIs-D9u1OGJTCmZ-7MDD06UZ8c2zQV';
   const message = {
     to: token,
     notification: {
