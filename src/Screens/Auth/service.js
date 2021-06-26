@@ -93,12 +93,6 @@ export const logout = async () => {
 
     await auth().signOut();
   } catch (error) {
-    firestore()
-      .collection('user')
-      .doc(auth().currentUser.uid)
-      .update({
-        token: firestore.FieldValue.arrayRemove(token),
-      });
     await auth().signOut();
     console.log(error);
   }

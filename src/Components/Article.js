@@ -18,9 +18,9 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import ThreeDot from 'react-native-vector-icons/Entypo';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
-import {addNoti} from '../Screens/Notification/service';
+import {addNoti, notiMes} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
@@ -44,13 +44,18 @@ const Article = ({text, image, time, uid, postid}) => {
   const [cmt, setCmt] = useState('');
   const [imgCmt, setImgCmt] = useState('');
   const currentUser = auth().currentUser.uid;
+  const curUser = useSelector(state => state.auth.user);
   const [content, setContent] = useState('');
   const [userCmt, setUserCmt] = useState('');
   const navigate = useNavigation();
   const [user, setUser] = useState('');
   const [size, setSize] = useState('');
   const [total, setTotal] = useState(0);
-
+  const payload = {
+    title: 'Bài viết của bạn đã có lượt thích mới',
+    body: `${curUser.name} đã thích bài viết của bạn`,
+    token: user.token,
+  };
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
@@ -60,6 +65,7 @@ const Article = ({text, image, time, uid, postid}) => {
     };
     userInfo();
   });
+
   useEffect(() => {
     const post = async () => {
       if (postid) {
@@ -158,9 +164,11 @@ const Article = ({text, image, time, uid, postid}) => {
       setTotal(prev => prev + 1);
       likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
       addNoti({postId: postid, type: 1});
+      if (user.token && user.token.length > 0) {
+        notiMes(payload);
+      }
     }
   };
-
   const handleNavi = () => {
     if (uid === currentUser) {
       navigate.navigate('Profile', {id: uid});
@@ -201,7 +209,14 @@ const Article = ({text, image, time, uid, postid}) => {
       <Pressable
         onPress={() =>
           navigate.navigate('PostDetail', {
+            text: text,
+            image: image,
+            currentUser: currentUser,
+            avatar: user.avatar,
+            name: user.name,
+            time: time,
             postid: postid,
+            size: size,
           })
         }>
         {text ? (
@@ -231,7 +246,14 @@ const Article = ({text, image, time, uid, postid}) => {
         <Text
           onPress={() =>
             navigate.navigate('PostDetail', {
+              text: text,
+              image: image,
+              currentUser: currentUser,
+              avatar: user.avatar,
+              name: user.name,
+              time: time,
               postid: postid,
+              size: size,
             })
           }
           style={styles.cmts}>
@@ -285,7 +307,14 @@ const Article = ({text, image, time, uid, postid}) => {
         <Pressable
           onPress={() =>
             navigate.navigate('PostDetail', {
+              text: text,
+              image: image,
+              currentUser: currentUser,
+              avatar: user.avatar,
+              name: user.name,
+              time: time,
               postid: postid,
+              size: size,
             })
           }>
           <View style={styles.cmtWrapper}>
@@ -319,6 +348,7 @@ const Article = ({text, image, time, uid, postid}) => {
     </Card>
   ) : null;
 };
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({

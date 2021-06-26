@@ -84,14 +84,15 @@ export const markReadAll = async () => {
 export const notiMes = async payload => {
   const token = payload.token;
   console.log('token in sendNotification ', token);
-
+  console.log('body in notification', payload.body);
+  console.log('title in notification', payload.title);
   const FIREBASE_API_KEY =
     'AAAAC4y4wQ0:APA91bHrEX-SGW83b7acyKMgzonPl8KKcu-CMW-CvkTznv3I91_NsjFIgolCtCzTB6YQrtD1p_2d6xUGgJM6syTGs6UpSX4YSh9Yr_2ki2OBMAWIs-D9u1OGJTCmZ-7MDD06UZ8c2zQV';
   const message = {
-    to: token,
+    to: token.toString(),
     notification: {
-      title: payload.title,
-      boby: payload.body,
+      title: payload.title.toString(),
+      boby: payload.body.toString(),
       vibrate: 1,
       sound: 1,
       show_in_foreground: true,

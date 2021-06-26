@@ -32,13 +32,15 @@ import {
   getAllCmt,
   deletePost,
   updatePost,
+  dataUser,
+  postReceived,
 } from './service';
 import {
   CLEAR_UPDATE_TEXT,
   CLOSE_CONFIRM,
   CLOSE_UPDATE_IMG,
 } from '../ModalPostConfig/contants';
-import {addNoti} from '../Notification/service';
+import {addNoti, notiMes} from '../Notification/service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -66,8 +68,17 @@ function* handleGetPost() {
 function* handleCmt({payload}) {
   try {
     const res = yield call(createCmt, payload);
+    const userCmt = yield call(dataUser);
+    const received = yield call(postReceived, {postId: payload.postId});
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
     yield call(addNoti, {postId: payload.postId, type: 0});
+    if (received.token && received.token.length > 0) {
+      yield call(notiMes, {
+        title: 'Bài viết của bạn đã có một bình luận mới',
+        body: `${userCmt.name} đã bình luận vào bài viết của bạn`,
+        token: received.token,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
