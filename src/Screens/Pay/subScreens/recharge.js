@@ -27,7 +27,7 @@ const Recharge = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text>Số dư tài khoản: {userMoney.money} đ</Text>
+        <Text style={styles.textHeader}>Số dư tài khoản: {userMoney.money} đ</Text>
         <TextInput
           placeholder="Nhập số tiền cần nạp"
           keyboardType="numeric"
@@ -64,22 +64,28 @@ const Recharge = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
+
   content: {
     flex: 0.4,
     alignItems: 'center',
     margin: '2%',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ABB2B9',
+    backgroundColor: 'white',
   },
+
   input: {
     margin: '1%',
     width: '80%',
     borderWidth: 1,
     borderColor: '#ABB2B9',
     borderRadius: 10,
+  },
+  textHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: '3%',
+    color: '#4169e1',
   },
   text: {
     fontSize: 18,

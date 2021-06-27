@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  Alert,
 } from 'react-native';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import styles from './styles';
@@ -33,8 +34,7 @@ export default function Pay({navigation}) {
   console.log(userMoney);
   console.log('====================================');
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <>
         <View style={styles.header1}>
           <Pressable
             style={{flexDirection: 'row', alignItems: 'center'}}
@@ -47,7 +47,7 @@ export default function Pay({navigation}) {
           </Pressable>
           <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>
         </View>
-        <Divider />
+        <ScrollView>
         <View style={styles.header2}>
           <TouchableOpacity style={styles.touchOpacityHeader}>
             <AntDesign name="scan1" size={50} color={'white'} />
@@ -82,16 +82,23 @@ export default function Pay({navigation}) {
             <Text style={styles.textHeader}>Rút tiền</Text>
           </TouchableOpacity>
         </View>
-      </View>
-      <ScrollView></ScrollView>
+
       <View style={styles.body}>
         <TouchableOpacity
           style={styles.touchOpacityBody}
           onPress={() => {
-            Alert.alert('Chức năng đang phát triển');
+              navigation.navigate('LuckyWheel');
           }}>
           <Ionicons name="game-controller" size={40} color={'#EC7063'} />
-          <Text>Thẻ game</Text>
+          <Text>Quay thưởng</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.touchOpacityBody}
+          onPress={() => {
+            navigation.navigate('ExchangeRate');
+        }}>
+          <FontAwesome name="balance-scale" size={40} color={'#839192'} />
+          <Text>Tỉ giá</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.touchOpacityBody}
@@ -141,14 +148,7 @@ export default function Pay({navigation}) {
           <Ionicons name="fast-food" size={40} color={'#AF7AC5'} />
           <Text>Đồ ăn</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.touchOpacityBody}
-          onPress={() => {
-            Alert.alert('Chức năng đang phát triển');
-          }}>
-          <FontAwesome name="balance-scale" size={40} color={'#839192'} />
-          <Text>Tỉ giá</Text>
-        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.touchOpacityBody}
           onPress={() => {
@@ -173,7 +173,9 @@ export default function Pay({navigation}) {
           )}
         />
       </View>
-    </View>
+      </ScrollView>
+
+    </>
   );
 }
 // export default Pay;
