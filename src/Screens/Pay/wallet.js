@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import {Avatar, Divider} from 'react-native-paper';
 import {useSelector} from 'react-redux';
