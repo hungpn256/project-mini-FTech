@@ -41,7 +41,7 @@ export default function index() {
       setAll([]);
       setLoad(true);
     };
-  }, [postId]);
+  }, []);
 
   const handleNavi = (uid, userName) => {
     if (uid === auth().currentUser.uid) {
