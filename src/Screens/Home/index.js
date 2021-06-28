@@ -36,7 +36,15 @@ const Home = ({navigation}) => {
   return (
     <>
       <View style={styles.header}>
-        <Text style={{fontSize: 25, backgroundColor: '#fff'}}>Logo</Text>
+        <Text
+          style={{
+            fontSize: 25,
+            fontWeight: 'bold',
+            color: '#1777F2',
+            backgroundColor: '#fff',
+          }}>
+          CoinCoin
+        </Text>
         <View style={styles.groupBtn}>
           <View style={styles.wrapperIcon}>
             <Fontisto
