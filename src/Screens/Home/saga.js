@@ -76,12 +76,15 @@ function* handleCmt({payload}) {
     if (received.token && received.token.length > 0) {
       yield call(notiMes, {
         title: `${userCmt.name} đã bình luận vào bài viết của bạn`,
-        body: payload.imageCmt
-          ? `${userCmt.name} đã bình luận một hình ảnh`
-          : payload.text,
+        body:
+          res.content?.length > 0
+            ? res.content
+            : `${userCmt.name} đã bình luận một hình ảnh`,
         token: received.token,
+        image: res?.image ?? null,
       });
     }
+    console.log(res, 'ré cmt');
   } catch (error) {
     console.log(error);
   }
