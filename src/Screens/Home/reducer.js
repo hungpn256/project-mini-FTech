@@ -6,6 +6,7 @@ import {
   GET_ALL_CMT,
   CONFIRM_DELETE_POST,
   CONFIRM_UPDATE_POST,
+  HOME_CHANGE_STATE,
 } from './constants';
 const initialState = {
   post: [],
@@ -30,6 +31,11 @@ const reducer = (state = initialState, action) => {
       return {...state};
     case CONFIRM_UPDATE_POST:
       return {...state};
+    case HOME_CHANGE_STATE:
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

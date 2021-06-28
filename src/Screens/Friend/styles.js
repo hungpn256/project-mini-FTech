@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     marginLeft: 12,
-    marginTop: 4,
   },
   action: {
     flexDirection: 'row',
