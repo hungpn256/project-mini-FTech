@@ -87,9 +87,7 @@ function* handleCmt({payload}) {
         token: received.token,
         image: res?.image ?? null,
         data: {
-          article: {
-            id: payload.postId,
-          },
+          article: payload.postId,
         },
       });
     }

@@ -58,9 +58,7 @@ const Article = ({text, image, time, uid, postid}) => {
     body: `${curUser.name} đã thích bài viết của bạn`,
     token: user.token,
     data: {
-      article: {
-        id: postid,
-      },
+      article: postid,
     },
   };
   useEffect(() => {
