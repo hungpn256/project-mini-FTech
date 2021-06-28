@@ -42,7 +42,7 @@ const Register = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ImageBackground style={styles.background} source={BG}>
           <Loading loading={loading} />
           <View style={styles.overlay}>
@@ -82,7 +82,7 @@ const Register = () => {
                 Already have an account ?{' '}
                 <Text
                   onPress={() => navigate.navigate('Login')}
-                  style={{fontWeight: 'bold', color: 'white'}}>
+                  style={{fontWeight: 'bold', color: '#696969'}}>
                   Sign in
                 </Text>
               </Text>

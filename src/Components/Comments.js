@@ -8,8 +8,10 @@ import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 import {useSelector, useDispatch} from 'react-redux';
 import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
+import {useNavigation} from '@react-navigation/native';
 export default function Comments({userId, cmtId, time, content, image}) {
   const [user, setUser] = useState();
+  const navigate = useNavigation();
   const dispatch = useDispatch();
   useEffect(() => {
     const userInfo = async () => {
@@ -21,18 +23,36 @@ export default function Comments({userId, cmtId, time, content, image}) {
     userInfo();
   }, []);
 
+  const handleNavi = () => {
+    if (user.id === auth().currentUser.uid) {
+      navigate.navigate('Profile', {id: auth().currentUser.uid});
+    } else {
+      navigate.navigate('Profile-o', {id: user.id, name: user.name});
+    }
+  };
+
   return (
     <View style={styles.cmtWrapper}>
       {user ? (
         <>
           <View style={styles.AvatarCmt}>
             {user.avatar ? (
-              <Avatar.Image source={{uri: user.avatar}} size={40} />
+              <Pressable onPress={handleNavi}>
+                <View style={styles.avatar}>
+                  <Avatar.Image source={{uri: user.avatar}} size={40} />
+                </View>
+              </Pressable>
             ) : (
-              <Avatar.Image source={avatarImg} size={40} />
+              <Pressable onPress={handleNavi}>
+                <View style={styles.avatar}>
+                  <Avatar.Image source={avatarImg} size={40} />
+                </View>
+              </Pressable>
             )}
             <View style={styles.cmt}>
-              <Text style={styles.userName}>{user.name}</Text>
+              <Text onPress={handleNavi} style={styles.userName}>
+                {user.name}
+              </Text>
               {content ? <Text>{content}</Text> : null}
             </View>
           </View>
@@ -83,6 +103,11 @@ export const styles = StyleSheet.create({
     borderRadius: 18,
     width: windowWidth * 0.4,
     height: windowHeight * 0.3,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
   },
   cmtGroup: {marginTop: 2, marginLeft: 50},
   AvatarCmt: {

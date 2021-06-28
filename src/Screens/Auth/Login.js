@@ -36,46 +36,44 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <ImageBackground style={styles.background} source={BG}>
-          <Loading loading={loading} />
-          <View style={styles.overlay}>
-            <View style={styles.LogoStyle}>
-              <Image source={Logo} style={styles.LogoSize} />
-            </View>
-            <View style={styles.quote}>
-              <Text style={styles.textQuote}>
-                Coin social media app. We connect people !
-              </Text>
-            </View>
-            <View style={styles.input}>
-              <TextInput
-                placeholder="Email"
-                onChangeText={text => setEmail(text)}
-              />
-              <TextInput
-                placeholder="Password"
-                onChangeText={text => setPass(text)}
-                secure={true}
-              />
-            </View>
-            <View style={styles.btn}>
-              <FButton Name="Sign in" handlePress={handleLogin} />
-            </View>
-            <Decor />
-            <View style={styles.btn}>
-              <FButton handlePress={handleGoogle} Name="Sign in with google " />
-              <Text style={[styles.textStyle, {marginBottom: 10}]}>
-                Don't have an account ?{' '}
-                <Text
-                  onPress={() => navigate.navigate('Register')}
-                  style={{fontWeight: 'bold', color: 'white'}}>
-                  Sign Up
-                </Text>
-              </Text>
-            </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Loading loading={loading} />
+        <View style={styles.overlay}>
+          <View style={styles.LogoStyle}>
+            <Image source={Logo} style={styles.LogoSize} />
           </View>
-        </ImageBackground>
+          <View style={styles.quote}>
+            <Text style={styles.textQuote}>
+              Coin social media app. We connect people !
+            </Text>
+          </View>
+          <View style={styles.input}>
+            <TextInput
+              placeholder="Email"
+              onChangeText={text => setEmail(text)}
+            />
+            <TextInput
+              placeholder="Password"
+              onChangeText={text => setPass(text)}
+              secure={true}
+            />
+          </View>
+          <View style={styles.btn}>
+            <FButton Name="Sign in" handlePress={handleLogin} />
+          </View>
+          <Decor />
+          <View style={styles.btn}>
+            <FButton handlePress={handleGoogle} Name="Sign in with google " />
+            <Text style={[styles.textStyle, {marginBottom: 10}]}>
+              Don't have an account ?{' '}
+              <Text
+                onPress={() => navigate.navigate('Register')}
+                style={{fontWeight: 'bold', color: '#696969'}}>
+                Sign Up
+              </Text>
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );

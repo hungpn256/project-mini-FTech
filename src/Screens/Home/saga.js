@@ -32,12 +32,15 @@ import {
   getAllCmt,
   deletePost,
   updatePost,
+  dataUser,
+  postReceived,
 } from './service';
 import {
   CLEAR_UPDATE_TEXT,
   CLOSE_CONFIRM,
   CLOSE_UPDATE_IMG,
 } from '../ModalPostConfig/contants';
+import {addNoti, notiMes} from '../Notification/service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -65,7 +68,17 @@ function* handleGetPost() {
 function* handleCmt({payload}) {
   try {
     const res = yield call(createCmt, payload);
+    const userCmt = yield call(dataUser);
+    const received = yield call(postReceived, {postId: payload.postId});
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
+    yield call(addNoti, {postId: payload.postId, type: 0});
+    if (received.token && received.token.length > 0) {
+      yield call(notiMes, {
+        title: 'Bài viết của bạn đã có một bình luận mới',
+        body: `${userCmt.name} đã bình luận vào bài viết của bạn`,
+        token: received.token,
+      });
+    }
   } catch (error) {
     console.log(error);
   }
@@ -82,8 +95,8 @@ function* handleAllCmt() {
 function* handleDeletePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
-    const res = yield call(deletePost, payload);
-    yield put({type: CONFIRM_DELETE_POST, payload: {newData: res}});
+    yield call(deletePost, payload);
+    yield put({type: CONFIRM_DELETE_POST});
   } catch (error) {
     console.log(error);
   } finally {
@@ -91,12 +104,6 @@ function* handleDeletePost({payload}) {
     yield put({type: CLOSE_CONFIRM});
   }
 }
-// function* handleGetMore() {
-//   try {
-//     const res = yield call(getMore);
-//     yield put({type: MORE_POST, payload: {more: res}});
-//   } catch (error) {}
-// }
 function* handleUpdatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
@@ -106,9 +113,9 @@ function* handleUpdatePost({payload}) {
     console.log(error);
   } finally {
     yield put({type: POST_LOADING, payload: {loading: false}});
-    yield put({type: CLOSE_MODAL_POST});
     yield put({type: CLEAR_UPDATE_TEXT});
     yield put({type: CLOSE_UPDATE_IMG});
+    yield put({type: CLOSE_MODAL_POST});
   }
 }
 function* watchPostSaga() {
