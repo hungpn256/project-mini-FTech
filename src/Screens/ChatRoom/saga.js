@@ -68,17 +68,19 @@ function* sendMesSaga({payload}) {
     const user = yield select(
       state => state.chat.conversation[payload.roomId].users,
     );
+    const me = yield select(state => state.auth.user);
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
     yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
-    if (user.token && user.token.length > 0) {
+    if (oUser.token && oUser.token.length > 0) {
       yield call(notiMes, {
-        title: `${user.name} đã gửi tin nhắn cho bạn`,
+        title: `${me.name} đã gửi tin nhắn cho bạn`,
         body: payload.messages[0].image
           ? 'bạn đã nhận được 1 hình ảnh'
           : payload.messages[0].text,
         token: oUser.token,
         image: payload.messages[0]?.image ?? null,
       });
+      console.log('success send noti');
     }
     console.log('send done');
   } catch (e) {
