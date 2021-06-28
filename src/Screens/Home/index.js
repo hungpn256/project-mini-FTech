@@ -59,12 +59,12 @@ const Home = () => {
           );
           if (remoteMessage.data.article) {
             navigation.navigate('PostDetail', {
-              postid: remoteMessage.data.article.id,
+              postid: remoteMessage.data.article,
             });
           } else if (remoteMessage.data.messenger) {
             navigation.navigate('Messenger', {
-              roomId: remoteMessage.data.messenger.id,
-              name: remoteMessage.data.messenger.name,
+              roomId: remoteMessage.data.messenger,
+              name: remoteMessage.data.name,
             });
           }
         }
