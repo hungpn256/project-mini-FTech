@@ -70,12 +70,15 @@ function* handleCmt({payload}) {
     const res = yield call(createCmt, payload);
     const userCmt = yield call(dataUser);
     const received = yield call(postReceived, {postId: payload.postId});
+    console.log(received + 'receiveddd');
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
     yield call(addNoti, {postId: payload.postId, type: 0});
     if (received.token && received.token.length > 0) {
       yield call(notiMes, {
-        title: 'Bài viết của bạn đã có một bình luận mới',
-        body: `${userCmt.name} đã bình luận vào bài viết của bạn`,
+        title: `${userCmt.name} đã bình luận vào bài viết của bạn`,
+        body: payload.imageCmt
+          ? `${userCmt.name} đã bình luận một hình ảnh`
+          : payload.text,
         token: received.token,
       });
     }
