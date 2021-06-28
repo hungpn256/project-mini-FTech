@@ -76,7 +76,7 @@ function* sendMesSaga({payload}) {
         body: payload.messages[0].image
           ? 'bạn đã nhận được 1 hình ảnh'
           : payload.messages[0].text,
-        token: oUser.token,
+        token: oUser.token[0],
       });
     }
     console.log('send done');
