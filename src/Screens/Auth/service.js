@@ -79,26 +79,19 @@ export const login = async ({email, pass}) => {
 
 export const logout = async () => {
   const token = await messaging().getToken();
+  await firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .update({
+      token: firestore.FieldValue.arrayRemove(token),
+    });
   try {
     // if (GoogleSignin.getTokens) {
-    firestore()
-      .collection('user')
-      .doc(auth().currentUser.uid)
-      .update({
-        token: firestore.FieldValue.arrayRemove(token),
-      });
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
     // }
-
     await auth().signOut();
   } catch (error) {
-    firestore()
-      .collection('user')
-      .doc(auth().currentUser.uid)
-      .update({
-        token: firestore.FieldValue.arrayRemove(token),
-      });
     await auth().signOut();
     console.log(error);
   }

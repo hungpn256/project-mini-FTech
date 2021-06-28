@@ -85,12 +85,11 @@ export const markReadAll = async () => {
 export const notiMes = async payload => {
   const token = payload.token;
   console.log('token in sendNotification ', token);
-
   const message = {
-    to: token,
+    to: token.toString(),
     notification: {
-      title: payload.title,
-      boby: payload.body,
+      title: payload.title.toString(),
+      boby: payload.body.toString(),
       vibrate: 1,
       sound: 1,
       show_in_foreground: true,
