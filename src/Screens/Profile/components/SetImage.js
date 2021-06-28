@@ -73,8 +73,14 @@ export default function SetImage({setImage, style}) {
                   }}
                 />
                 <List.Item
-                  title="camera"
-                  left={() => <FontAwesome name="camera" size={25} />}
+                  title="Close"
+                  left={() => (
+                    <FontAwesome
+                      name="close"
+                      size={25}
+                      style={{marginHorizontal: 4}}
+                    />
+                  )}
                   onPress={() => setVisible(false)}
                 />
               </List.Section>

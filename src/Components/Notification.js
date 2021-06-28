@@ -7,6 +7,8 @@ import {useNavigation} from '@react-navigation/native';
 import {markReadNoti} from '../Screens/Notification/service';
 import {useDispatch} from 'react-redux';
 import {MARK_READ_NOTIFICATION} from '../Screens/Notification/constants';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 export default function Notification({item}) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -28,9 +30,33 @@ export default function Notification({item}) {
           }}
           size={65}
         />
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 4,
+            right: -4,
+            backgroundColor: item.type === 1 ? '#1777F2' : '#2ECC71',
+            borderRadius: 999,
+          }}>
+          {item.type === 1 ? (
+            <AntDesign
+              name="like1"
+              color="#fff"
+              size={13}
+              style={{padding: 5}}
+            />
+          ) : (
+            <FontAwesome
+              name="comment"
+              color="#fff"
+              size={13}
+              style={{padding: 5}}
+            />
+          )}
+        </View>
       </View>
       <View style={styles.content}>
-        <Text style={[styles.text, {color: item.unread ? '#123' : '#555'}]}>
+        <Text style={[styles.text, {color: '#000'}]}>
           <Text style={styles.name}>
             {item.users.map(u => u.name).join(', ')}
           </Text>{' '}
@@ -65,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 16,
+    fontSize: 15,
   },
   name: {
     fontWeight: '700',

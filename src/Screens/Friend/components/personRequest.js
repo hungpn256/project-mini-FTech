@@ -13,7 +13,12 @@ const PersonRequest = ({item, accept, deleteFriend, isFriend}) => {
         onPress={() => {
           navigation.navigate('Profile-o', {id: item.id, name: item.name});
         }}>
-        <Avatar.Image source={{uri: item.avatar || avatarDefault}} size={80} />
+        <View style={{borderWidth: 1, borderColor: '#eee', borderRadius: 999}}>
+          <Avatar.Image
+            source={{uri: item.avatar || avatarDefault}}
+            size={65}
+          />
+        </View>
       </Pressable>
       <View>
         <Text style={styles.name}>{item.name}</Text>

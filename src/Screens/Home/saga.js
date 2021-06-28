@@ -22,6 +22,7 @@ import {
   CONFIRM_DELETE_POST,
   CONFIRM_UPDATE_POST,
   UPDATE_POST,
+  HOME_CHANGE_STATE,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
 import {
@@ -58,11 +59,14 @@ function* handleCreatePost({payload}) {
 
 function* handleGetPost() {
   try {
+    yield put({type: HOME_CHANGE_STATE, payload: {refreshing: true}});
     const res = yield call(getAll);
     console.log(res);
     yield put({type: ALL_POST, payload: {data: res}});
   } catch (err) {
     console.log(err);
+  } finally {
+    yield put({type: HOME_CHANGE_STATE, payload: {refreshing: false}});
   }
 }
 function* handleCmt({payload}) {
@@ -82,6 +86,11 @@ function* handleCmt({payload}) {
             : `${userCmt.name} đã bình luận một hình ảnh`,
         token: received.token,
         image: res?.image ?? null,
+        data: {
+          article: {
+            id: payload.postId,
+          },
+        },
       });
     }
     console.log(res, 'ré cmt');
