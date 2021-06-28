@@ -12,6 +12,7 @@ import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
+import ModalLike from './src/Screens/ModalLike';
 import messaging from '@react-native-firebase/messaging';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
