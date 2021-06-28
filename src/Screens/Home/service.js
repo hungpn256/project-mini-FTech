@@ -59,8 +59,8 @@ export const createCmt = async ({text, uid, postId, imageCmt}) => {
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     const cmtId = cmt.id;
-    const cmtData = getCmt(cmtId);
-    return {id: cmtId, ...cmtData};
+    const cmtData = await cmt.get();
+    return {id: cmtId, ...cmtData.data()};
   } catch (error) {
     console.log(error);
     return false;
