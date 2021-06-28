@@ -30,7 +30,11 @@ export default function PostArticle({editable}) {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (
+        props.type === 'image/jpeg' ||
+        props.type === 'image/png' ||
+        props.type === 'image/jpg'
+      ) {
         dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
       }
     });
@@ -51,7 +55,11 @@ export default function PostArticle({editable}) {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.type === 'image/jpeg') {
+          if (
+            props.type === 'image/jpeg' ||
+            props.type === 'image/png' ||
+            props.type === 'image/jpg'
+          ) {
             dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
           }
         });
