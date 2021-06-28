@@ -71,6 +71,7 @@ export default function ChatRoom({navigation}) {
                       }
                       navigation.navigate('Messenger', {
                         roomId: room[0],
+                        name: userSearch.name,
                       });
                     }}>
                     <Avatar.Image

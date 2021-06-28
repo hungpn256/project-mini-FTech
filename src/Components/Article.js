@@ -17,7 +17,7 @@ import {Avatar, Card, Paragraph} from 'react-native-paper';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import ThreeDot from 'react-native-vector-icons/Entypo';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
 import {addNoti, notiMes} from '../Screens/Notification/service';
@@ -55,6 +55,11 @@ const Article = ({text, image, time, uid, postid}) => {
     title: 'Bài viết của bạn đã có lượt thích mới',
     body: `${curUser.name} đã thích bài viết của bạn`,
     token: user.token,
+    data: {
+      article: {
+        id: postid,
+      },
+    },
   };
   useEffect(() => {
     const userInfo = async () => {
@@ -163,7 +168,10 @@ const Article = ({text, image, time, uid, postid}) => {
       setLike(true);
       setTotal(prev => prev + 1);
       likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
-      addNoti({postId: postid, type: 1});
+      addNoti({
+        postId: postid,
+        type: 1,
+      });
       if (user.token && user.token.length > 0) {
         notiMes(payload);
       }
@@ -185,7 +193,7 @@ const Article = ({text, image, time, uid, postid}) => {
   };
 
   return user ? (
-    <Card mode="outlined" style={styles.container}>
+    <Card style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={user.name}
@@ -209,14 +217,7 @@ const Article = ({text, image, time, uid, postid}) => {
       <Pressable
         onPress={() =>
           navigate.navigate('PostDetail', {
-            text: text,
-            image: image,
-            currentUser: currentUser,
-            avatar: user.avatar,
-            name: user.name,
-            time: time,
             postid: postid,
-            size: size,
           })
         }>
         {text ? (
@@ -246,14 +247,7 @@ const Article = ({text, image, time, uid, postid}) => {
         <Text
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }
           style={styles.cmts}>
@@ -279,13 +273,17 @@ const Article = ({text, image, time, uid, postid}) => {
         </Pressable>
         <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
-            <FontistoIcon color="#696969" name="comment" size={20} />
+            <FontistoIcon color="#696969" name="comment" size={18} />
             <Text style={[styles.actionText, {color: '#696969'}]}>Comment</Text>
           </View>
         </Pressable>
         <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
-            <SimpleLineIcons name="share" color="#696969" size={20} />
+            <MaterialCommunityIcons
+              name="share-outline"
+              color="#696969"
+              size={20}
+            />
             <Text style={[styles.actionText, {color: '#696969'}]}>Share</Text>
           </View>
         </Pressable>
@@ -307,14 +305,7 @@ const Article = ({text, image, time, uid, postid}) => {
         <Pressable
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }>
           <View style={styles.cmtWrapper}>

@@ -132,7 +132,7 @@ const TabNavigator = () => {
       })}
       tabBarOptions={{
         activeTintColor: '#1777F2',
-        inactiveTintColor: '#777',
+        inactiveTintColor: '#676356',
         showLabel: false,
       }}>
       <Tab.Screen name="Home" component={Home} />

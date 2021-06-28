@@ -99,6 +99,9 @@ export const notiMes = async payload => {
       priority: 'high',
       content_available: true,
     },
+    data: {
+      navigate: payload?.navigate ?? 'Friends',
+    },
   };
 
   let headers = new Headers({

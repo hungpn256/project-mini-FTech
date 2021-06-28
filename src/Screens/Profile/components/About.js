@@ -35,7 +35,7 @@ export default function About({user}) {
       {user.phoneNumber.length > 0 && (
         <List.Item
           title="Phone number"
-          description="0584051516"
+          description={user.phoneNumber}
           left={() => (
             <List.Icon
               style={{backgroundColor: '#777', borderRadius: 999}}
