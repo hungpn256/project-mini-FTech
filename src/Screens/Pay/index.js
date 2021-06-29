@@ -27,9 +27,6 @@ const ImageCarousel = [
   {image: require('./assets/4.jpg')},
 ];
 
-function formatMoney(n, currency = '') {
-  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
 // Pay = () => {
 export default function Pay({navigation}) {
   const userMoney = useSelector(state => state.auth.user);
@@ -37,59 +34,59 @@ export default function Pay({navigation}) {
   console.log(userMoney);
   console.log('====================================');
   return (
-    <View style={styles.container}>
-        <View style={styles.header1}>
-          <Pressable
-            style={{flexDirection: 'row', alignItems: 'center'}}
-            onPress={() => {
-              console.log('sda');
-              navigation.navigate('#');
-            }}>
-            <Ionicons name="chevron-back" color="#fff" size={40} />
-            <Text style={styles.textHeader1}>Home</Text>
-          </Pressable>
-          <Text style={styles.textHeader1}>Số dư : {formatMoney(userMoney.money)} đ</Text>
-        </View>
-        <View style={styles.header2}>
-          <TouchableOpacity style={styles.touchOpacityHeader}>
-            <AntDesign name="scan1" size={50} color={'white'} />
-            <Text style={styles.textHeader}>Quét mã</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchOpacityHeader}
-            onPress={() => {
-              navigation.navigate('Recharge');
-            }}>
-            <MaterialCommunityIcons
-              name="wallet-plus-outline"
-              size={50}
-              color={'white'}
-            />
-            <Text style={styles.textHeader}>Nạp tiền</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchOpacityHeader}
-            onPress={() => {
-              navigation.navigate('Transfers');
-            }}>
-            <FontAwesome name="exchange" size={50} color={'white'} />
-            <Text style={styles.textHeader}>Chuyển tiền</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.touchOpacityHeader}
-            onPress={() => {
-              navigation.navigate('WithDraw');
-            }}>
-            <AntDesign name="wallet" size={50} color={'white'} />
-            <Text style={styles.textHeader}>Rút tiền</Text>
-          </TouchableOpacity>
-        </View>
+    <>
+      <View style={styles.header1}>
+        <Pressable
+          style={{flexDirection: 'row', alignItems: 'center'}}
+          onPress={() => {
+            console.log('sda');
+            navigation.navigate('#');
+          }}>
+          <Ionicons name="chevron-back" color="#fff" size={40} />
+          <Text style={styles.textHeader1}>Home</Text>
+        </Pressable>
+        <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>
+      </View>
+      <View style={styles.header2}>
+        <TouchableOpacity style={styles.touchOpacityHeader}>
+          <AntDesign name="scan1" size={50} color={'white'} />
+          <Text style={styles.textHeader}>Quét mã</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.touchOpacityHeader}
+          onPress={() => {
+            navigation.navigate('Recharge');
+          }}>
+          <MaterialCommunityIcons
+            name="wallet-plus-outline"
+            size={50}
+            color={'white'}
+          />
+          <Text style={styles.textHeader}>Nạp tiền</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.touchOpacityHeader}
+          onPress={() => {
+            navigation.navigate('Transfers');
+          }}>
+          <FontAwesome name="exchange" size={50} color={'white'} />
+          <Text style={styles.textHeader}>Chuyển tiền</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.touchOpacityHeader}
+          onPress={() => {
+            navigation.navigate('WithDraw');
+          }}>
+          <AntDesign name="wallet" size={50} color={'white'} />
+          <Text style={styles.textHeader}>Rút tiền</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.body}>
         <TouchableOpacity
           style={styles.touchOpacityBody}
           onPress={() => {
-              navigation.navigate('LuckyWheel');
+            navigation.navigate('LuckyWheel');
           }}>
           <Ionicons name="game-controller" size={40} color={'#EC7063'} />
           <Text>Quay thưởng</Text>
@@ -98,7 +95,7 @@ export default function Pay({navigation}) {
           style={styles.touchOpacityBody}
           onPress={() => {
             navigation.navigate('ExchangeRate');
-        }}>
+          }}>
           <FontAwesome name="balance-scale" size={40} color={'#839192'} />
           <Text>Tỉ giá</Text>
         </TouchableOpacity>
@@ -175,7 +172,6 @@ export default function Pay({navigation}) {
           )}
         />
       </View>
-      </View>
+    </>
   );
 }
-// export default Pay;
