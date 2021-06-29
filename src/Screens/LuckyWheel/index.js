@@ -7,5 +7,5 @@ const LuckyWheel = () => {
       <Text>aloooôoo</Text>
     </View>
   );
-}
+};
 export default LuckyWheel;
