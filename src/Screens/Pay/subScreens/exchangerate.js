@@ -5,36 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  FlatList,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 import DropDownPicker from 'react-native-dropdown-picker';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-async function getData() {
-  const listCurrency = ['USD', 'CNY', 'EUR', 'AUD', 'SGD', 'JPY', 'GBP', 'CHF'];
-  const listCurrencyUpdate = [''];
-  try {
-    console.log('-------------------start request----------------------');
-    const response = await axios.get(
-      'https://v6.exchangerate-api.com/v6/c5025aa66454926be950d407/latest/VND',
-    );
-    // console.log('USD :'+ response.data.conversion_rates.USD);
-    // console.log('JPY :'+ response.data.conversion_rates.JPY);
-    // listCurrency.forEach(item => {
-    //     // listCurrencyUpdate.push(response.data.conversion_rates.element);
-    //     console.log(response.data.conversion_rates.item)
-    // });
-    var result = response.data.conversion_rates;
-    for (const item in result) {
-      if (listCurrency.includes(item)) console.log(item, result[item]);
-    }
-  } catch (error) {
-    // handle error
-    console.log(error.message);
-  }
-  console.log(
-    '-------------------end request --------------------------------',
-  );
+function formatMoney(n, currency = '') {
+  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 const ExchangeRate = () => {
@@ -55,56 +33,6 @@ const ExchangeRate = () => {
   ]);
   const [valueInput, setValueInput] = useState();
   const [valueOutput, setValueOutput] = useState();
-  const [listCurrencyValue, setListCurrencyValue] = useState([]);
-  const [listCurrencyName, setListCurrencyName] = useState([]);
-
-  const showExchangeRate = () => {
-    const listCurrency = [
-      'USD',
-      'CNY',
-      'EUR',
-      'AUD',
-      'SGD',
-      'JPY',
-      'GBP',
-      'CHF',
-    ];
-    listCurrency.forEach(element => {
-      exchangeRateForShow(element, 'VND');
-    });
-  };
-
-  const exchangeRateForShow = (fromCurrency, toCurrency) => {
-    let url =
-      'https://v6.exchangerate-api.com/v6/c5025aa66454926be950d407/latest/' +
-      fromCurrency;
-    getData();
-    async function getData() {
-      try {
-        console.log('-------------------start request----------------------');
-        const response = await axios.get(url);
-        var result = response.data.conversion_rates;
-        for (const item in result) {
-          if (item === toCurrency) {
-            console.log(fromCurrency + ':' + item, result[item]);
-            setListCurrencyValue(listCurrencyValue => [
-              ...listCurrencyValue,
-              result[item],
-            ]);
-            setListCurrencyName(listCurrencyName => [
-              ...listCurrencyName,
-              fromCurrency,
-            ]);
-          }
-        }
-      } catch (error) {
-        // handle error
-        console.log(error.message);
-      }
-      console.log('-------------------end request ------------------------');
-    }
-  };
-
   const exchangeRate = (fromCurrency, toCurrency) => {
     let url =
       'https://v6.exchangerate-api.com/v6/c5025aa66454926be950d407/latest/' +
@@ -132,7 +60,7 @@ const ExchangeRate = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.body}>
+      <View style={styles.body1}>
         <DropDownPicker
           open={open1}
           value={value1}
@@ -153,6 +81,7 @@ const ExchangeRate = () => {
             setOpen2(false);
           }}
         />
+        <FontAwesome name="forward" size={30} color="#1777F2" />
         <DropDownPicker
           open={open2}
           value={value2}
@@ -174,9 +103,11 @@ const ExchangeRate = () => {
         />
       </View>
 
-      <View style={styles.body}>
+      <View style={styles.body2}>
         <TextInput
+          style={styles.textInput}
           placeholder="Nhập số tiền"
+          placeholderTextColor="white"
           keyboardType="numeric"
           value={Number(valueInput)}
           onChangeText={text => {
@@ -190,48 +121,99 @@ const ExchangeRate = () => {
             }
           }}
         />
-        <Text>
-          {value1}= {valueOutput} {value2}
-        </Text>
+        <FontAwesome name="forward" size={30} color="#b9b8ba" />
+        <View style={styles.textOutput}>
+          <Text style={styles.textOutputFont}>{valueOutput}</Text>
+        </View>
       </View>
-
-      <TouchableOpacity
-        style={styles.touch}
-        onPress={() => exchangeRate(value1, value2)}>
-        <Text>Chuyển đổi</Text>
-      </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.touch} onPress={() =>getData()}><Text>start</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.touch} onPress={() =>showExchangeRate()}><Text>test2</Text></TouchableOpacity> */}
-      {/* <Text>Name: {listCurrencyName}</Text>
-            <Text>Value: {listCurrencyValue}</Text> */}
+      <View style={styles.viewTouch}>
+        <TouchableOpacity
+          style={styles.touch}
+          onPress={() => {
+            if (value1 === null || value2 === null) {
+              Alert.alert('Bạn chưa chọn loại tiền');
+            } else if (valueInput == null) {
+              Alert.alert('Bạn chưa nhập số tiền');
+            } else if (isNaN(valueInput) === true || valueInput < 0) {
+              Alert.alert('Bạn nhập chưa đúng');
+            } else {
+              exchangeRate(value1, value2);
+            }
+          }}>
+          <Text style={styles.textColor}>Exchange</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
-  body: {
-    marginTop: 20,
+  body1: {
+    paddingHorizontal: 5,
     flexDirection: 'row',
-    height: 100,
+    height: 80,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+  },
+  body2: {
+    paddingHorizontal: 5,
+    flexDirection: 'row',
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textInput: {
+    fontSize: 16,
+    fontWeight: '700',
+    backgroundColor: '#b9b8ba',
+    width: '45%',
+    borderRadius: 10,
+    height: 50,
+    paddingLeft: 20,
+  },
+  textOutput: {
+    backgroundColor: '#b9b8ba',
+    width: '45%',
+    borderRadius: 10,
+    textAlign: 'center',
+    height: 50,
+    paddingLeft: 20,
+    justifyContent: 'center',
+  },
+  textOutputFont: {
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  viewTouch: {
+    alignItems: 'center',
   },
   touch: {
     margin: 10,
-    width: 100,
-    height: 40,
+    width: 130,
+    height: 50,
     backgroundColor: 'white',
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#1777F2',
+    borderRadius: 10,
   },
   picker: {
     backgroundColor: '#1777F2',
+    borderWidth: 0,
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowRadius: 8,
+    elevation: 18,
   },
   containerPicker: {
-    width: '40%',
+    width: '45%',
   },
   textPiker: {
     fontSize: 16,
@@ -243,8 +225,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     backgroundColor: '#1777F2',
-    width: '120%',
     height: '100%',
+  },
+  textColor: {
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '700',
   },
 });
 export default ExchangeRate;
