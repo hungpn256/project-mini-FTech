@@ -41,7 +41,7 @@ const Recharge = () => {
           placeholder="Nhập số tiền cần rút"
           keyboardType="numeric"
           style={styles.input}
-          value={Number(money)}
+          value={'' + money}
           onChangeText={text => {
             try {
               if (text.length > 0) setMoney(parseInt(text));
