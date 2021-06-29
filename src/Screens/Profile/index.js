@@ -17,6 +17,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
+import Loading from '../../Components/Loading/index.js';
 import Nothing from '../../Components/Nothing.js';
 import {avatarDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
@@ -61,6 +62,7 @@ const Profile = ({navigation, route}) => {
     postsProfile,
     role,
     loadingPost,
+    editing,
   } = profile;
   useEffect(() => {
     setRoleFriend(role);
@@ -84,6 +86,9 @@ const Profile = ({navigation, route}) => {
       setLimit(l => l + 5);
     }
   }, [loadPost]);
+  if (editing) {
+    return <Loading loading={true} />;
+  }
   if (!user || loading) {
     return (
       <SkeletonPlaceholder>

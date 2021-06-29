@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 
 function formatMoney(n, currency = '') {
   return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
+}
 
 const Recharge = () => {
   const navigation = useNavigation();
@@ -34,12 +34,14 @@ const Recharge = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.textHeader}>Số dư tài khoản: {formatMoney(userMoney.money)} đ</Text>
+        <Text style={styles.textHeader}>
+          Số dư tài khoản: {formatMoney(userMoney.money)} đ
+        </Text>
         <TextInput
           placeholder="Nhập số tiền cần rút"
           keyboardType="numeric"
           style={styles.input}
-          value={Number(money)}
+          value={'' + money}
           onChangeText={text => {
             try {
               if (text.length > 0) setMoney(parseInt(text));
@@ -56,11 +58,9 @@ const Recharge = () => {
             onPress={() => {
               if (isNaN(money) === true || money < 0) {
                 Alert.alert('Bạn nhập không đúng');
-              }
-              else if(money >userMoney.money) {
-                Alert.alert('Số dư tài khoản không đủ')
-              }
-               else {
+              } else if (money > userMoney.money) {
+                Alert.alert('Số dư tài khoản không đủ');
+              } else {
                 dispatch({type: WITHDRAW_MONEY, payload: money});
               }
             }}>
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: '2%',
     borderRadius: 10,
-
   },
 
   input: {
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: '3%',
-    color: '#4169e1',
+    color: '#1777F2',
   },
   text: {
     fontSize: 18,
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
     padding: 5,
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    marginHorizontal: '1.5%',
     borderRadius: 5,
     height: '26%',
   },

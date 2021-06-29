@@ -81,7 +81,7 @@ const Home = () => {
             color: '#1777F2',
             backgroundColor: '#fff',
           }}>
-          Fscocial
+          Fsocial
         </Text>
         <View style={styles.groupBtn}>
           <View style={styles.wrapperIcon}>
