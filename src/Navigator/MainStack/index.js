@@ -268,6 +268,7 @@ export default function AppNavigator() {
           component={ChatRoom}
           options={{
             headerRight: () => <NewMessenger />,
+            title: 'FMessenger',
           }}
         />
         <Stack.Screen
