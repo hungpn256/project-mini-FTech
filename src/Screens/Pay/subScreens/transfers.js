@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ScrollView,
+  Pressable,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
+import firestore, {firebase} from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
-import {WITHDRAW_MONEY} from '../constaints';
-
+import {ALL_USER_WALLET, WITHDRAW_MONEY} from '../constaints';
+import Feather from 'react-native-vector-icons/Feather';
+import avatarImg from '../../../../assets/Img/avatar.png';
 const handleMoney = (surplus, inputNumber) => {
   if (surplus >= inputNumber) {
     dispatch({type: WITHDRAW_MONEY, payload: inputNumber});
@@ -23,65 +27,159 @@ const Transfers = () => {
   const dispatch = useDispatch();
   const [money, setMoney] = useState(0);
   const [receiver, setReceiver] = useState('');
+  const [text, setText] = useState('');
+  const [filter, setFilter] = useState('');
+  const allUser = useSelector(state => state.wallet.users);
+  useEffect(() => {
+    dispatch({type: ALL_USER_WALLET});
+  }, []);
+
+  useEffect(() => {
+    search();
+  }, [text]);
+
+  const search = () => {
+    const data = allUser.filter(item =>
+      item.name.match(text) ? item.name.match(text) : item.email?.match(text),
+    );
+    setFilter(data);
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <Text>Số dư tài khoản: {userMoney.money} đ</Text>
+      <View style={styles.inputGroup}>
         <TextInput
-          placeholder="Nhập tên người nhận"
-          style={styles.input}
-          value={receiver}
-          onChangeText={text => {
-            setReceiver(text);
-          }}
+          onChangeText={e => setText(e)}
+          style={styles.textInput}
+          value={text}
+          placeholder="Name"
         />
-        <View style={styles.viewTouchableOpacity}>
-          <TouchableOpacity
-            onPress={() => {
-              if (userMoney.money <= money) {
-                Alert.alert('Số dư tài khoản không đủ');
-              } else if (isNaN(money) === true || money < 0) {
-                Alert.alert('Bạn nhập không đúng');
-              } else {
-                dispatch({type: WITHDRAW_MONEY, payload: money});
-              }
-              // dispatch({type: WITHDRAW_MONEY, payload: money});
-            }}>
-            <Text style={styles.text}>Tìm kiếm</Text>
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          placeholder="Nhập số tiền cần chuyển"
-          keyboardType="numeric"
-          style={styles.input}
-          value={Number(money)}
-          onChangeText={text => {
-            setMoney(parseInt(text));
-          }}
-        />
-        <View style={styles.viewTouchableOpacity}>
-          <TouchableOpacity
-            onPress={() => {
-              if (userMoney.money <= money) {
-                Alert.alert('Số dư tài khoản không đủ');
-              } else if (isNaN(money) === true || money < 0) {
-                Alert.alert('Bạn nhập không đúng');
-              } else {
-                dispatch({type: WITHDRAW_MONEY, payload: money});
-              }
-              // dispatch({type: WITHDRAW_MONEY, payload: money});
-            }}>
-            <Text style={styles.text}>Xác nhận</Text>
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View style={{paddingHorizontal: 8, marginTop: 10}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {filter.length > 0 ? (
+            filter.map(item => {
+              return (
+                <>
+                  <View
+                    key={item.id}
+                    style={{
+                      marginTop: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    {item.avatar ? (
+                      <Pressable>
+                        <View style={styles.avatar}>
+                          <Avatar.Image source={{uri: item.avatar}} size={45} />
+                        </View>
+                      </Pressable>
+                    ) : (
+                      <Pressable>
+                        <View style={styles.avatar}>
+                          <Avatar.Image source={avatarImg} size={45} />
+                        </View>
+                      </Pressable>
+                    )}
+                    <View style={{flexDirection: 'column'}}>
+                      <Text style={styles.userName}>{item.name}</Text>
+                      <Text style={styles.userName}>
+                        {item.email ? item.email : 'xx-xx-xx'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      borderBottomColor: '#eee',
+                      borderBottomWidth: 1,
+                      marginTop: 5,
+                    }}></View>
+                </>
+              );
+            })
+          ) : (
+            <>
+              {allUser
+                ? allUser.map(item => {
+                    return (
+                      <>
+                        <View
+                          key={item.id}
+                          style={{
+                            marginTop: 10,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}>
+                          {item.avatar ? (
+                            <Pressable>
+                              <View style={styles.avatar}>
+                                <Avatar.Image
+                                  source={{uri: item.avatar}}
+                                  size={45}
+                                />
+                              </View>
+                            </Pressable>
+                          ) : (
+                            <Pressable>
+                              <View style={styles.avatar}>
+                                <Avatar.Image source={avatarImg} size={45} />
+                              </View>
+                            </Pressable>
+                          )}
+                          <View style={{flexDirection: 'column'}}>
+                            <Text style={styles.userName}>{item.name}</Text>
+                            <Text style={styles.userName}>
+                              {item.email ? item.email : 'xx-xx-xx'}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            borderBottomColor: '#eee',
+                            borderBottomWidth: 1,
+                            marginTop: 5,
+                          }}></View>
+                      </>
+                    );
+                  })
+                : null}
+            </>
+          )}
+        </ScrollView>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: '#EEEEEE',
+    borderRadius: 23,
+    paddingHorizontal: 10,
+    flex: 1,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
+  },
+  cmtGroup: {marginTop: 2, marginLeft: 50},
+  AvatarCmt: {
+    flexDirection: 'row',
+  },
+  inputGroup: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginLeft: 5,
+    backgroundColor: '#1777F2',
+    padding: 10,
+    borderRadius: 999,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
+    paddingHorizontal: 10,
   },
   content: {
     flex: 0.4,
@@ -107,6 +205,9 @@ const styles = StyleSheet.create({
     borderColor: '#ABB2B9',
     borderWidth: 1,
     padding: 5,
+  },
+  userName: {
+    marginLeft: 10,
   },
 });
 export default Transfers;
