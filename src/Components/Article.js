@@ -24,7 +24,6 @@ import {addNoti, notiMes} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
 import InputEncloseAvatar from './InputEncloseAvatar';
-import ModalLike from '@Screens/ModalLike';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -198,7 +197,6 @@ const Article = ({text, image, time, uid, postid}) => {
 
   return user ? (
     <Card style={styles.container}>
-      <ModalLike />
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={user.name}
@@ -236,7 +234,7 @@ const Article = ({text, image, time, uid, postid}) => {
       </Pressable>
       <View style={styles.infoPost}>
         <Pressable
-          onPress={handleLikeModal}
+          onPress={() => handleLikeModal()}
           style={{flexDirection: 'row', alignItems: 'center'}}>
           <AntDesignIcon
             style={{
