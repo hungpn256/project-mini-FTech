@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import avatarImg from '../../assets/Img/avatar.png';
 import {addNoti, notiMes} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
+import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
 import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
   <>
@@ -190,6 +191,10 @@ const Article = ({text, image, time, uid, postid}) => {
     });
   };
 
+  const handleLikeModal = () => {
+    dispatch({type: OPEN_LIKE_MODAL, payload: {postId: postid}});
+  };
+
   return user ? (
     <Card style={styles.container}>
       <Card.Title
@@ -228,7 +233,9 @@ const Article = ({text, image, time, uid, postid}) => {
         ) : null}
       </Pressable>
       <View style={styles.infoPost}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Pressable
+          onPress={() => handleLikeModal()}
+          style={{flexDirection: 'row', alignItems: 'center'}}>
           <AntDesignIcon
             style={{
               padding: 4,
@@ -240,7 +247,7 @@ const Article = ({text, image, time, uid, postid}) => {
             size={11}
           />
           <Text style={styles.like}>{total < 0 ? 0 : total} </Text>
-        </View>
+        </Pressable>
 
         <Text
           onPress={() =>

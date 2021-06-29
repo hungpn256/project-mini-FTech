@@ -13,6 +13,8 @@ import {Badge} from 'react-native-paper';
 import Nothing from '../../Components/Nothing';
 import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
+import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
+import ModalLike from '@Screens/ModalLike';
 const Home = () => {
   const navigation = useNavigation();
   const postData = useSelector(state => state.home.post);
@@ -27,10 +29,8 @@ const Home = () => {
   useEffect(() => {
     firestore()
       .collection('post')
-      .onSnapshot(snap => {
-        snap.forEach(() => {
-          dispatch({type: GET_POST});
-        });
+      .onSnapshot(() => {
+        dispatch({type: GET_POST});
       });
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
@@ -69,9 +69,11 @@ const Home = () => {
         }
       });
   }, []);
+
   return (
     <>
       <View style={styles.header}>
+        <ModalLike />
         <Text
           style={{
             fontSize: 25,
@@ -79,7 +81,7 @@ const Home = () => {
             color: '#1777F2',
             backgroundColor: '#fff',
           }}>
-          CoinCoin
+          Fscocial
         </Text>
         <View style={styles.groupBtn}>
           <View style={styles.wrapperIcon}>
