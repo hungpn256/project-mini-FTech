@@ -12,11 +12,11 @@ import {
   View,
 } from 'react-native';
 import {Button} from 'react-native-paper';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
-import Loading from '../../Components/Loading/index.js';
 import Nothing from '../../Components/Nothing.js';
 import {avatarDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
@@ -32,10 +32,11 @@ import {
   UPDATE_ME,
 } from './constants.js';
 import styles from './styles';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 const Profile = ({navigation, route}) => {
   //1 chưa gửi lời mời, 2 chưa được chấp thuận, 3 chờ mình chấp thuận, 4 đã chấp thuận
   const [roleFriend, setRoleFriend] = useState(1);
+  const [limit, setLimit] = useState(0);
+  const [loadPost, setLoadPost] = useState(false);
   const id = route?.params?.id;
   const [tab, setTab] = useState(1);
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const Profile = ({navigation, route}) => {
   const me = useSelector(state => state.auth.user);
   useEffect(() => {
     onRefresh();
+    setLimit(0);
   }, [onRefresh]);
   const profile = useSelector(state => state.profile);
   const friend = useSelector(state => state.friend.accepted);
@@ -64,13 +66,24 @@ const Profile = ({navigation, route}) => {
     setRoleFriend(role);
   }, [role]);
   const user = id ? other : me;
-  const posts = id ? postsProfile : postsMe;
+  let allPost = id ? postsProfile : postsMe;
+  const posts = [...allPost].splice(0, limit);
+  const postHavePhotos = posts && posts.filter(i => i.imageUrl);
   const setAvatar = image => {
     dispatch({type: UPDATE_ME, payload: {avatar: image}});
   };
   const setBackground = image => {
     dispatch({type: UPDATE_ME, payload: {background: image}});
   };
+  useEffect(() => {
+    if (loadPost) {
+      setTimeout(() => {
+        setLoadPost(false);
+      }, 500);
+    } else {
+      setLimit(l => l + 5);
+    }
+  }, [loadPost]);
   if (!user || loading) {
     return (
       <SkeletonPlaceholder>
@@ -92,9 +105,23 @@ const Profile = ({navigation, route}) => {
       </SkeletonPlaceholder>
     );
   }
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 100;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
   return (
     <>
       <ScrollView
+        onScroll={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent)) {
+            if (!loadPost) {
+              setLoadPost(true);
+            }
+          }
+        }}
         style={styles.background}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
@@ -212,31 +239,49 @@ const Profile = ({navigation, route}) => {
                     : roleFriend === 3
                     ? ' Accept'
                     : roleFriend === 2
-                    ? ' Involke'
+                    ? ' Delete'
                     : ' Add friend'}
                 </Text>
               </Button>
             ) : (
-              <Button
-                style={styles.btn}
-                mode="contained"
-                onPress={() => {
-                  navigation.navigate('EditProfile');
-                }}>
-                <AntDesign name="edit" size={16} color="#fff" />
-                <Text style={styles.btnText}> Edit profile</Text>
-              </Button>
+              <>
+                <Button
+                  style={styles.btn}
+                  mode="contained"
+                  onPress={() => {
+                    navigation.navigate('EditProfile');
+                  }}>
+                  <AntDesign name="pluscircle" size={16} color="#fff" />
+                  <Text style={[styles.btnText]}> Add to story</Text>
+                </Button>
+                <Button
+                  style={[styles.btn, {backgroundColor: '#e0e0e0'}]}
+                  mode="contained"
+                  onPress={() => {
+                    navigation.navigate('EditProfile');
+                  }}>
+                  <AntDesign name="edit" size={16} color="#000" />
+                  <Text style={[styles.btnText, {color: '#000'}]}>
+                    {' '}
+                    Edit profile
+                  </Text>
+                </Button>
+              </>
             )}
           </View>
           <View style={styles.infor}>
             <View style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Posts</Text>
-              <Text style={styles.inforItemNumber}>{posts?.length ?? 0}</Text>
+              <Text style={styles.inforItemNumber}>{allPost?.length ?? 0}</Text>
             </View>
-            <View style={styles.inforItem}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('Friends');
+              }}
+              style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Friends</Text>
               <Text style={styles.inforItemNumber}>{friend.length}</Text>
-            </View>
+            </Pressable>
             <View style={styles.inforItem}>
               <Text style={styles.inforItemTitle}>Following</Text>
               <Text style={styles.inforItemNumber}>125</Text>
@@ -249,6 +294,7 @@ const Profile = ({navigation, route}) => {
               style={[
                 {
                   marginVertical: 5,
+                  marginHorizontal: 5,
                 },
                 tab === 1 && styles.btnActive,
               ]}
@@ -266,6 +312,7 @@ const Profile = ({navigation, route}) => {
               style={[
                 {
                   marginVertical: 5,
+                  marginHorizontal: 5,
                 },
                 tab === 2 && styles.btnActive,
               ]}
@@ -283,6 +330,7 @@ const Profile = ({navigation, route}) => {
               style={[
                 {
                   marginVertical: 5,
+                  marginHorizontal: 5,
                 },
                 tab === 3 && styles.btnActive,
               ]}
@@ -300,24 +348,26 @@ const Profile = ({navigation, route}) => {
             <View style={styles.viewContent}>
               <View style={{marginVertical: 8}}>
                 {!id && <PostArticle />}
-                {loadingPost ? (
-                  <View>
-                    <ActivityIndicator size="large" />
-                    <Text>sda</Text>
-                  </View>
-                ) : posts && posts.length > 0 ? (
-                  posts.map(item => {
-                    return (
-                      <Article
-                        time={moment(item.createAt?.toDate()).fromNow()}
-                        key={item.id}
-                        text={item.content}
-                        image={item.imageUrl}
-                        uid={item.userId}
-                        postid={item.id}
-                      />
-                    );
-                  })
+                {posts && posts.length > 0 ? (
+                  <>
+                    {posts.map(item => {
+                      return (
+                        <Article
+                          time={moment(item.createAt?.toDate()).fromNow()}
+                          key={item.id}
+                          text={item.content}
+                          image={item.imageUrl}
+                          uid={item.userId}
+                          postid={item.id}
+                        />
+                      );
+                    })}
+                    {loadPost && (
+                      <View style={{marginVertical: 20}}>
+                        <ActivityIndicator size="large" color="#1777F2" />
+                      </View>
+                    )}
+                  </>
                 ) : (
                   <Nothing />
                 )}
@@ -326,11 +376,13 @@ const Profile = ({navigation, route}) => {
           ) : tab === 2 ? (
             <View style={styles.viewContent}>
               <View style={styles.photosImages}>
-                {posts &&
-                  posts.map(item => {
-                    if (item.imageUrl)
-                      return <ImageComponent key={item.id} item={item} />;
-                  })}
+                {posts && postHavePhotos.length > 0 ? (
+                  postHavePhotos.map(item => {
+                    return <ImageComponent key={item.id} item={item} />;
+                  })
+                ) : (
+                  <Nothing />
+                )}
               </View>
             </View>
           ) : (

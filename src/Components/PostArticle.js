@@ -1,36 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  Image,
-  PermissionsAndroid,
-} from 'react-native';
-import {Avatar, Button, Card, Divider} from 'react-native-paper';
-import InputEncloseAvatar from './InputEncloseAvatar';
+import React, {useState} from 'react';
+import {PermissionsAndroid, StyleSheet, View} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import ModalPost from './ModalPost';
-import ModalCreatePost from '@Components/Modal';
-import CameraGroup from './CameraGroup';
-import {MODAL_CREATE_POST_IMG} from '../Screens/ModalCreatePost/contants';
+import {Card} from 'react-native-paper';
 import {useDispatch} from 'react-redux';
-export default function PostArticle({editable}) {
-  const [image, setImage] = useState(null);
-  const [status, setStatus] = useState(false);
+import {MODAL_CREATE_POST_IMG} from '../Screens/ModalCreatePost/contants';
+import CameraGroup from './CameraGroup';
+import ModalPost from './ModalPost';
+export default function PostArticle({}) {
   const dispatch = useDispatch();
-
-  const handlePress = () => {
-    setStatus(false);
-  };
-
-  const delImg = () => {
-    setImage(null);
-  };
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (
+        props.type === 'image/jpeg' ||
+        props.type === 'image/png' ||
+        props.type === 'image/jpg'
+      ) {
         dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
       }
     });
@@ -52,8 +37,16 @@ export default function PostArticle({editable}) {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
        
         launchCamera({mediaType: 'photo'}, props => {
+<<<<<<< HEAD
           console.log(11111111111111);
           if (props.type === 'image/jpeg') {
+=======
+          if (
+            props.type === 'image/jpeg' ||
+            props.type === 'image/png' ||
+            props.type === 'image/jpg'
+          ) {
+>>>>>>> 45d0d76f01654c50190eb208983998f3bef9837c
             dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
           }
         });
@@ -76,6 +69,7 @@ export default function PostArticle({editable}) {
 const styles = StyleSheet.create({
   container: {
     padding: 8,
+    marginBottom: 4,
   },
   inputWrapper: {
     paddingTop: 8,
