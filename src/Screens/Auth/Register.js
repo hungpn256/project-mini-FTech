@@ -66,11 +66,13 @@ const Register = () => {
               <TextInput
                 placeholder="Password"
                 onChangeText={text => setPass(text)}
+                pass={true}
                 secure={true}
               />
               <TextInput
                 placeholder="Re-password"
                 onChangeText={text => setRepass(text)}
+                pass={true}
                 secure={true}
               />
             </View>

@@ -22,6 +22,7 @@ import {
   CONFIRM_DELETE_POST,
   CONFIRM_UPDATE_POST,
   UPDATE_POST,
+  HOME_CHANGE_STATE,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
 import {
@@ -82,6 +83,9 @@ function* handleCmt({payload}) {
             : `${userCmt.name} đã bình luận một hình ảnh`,
         token: received.token,
         image: res?.image ?? null,
+        data: {
+          article: payload.postId,
+        },
       });
     }
     console.log(res, 'ré cmt');

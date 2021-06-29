@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
   wrapperCover: {
     width: '100%',
     height: 240,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 2,
   },
   cover: {
     width: '100%',
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 999,
     borderColor: '#EEEEEE',
-    borderWidth: 1,
+    borderWidth: 4,
     left: '50%',
     bottom: 0,
     transform: [{translateX: -90}],
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 16,
+    marginTop: 8,
   },
   photosItem: {
     width: windowWidth / 3 - 2,
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   viewContent: {
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#eeeeee',
   },
   btnGroup: {
     flexDirection: 'row',

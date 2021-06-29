@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Loading from './src/Components/Loading';
@@ -12,7 +13,6 @@ import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
-import messaging from '@react-native-firebase/messaging';
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
