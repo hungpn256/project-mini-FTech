@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 
 function formatMoney(n, currency = '') {
   return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
+}
 
 const Recharge = () => {
   const navigation = useNavigation();
@@ -30,24 +30,30 @@ const Recharge = () => {
       dispatch({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: false}});
     };
   }, [rechargeSuccess]);
+  console.log(money);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.textHeader}>Số dư tài khoản: {formatMoney(userMoney.money)} đ</Text>
+        <Text style={styles.textHeader}>
+          Số dư tài khoản: {formatMoney(userMoney.money)} đ
+        </Text>
         <TextInput
-          placeholder="Nhập số tiền cần nạp"
+          placeholder="Nhập số tiền cần nạssp"
           keyboardType="numeric"
           style={styles.input}
-          value={Number(money)}
+          value={money}
           onChangeText={text => {
-            try {
-              if (text.length > 0) setMoney(parseInt(text));
-              else {
-                setMoney(0);
+            setMoney(m => {
+              try {
+                let tmp = parseInt(text);
+                console.log(tmp);
+                if (isNaN(tmp) === true) return m;
+                console.log('return ', isNaN(tmp));
+                return tmp;
+              } catch (e) {
+                return m;
               }
-            } catch (e) {
-              setMoney(0);
-            }
+            });
           }}
         />
         <View style={styles.viewTouchableOpacity}>
@@ -78,7 +84,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: '2%',
     borderRadius: 10,
-
   },
 
   input: {
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: '3%',
-    color: '#4169e1',
+    color: '#1777F2',
   },
   text: {
     fontSize: 18,
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
     padding: 5,
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     justifyContent: 'center',
     alignItems: 'center',
   },
