@@ -42,7 +42,7 @@ export default function Post({type, src, closeModal, closeImg}) {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
+      if (props && props.type?.match('image')) {
         setImage(props);
       }
     });
@@ -63,7 +63,7 @@ export default function Post({type, src, closeModal, closeImg}) {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.type === 'image/jpeg') {
+          if (props && props.type?.match('image')) {
             setImage(props);
           }
         });

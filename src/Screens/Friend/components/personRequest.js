@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 import {avatarDefault} from '../../../index_Constant';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles';
 const PersonRequest = ({item, accept, deleteFriend, isFriend}) => {
   const [accepted, setAccepted] = useState(isFriend || 0);
@@ -18,6 +19,21 @@ const PersonRequest = ({item, accept, deleteFriend, isFriend}) => {
             source={{uri: item.avatar || avatarDefault}}
             size={65}
           />
+          <View
+            style={{
+              position: 'absolute',
+              backgroundColor: '#1777F2',
+              borderRadius: 999,
+              bottom: 4,
+              right: -4,
+            }}>
+            <FontAwesome
+              name="user-plus"
+              color="#fff"
+              style={{padding: 5}}
+              size={13}
+            />
+          </View>
         </View>
       </Pressable>
       <View>

@@ -54,7 +54,7 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchCamera({mediaType: 'photo'}, props => {
-                      if (props.type === 'image/jpeg') {
+                      if (props && props.type?.match('image')) {
                         setImage(props);
                       }
                     });
@@ -66,7 +66,7 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchImageLibrary({mediaType: 'photo'}, props => {
-                      if (props.type === 'image/jpeg') {
+                      if (props && props.type?.match('image')) {
                         setImage(props);
                       }
                     });
