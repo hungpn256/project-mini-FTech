@@ -30,7 +30,6 @@ const Recharge = () => {
       dispatch({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: false}});
     };
   }, [rechargeSuccess]);
-  console.log(money);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -41,19 +40,16 @@ const Recharge = () => {
           placeholder="Nhập số tiền cần nạssp"
           keyboardType="numeric"
           style={styles.input}
-          value={money}
+          value={'' + money}
           onChangeText={text => {
-            setMoney(m => {
-              try {
-                let tmp = parseInt(text);
-                console.log(tmp);
-                if (isNaN(tmp) === true) return m;
-                console.log('return ', isNaN(tmp));
-                return tmp;
-              } catch (e) {
-                return m;
+            try {
+              if (text.length > 0) setMoney(parseInt(text));
+              else {
+                setMoney(0);
               }
-            });
+            } catch (e) {
+              setMoney(0);
+            }
           }}
         />
         <View style={styles.viewTouchableOpacity}>
