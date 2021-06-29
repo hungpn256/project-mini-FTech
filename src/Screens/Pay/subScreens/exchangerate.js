@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import axios from 'axios';
-import DropDownPicker from 'react-native-dropdown-picker';
+// import DropDownPicker from 'react-native-dropdown-picker';
 
 async function getData() {
   const listCurrency = ['USD', 'CNY', 'EUR', 'AUD', 'SGD', 'JPY', 'GBP', 'CHF'];
@@ -133,7 +133,7 @@ const ExchangeRate = () => {
   return (
     <View style={styles.container}>
       <View style={styles.body}>
-        <DropDownPicker
+        {/* <DropDownPicker
           open={open1}
           value={value1}
           items={items}
@@ -171,7 +171,7 @@ const ExchangeRate = () => {
           onOpen={() => {
             setOpen1(false);
           }}
-        />
+        /> */}
       </View>
 
       <View style={styles.body}>
