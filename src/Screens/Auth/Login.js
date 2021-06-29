@@ -56,6 +56,7 @@ export default function Login() {
               placeholder="Password"
               onChangeText={text => setPass(text)}
               secure={true}
+              pass={true}
             />
           </View>
           <View style={styles.btn}>
