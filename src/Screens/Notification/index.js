@@ -79,38 +79,46 @@ export default function NotificationScreen() {
             <Text style={styles.headerNoti}>Mark read</Text>
           </Pressable>
         </View>
-        {notifications &&
-          notifications
-            .slice(0, 3)
-            .map(item => <Notification item={item} key={item.id} />)}
-        {friend && friend.length > 0 && (
+        {notifications && notifications.length > 0 ? (
           <>
-            <View>
-              <Text style={styles.headerNoti}>Friend Requests:</Text>
-            </View>
-            {friend.slice(0, 2).map(item => (
-              <PersonRequest
-                accept={accept}
-                item={item}
-                deleteFriend={deleteFriend}
-                key={item.id}
-              />
+            {notifications.slice(0, 3).map(item => (
+              <Notification item={item} key={item.id} />
             ))}
-          </>
-        )}
-        {notifications.length > 3 && (
-          <>
-            {friend && friend.length !== 0 && (
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.headerNoti}>Early</Text>
-              </View>
+            {friend && friend.length > 0 && (
+              <>
+                <View>
+                  <Text style={styles.headerNoti}>Friend Requests:</Text>
+                </View>
+                {friend.slice(0, 2).map(item => (
+                  <PersonRequest
+                    accept={accept}
+                    item={item}
+                    deleteFriend={deleteFriend}
+                    key={item.id}
+                  />
+                ))}
+              </>
             )}
-            {notifications &&
-              notifications
-                .slice(3)
-                .map(item => <Notification item={item} key={item.id} />)}
+            {notifications.length > 3 && (
+              <>
+                {friend && friend.length !== 0 && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={styles.headerNoti}>Early</Text>
+                  </View>
+                )}
+                {notifications &&
+                  notifications
+                    .slice(3)
+                    .map(item => <Notification item={item} key={item.id} />)}
+              </>
+            )}
           </>
+        ) : (
+          <Nothing />
         )}
       </ScrollView>
     </View>
