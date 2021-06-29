@@ -2,6 +2,7 @@ import {WALLET_CHANGE_STATE} from './constaints';
 
 const initialState = {
   rechargeSuccess: false,
+  withdrawSuccess: false,
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {

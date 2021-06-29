@@ -27,6 +27,9 @@ const ImageCarousel = [
   {image: require('./assets/4.jpg')},
 ];
 
+function formatMoney(n, currency = '') {
+  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
 // Pay = () => {
 export default function Pay({navigation}) {
   const userMoney = useSelector(state => state.auth.user);
@@ -34,7 +37,7 @@ export default function Pay({navigation}) {
   console.log(userMoney);
   console.log('====================================');
   return (
-    <>
+    <View style={styles.container}>
         <View style={styles.header1}>
           <Pressable
             style={{flexDirection: 'row', alignItems: 'center'}}
@@ -45,9 +48,8 @@ export default function Pay({navigation}) {
             <Ionicons name="chevron-back" color="#fff" size={40} />
             <Text style={styles.textHeader1}>Home</Text>
           </Pressable>
-          <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>
+          <Text style={styles.textHeader1}>Số dư : {formatMoney(userMoney.money)} đ</Text>
         </View>
-        <ScrollView>
         <View style={styles.header2}>
           <TouchableOpacity style={styles.touchOpacityHeader}>
             <AntDesign name="scan1" size={50} color={'white'} />
@@ -173,9 +175,7 @@ export default function Pay({navigation}) {
           )}
         />
       </View>
-      </ScrollView>
-
-    </>
+      </View>
   );
 }
 // export default Pay;

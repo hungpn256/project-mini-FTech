@@ -1,11 +1,13 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  },
   header1: {
     paddingRight: '7%',
     flexDirection: 'row',
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     alignItems: 'center',
     marginLeft: '1.5%',
     marginRight: '1.5%',
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
   header2: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     marginLeft: '1.5%',
     marginRight: '1.5%',
     borderBottomEndRadius: 5,
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    height: '35%',
+    flex: 1,
     backgroundColor: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -61,15 +63,15 @@ const styles = StyleSheet.create({
     marginHorizontal: '2%',
     borderRadius: 5,
     width: '29%',
-    height: '29%',
+    height: '32%',
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
 
   footer: {
-    marginHorizontal:'1.5%',
+    marginHorizontal: '1.5%',
     borderRadius: 5,
-    height: '16%',
+    height: '26%',
   },
 
   child: {

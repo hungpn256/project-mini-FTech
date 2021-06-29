@@ -5,11 +5,17 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {RECHARGE_MONEY, WALLET_CHANGE_STATE} from '../constaints';
 import {useNavigation} from '@react-navigation/native';
+
+function formatMoney(n, currency = '') {
+  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
 const Recharge = () => {
   const navigation = useNavigation();
   const userMoney = useSelector(state => state.auth.user);
@@ -27,7 +33,7 @@ const Recharge = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.textHeader}>Số dư tài khoản: {userMoney.money} đ</Text>
+        <Text style={styles.textHeader}>Số dư tài khoản: {formatMoney(userMoney.money)} đ</Text>
         <TextInput
           placeholder="Nhập số tiền cần nạp"
           keyboardType="numeric"
@@ -64,14 +70,15 @@ const Recharge = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
 
   content: {
-    flex: 0.4,
+    flex: 1,
     alignItems: 'center',
     margin: '2%',
     borderRadius: 10,
-    backgroundColor: 'white',
+
   },
 
   input: {
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ABB2B9',
     borderRadius: 10,
+    paddingLeft: 20,
   },
   textHeader: {
     fontSize: 20,
@@ -89,13 +97,17 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
+    color: 'white',
   },
   viewTouchableOpacity: {
+    width: '25%',
+    height: 50,
     marginTop: 10,
     borderRadius: 5,
-    borderColor: '#ABB2B9',
-    borderWidth: 1,
     padding: 5,
+    backgroundColor: '#4169e1',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default Recharge;
