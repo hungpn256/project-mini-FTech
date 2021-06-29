@@ -25,7 +25,6 @@ const Home = () => {
       unread++;
     }
   }
-  const refreshing = useSelector(state => state.home.refreshing);
   const dispatch = useDispatch();
   useEffect(() => {
     firestore()
@@ -116,14 +115,6 @@ const Home = () => {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              dispatch({type: GET_POST});
-            }}
-          />
-        }
         style={{backgroundColor: '#eeeeee'}}>
         <PostArticle />
         {postData && postData.length > 0 ? (

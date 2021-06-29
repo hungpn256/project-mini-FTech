@@ -9,11 +9,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'center',
     minHeight: heightWindow,
+    backgroundColor: '#fff',
   },
   overlay: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
   },
   LogoSize: {backgroundColor: '#1777F2'},
   LogoText: {

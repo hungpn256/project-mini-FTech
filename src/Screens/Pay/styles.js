@@ -4,31 +4,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    borderRadius: 12,
-    flexDirection: 'column',
-    flex: 10,
-  },
   header1: {
     paddingRight: '7%',
-    flex: 5,
     flexDirection: 'row',
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     alignItems: 'center',
     marginLeft: '1.5%',
     marginRight: '1.5%',
     justifyContent: 'space-between',
   },
+
   header2: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    flex: 7,
-    backgroundColor: '#4169e1',
+    backgroundColor: '#1777F2',
     marginLeft: '1.5%',
     marginRight: '1.5%',
     borderBottomEndRadius: 5,
     borderBottomLeftRadius: 5,
   },
+
   touchOpacityHeader: {
     marginLeft: '3%',
     marginBottom: '3%',
@@ -39,18 +34,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   textHeader: {
     color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
   },
+
   textHeader1: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
   },
+
   body: {
-    flex: 25,
+    flex: 1,
     backgroundColor: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -59,37 +57,37 @@ const styles = StyleSheet.create({
     borderColor: '#AEB6BF',
     borderRadius: 5,
   },
+
   touchOpacityBody: {
-    marginTop: '4%',
-    marginLeft: '3%',
+    marginTop: '1%',
+    marginHorizontal: '2%',
     borderRadius: 5,
     width: '29%',
-    height: '29%',
+    height: '32%',
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
+
   footer: {
-    marginLeft: '1.5%',
-    marginRight: '1.5%',
-    flex: 8,
+    marginHorizontal: '1.5%',
     borderRadius: 5,
+    height: '26%',
   },
+
   child: {
-    flex: 1,
     width: windowWidth,
     justifyContent: 'center',
   },
+
   imageCarousel: {
-    flex: 1,
     width: windowWidth,
-    resizeMode: 'stretch',
+    resizeMode: 'contain',
     borderRadius: 5,
   },
+
   modalView: {
-    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
     width: windowWidth,
   },
 });
