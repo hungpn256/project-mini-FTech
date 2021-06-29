@@ -59,14 +59,11 @@ function* handleCreatePost({payload}) {
 
 function* handleGetPost() {
   try {
-    yield put({type: HOME_CHANGE_STATE, payload: {refreshing: true}});
     const res = yield call(getAll);
     console.log(res);
     yield put({type: ALL_POST, payload: {data: res}});
   } catch (err) {
     console.log(err);
-  } finally {
-    yield put({type: HOME_CHANGE_STATE, payload: {refreshing: false}});
   }
 }
 function* handleCmt({payload}) {

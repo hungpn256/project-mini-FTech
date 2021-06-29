@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import {Avatar, Divider} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -51,7 +52,7 @@ const Wallet = () => {
 };
 const styles = StyleSheet.create({
   container: {flex: 1},
-  header: {flex: 2, backgroundColor: '#5499C7'},
+  header: {flex: 2, backgroundColor: '#4169e1'},
   touchOpacityHeader: {flex: 1, flexDirection: 'row', alignItems: 'center'},
   viewAvata: {
     width: windowWidth / 5,
@@ -59,17 +60,27 @@ const styles = StyleSheet.create({
     margin: '1%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#AEB6BF',
     borderRadius: windowWidth / 10,
   },
   viewInfo: {
     paddingLeft: '2%',
     flex: 1,
   },
-  avatar: {},
+  avatar: {
+    width: 50,
+    height: 50,
+    margin: '1%',
+    borderRadius: 25,
+    flex: 1,
+  },
   body: {flex: 11},
   viewTouchopacityBody: {
     height: '8%',
+  },
+  textName: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: 'white',
   },
   touchOpacityBody: {flex: 1, justifyContent: 'center', padding: '2%'},
 });
