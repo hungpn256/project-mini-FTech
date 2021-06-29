@@ -116,15 +116,15 @@ const ExchangeRate = () => {
                         setOpen={setOpen1}
                         setValue={setValue1}
                         setItems={setItems}
-                        maxHeight={200}
-                        style={styles.picker}
-                        containerStyle={styles.containerPicker}
-                        textStyle={styles.textPiker}
-                        placeholder="Từ"
-                        listItemContainer={styles.itemPicker}
+                        maxHeight={250}
+                        // style={styles.picker}
+                        // containerStyle={styles.containerPicker}
+                        // textStyle={styles.textPiker}
+                        // placeholder="Từ"
+                        // listItemContainer={styles.itemPicker}
                         zIndex={2000}
                         zIndexInverse={2000}
-                        listItemLabelStyle={styles.listItemPicker}
+                        // listItemLabelStyle={styles.listItemPicker}
                         onOpen={() => {setOpen2(false)}}
                     />
                 <TextInput
@@ -165,10 +165,10 @@ const ExchangeRate = () => {
             </View>
             <Text>{valueInput} {value1} = {valueOutput} {value2}</Text>  
             <TouchableOpacity style={styles.touch} onPress={() =>exchangeRate(value1,value2)}><Text>Chuyển đổi</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.touch} onPress={() =>getData()}><Text>start</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.touch} onPress={() =>showExchangeRate()}><Text>test2</Text></TouchableOpacity>
-            <Text>Name: {listCurrencyName}</Text>
-            <Text>Value: {listCurrencyValue}</Text>
+            {/* <TouchableOpacity style={styles.touch} onPress={() =>getData()}><Text>start</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.touch} onPress={() =>showExchangeRate()}><Text>test2</Text></TouchableOpacity> */}
+            {/* <Text>Name: {listCurrencyName}</Text>
+            <Text>Value: {listCurrencyValue}</Text> */}
         </View>
     );
 };
