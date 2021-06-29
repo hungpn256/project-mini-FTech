@@ -17,9 +17,10 @@ import {avatarDefault} from '../../../index_Constant';
 import {GET_USER_BY_NAME} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
-
+import Loading from '@Components/Loading';
 const NewMessenger = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.auth.user);
   const [visibleModal, setVisibleModal] = useState(false);
   const userSearch = useSelector(state => state.chat.userSearch);
@@ -40,6 +41,7 @@ const NewMessenger = () => {
   }, [visibleModal]);
   return (
     <View>
+      <Loading loading={loading} />
       <TouchableOpacity
         style={styles.headerRight}
         onPress={() => {
@@ -90,11 +92,13 @@ const NewMessenger = () => {
                       setVisibleModal(false);
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
+                        setLoading(true);
                         const res = await createConversation([
                           user.id,
                           item.id,
                         ]);
                         room.push(res.id);
+                        setLoading(false);
                       }
                       navigation.navigate('Messenger', {
                         roomId: room[0],
