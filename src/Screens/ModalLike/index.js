@@ -20,20 +20,25 @@ export default function index() {
   const navigate = useNavigation();
   useEffect(() => {
     const user = async () => {
-      const query = await firestore().collection('post').doc(postId).get();
-      const user = query.data().like;
-      console.log(user);
-      const arr = [];
-      if (user.length > 0) {
-        for (let i = 0; i < user.length; i++) {
-          const item = await firestore().collection('user').doc(user[i]).get();
-          console.log(item.data().name + 'name');
-          arr.push(item.data());
+      if (postId) {
+        const query = await firestore().collection('post').doc(postId).get();
+        const user = query.data().like;
+        console.log(user);
+        const arr = [];
+        if (user.length > 0) {
+          for (let i = 0; i < user.length; i++) {
+            const item = await firestore()
+              .collection('user')
+              .doc(user[i])
+              .get();
+            console.log(item.data().name + 'name');
+            arr.push(item.data());
+          }
+          setAll(arr);
+          setLoad(false);
+        } else {
+          setLoad(false);
         }
-        setAll(arr);
-        setLoad(false);
-      } else {
-        setLoad(false);
       }
     };
     user();
@@ -41,13 +46,13 @@ export default function index() {
       setAll([]);
       setLoad(true);
     };
-  }, []);
+  }, [postId]);
 
   const handleNavi = (uid, userName) => {
     if (uid === auth().currentUser.uid) {
-      navigate.push('Profile', {id: uid});
+      navigate.navigate('Profile', {id: uid});
     } else {
-      navigate.push('Profile-o', {id: uid, name: userName});
+      navigate.navigate('Profile-o', {id: uid, name: userName});
     }
   };
   return (
@@ -95,7 +100,7 @@ export default function index() {
               {all.map(item => {
                 return (
                   <Pressable
-                    onPress={handleNavi(item.id, item.name)}
+                    onPress={() => handleNavi(item.id, item.name)}
                     key={item.id}
                     style={styles.avatarLike}>
                     {item.avatar ? (
