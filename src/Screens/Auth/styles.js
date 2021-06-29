@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
-  LogoSize: {
-    width: 170,
-    height: 170,
+  LogoSize: {backgroundColor: '#1777F2'},
+  LogoText: {
+    fontSize: 50,
   },
   textStyle: {
     color: '#696969',
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   LogoStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 2,
+    flex: 1,
     marginTop: 40,
     marginBottom: 40,
   },
