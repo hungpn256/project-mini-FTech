@@ -39,7 +39,7 @@ export default function ChatRoom({navigation}) {
       setRoomList(conversationOrdered);
     };
     x();
-  }, [Object.keys(conversation).length]);
+  }, [conversation]);
 
   return (
     <GestureRecognizer
