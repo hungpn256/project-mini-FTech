@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Loading from './src/Components/Loading';
+import Loading from './src/Components/SplashScreen/index';
 import NoInternetModal from './src/Components/NoInternetModal';
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';

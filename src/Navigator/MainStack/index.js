@@ -29,6 +29,8 @@ import PostDetail from '@Screens/PostDetail';
 import Friend from '../../Screens/Friend';
 import Notification from '../../Screens/Notification';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
+import LuckyWheel from '@Screens/LuckyWheel/index';
+import ExchangeRate from '@Screens/Pay/subScreens/exchangerate';
 import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
 import {notiMes} from '../../Screens/Notification/service';
 const Tab = createBottomTabNavigator();
@@ -268,6 +270,7 @@ export default function AppNavigator() {
           component={ChatRoom}
           options={{
             headerRight: () => <NewMessenger />,
+            title: 'FMessenger',
           }}
         />
         <Stack.Screen
@@ -285,6 +288,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Recharge" component={Recharge} />
         <Stack.Screen name="Transfers" component={Transfers} />
         <Stack.Screen name="WithDraw" component={WithDraw} />
+        <Stack.Screen name="LuckyWheel" component={LuckyWheel}/>
+        <Stack.Screen name="ExchangeRate" component={ExchangeRate}/>
         <Stack.Screen
           options={{
             headerShown: false,

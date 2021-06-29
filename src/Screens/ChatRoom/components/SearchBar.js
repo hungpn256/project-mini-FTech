@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Text, TextInput} from 'react-native';
 import {Searchbar} from 'react-native-paper';
 
 const SearchBar = ({txtSearch, setTxtSearch}) => {
@@ -6,7 +7,7 @@ const SearchBar = ({txtSearch, setTxtSearch}) => {
     <Searchbar
       value={txtSearch}
       onChangeText={text => {
-        setTxtSearch(text);
+        setTxtSearch?.(text);
       }}
       placeholder="Search"
       style={{

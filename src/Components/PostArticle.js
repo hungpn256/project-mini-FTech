@@ -35,6 +35,7 @@ export default function PostArticle({}) {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+       
         launchCamera({mediaType: 'photo'}, props => {
           if (
             props.type === 'image/jpeg' ||
