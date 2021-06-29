@@ -1,0 +1,2 @@
+export const OPEN_LIKE_MODAL = 'OPEN_LIKE_MODAL';
+export const CLOSE_LIKE_MODAL = 'CLOSE_LIKE_MODAL';

@@ -54,7 +54,7 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchCamera({mediaType: 'photo'}, props => {
-                      if (props.type === 'image/jpeg') {
+                      if (props && props.type?.match('image')) {
                         setImage(props);
                       }
                     });
@@ -66,15 +66,21 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchImageLibrary({mediaType: 'photo'}, props => {
-                      if (props.type === 'image/jpeg') {
+                      if (props && props.type?.match('image')) {
                         setImage(props);
                       }
                     });
                   }}
                 />
                 <List.Item
-                  title="camera"
-                  left={() => <FontAwesome name="camera" size={25} />}
+                  title="Close"
+                  left={() => (
+                    <FontAwesome
+                      name="close"
+                      size={25}
+                      style={{marginHorizontal: 4}}
+                    />
+                  )}
                   onPress={() => setVisible(false)}
                 />
               </List.Section>

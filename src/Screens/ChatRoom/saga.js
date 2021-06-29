@@ -79,6 +79,10 @@ function* sendMesSaga({payload}) {
           : payload.messages[0].text,
         token: oUser.token,
         image: payload.messages[0]?.image ?? null,
+        data: {
+          messenger: payload.roomId,
+          name: me.name,
+        },
       });
       console.log('success send noti');
     }
