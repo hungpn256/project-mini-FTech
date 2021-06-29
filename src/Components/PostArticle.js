@@ -37,16 +37,11 @@ export default function PostArticle({}) {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
        
         launchCamera({mediaType: 'photo'}, props => {
-<<<<<<< HEAD
-          console.log(11111111111111);
-          if (props.type === 'image/jpeg') {
-=======
           if (
             props.type === 'image/jpeg' ||
             props.type === 'image/png' ||
             props.type === 'image/jpg'
           ) {
->>>>>>> 45d0d76f01654c50190eb208983998f3bef9837c
             dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
           }
         });

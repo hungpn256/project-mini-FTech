@@ -3,7 +3,8 @@ import {
   RECHARGE_MONEY,
   RECHARGE_MONEY_SUCCESS,
   WALLET_CHANGE_STATE,
-  WITHDRAW_MONEY
+  WITHDRAW_MONEY,
+  WITHDRAW_MONEY_SUCCESS
 } from './constaints';
 import {rechargeMoney,withdrawMoney} from './service';
 
@@ -20,9 +21,14 @@ function* rechargeMoneySaga({payload}) {
 }
 function* withdrawMoneySaga({payload}) {
   try {
-    const res = yield call(withdrawMoney, payload);
+    yield put({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: true}});
+    yield call(withdrawMoney, payload);
+    yield put({type: WITHDRAW_MONEY_SUCCESS, payload});
   } catch (e) {
     console.log(e);
+  }
+  finally {
+    yield put({type: WALLET_CHANGE_STATE, payload: {withdrawSuccess: false}});
   }
 }
 
