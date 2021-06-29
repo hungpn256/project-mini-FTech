@@ -79,14 +79,24 @@ export default function ChatRoom({navigation}) {
                         name: userSearch.name,
                       });
                     }}>
-                    <Avatar.Image
-                      source={{
-                        uri:
-                          item.avatar.length > 0 ? item.avatar : avatarDefault,
-                      }}
-                      style={styles.avatar}
-                      size={70}
-                    />
+                    <View
+                      style={{
+                        borderColor: '#EEEEEE',
+                        borderWidth: 1,
+                        borderRadius: 999,
+                      }}>
+                      <Avatar.Image
+                        source={{
+                          uri:
+                            item.avatar.length > 0
+                              ? item.avatar
+                              : avatarDefault,
+                        }}
+                        style={styles.avatar}
+                        size={65}
+                      />
+                    </View>
+
                     <Text style={[styles.name, {fontSize: 16}]}>
                       {item.name}
                     </Text>
@@ -138,12 +148,19 @@ export default function ChatRoom({navigation}) {
                           descriptionStyle={unread && styles.textUnread}
                           titleStyle={styles.titleStyle}
                           left={() => (
-                            <Avatar.Image
-                              source={{
-                                uri: userOther.avatar || avatarDefault,
-                              }}
-                              size={55}
-                            />
+                            <View
+                              style={{
+                                borderColor: '#EEEEEE',
+                                borderWidth: 1,
+                                borderRadius: 999,
+                              }}>
+                              <Avatar.Image
+                                source={{
+                                  uri: userOther.avatar || avatarDefault,
+                                }}
+                                size={55}
+                              />
+                            </View>
                           )}
                         />
                       </Card>
