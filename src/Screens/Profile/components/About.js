@@ -2,6 +2,7 @@ import React from 'react';
 import {List} from 'react-native-paper';
 import moment from 'moment';
 export default function About({user}) {
+  console.log(user.dateOfBirth + 'DOBDOB');
   return (
     <List.Section>
       <List.Subheader>Giới thiệu chung</List.Subheader>
@@ -34,7 +35,7 @@ export default function About({user}) {
       {user.phoneNumber.length > 0 && (
         <List.Item
           title="Phone number"
-          description="0584051516"
+          description={user.phoneNumber}
           left={() => (
             <List.Icon
               style={{backgroundColor: '#777', borderRadius: 999}}
@@ -47,7 +48,7 @@ export default function About({user}) {
       {user.dateOfBirth.length > 0 && (
         <List.Item
           title="Date of birth"
-          description={moment(user.dateOfBirth).format('DD/mm/yyyy')}
+          description={moment(user.dateOfBirth).format('DD/MM/yyyy')}
           left={() => (
             <List.Icon
               style={{backgroundColor: '#777', borderRadius: 999}}

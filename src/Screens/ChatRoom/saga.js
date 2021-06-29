@@ -27,6 +27,7 @@ import {
   markRead,
 } from './service';
 import auth from '@react-native-firebase/auth';
+import {notiMes} from '../Notification/service';
 
 function* getUserByNameSaga({payload}) {
   try {
@@ -67,8 +68,24 @@ function* sendMesSaga({payload}) {
     const user = yield select(
       state => state.chat.conversation[payload.roomId].users,
     );
+    const me = yield select(state => state.auth.user);
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
     yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    if (oUser.token && oUser.token.length > 0) {
+      yield call(notiMes, {
+        title: `${me.name} đã gửi tin nhắn cho bạn`,
+        body: payload.messages[0].image
+          ? 'bạn đã nhận được 1 hình ảnh'
+          : payload.messages[0].text,
+        token: oUser.token,
+        image: payload.messages[0]?.image ?? null,
+        data: {
+          messenger: payload.roomId,
+          name: me.name,
+        },
+      });
+      console.log('success send noti');
+    }
     console.log('send done');
   } catch (e) {
     console.log('err send mes', e);

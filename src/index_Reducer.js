@@ -10,6 +10,8 @@ import modalCreatePost from './Screens/ModalCreatePost/reducer';
 import wallet from './Screens/Pay/reducer';
 import modalPostConfig from './Screens/ModalPostConfig/reducer';
 import modalEditPost from './Screens/ModalEditPost/reducer';
+import notification from './Screens/Notification/reducer';
+import modalLike from './Screens/ModalLike/reducer';
 const rootReducer = combineReducers({
   home,
   auth,
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   modalCreatePost,
   wallet,
   modalPostConfig,
+  notification,
+  modalLike,
 });
 
 export default rootReducer;

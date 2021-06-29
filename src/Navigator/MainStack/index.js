@@ -14,7 +14,7 @@ import WithDraw from '@Screens/Pay/subScreens/withdraw';
 import Wallet from '@Screens/Pay/wallet';
 import Profile from '@Screens/Profile';
 import Search from '@Screens/SearchHome';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -31,6 +31,8 @@ import Notification from '../../Screens/Notification';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
 import LuckyWheel from '@Screens/LuckyWheel/index';
 import ExchangeRate from '@Screens/Pay/subScreens/exchangerate';
+import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
+import {notiMes} from '../../Screens/Notification/service';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -67,6 +69,15 @@ const StackNavigatorMenu = () => {
   );
 };
 const TabNavigator = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    notiMes();
+    dispatch({type: GET_NOTIFICATIONS});
+  }, []);
+  const notifications = useSelector(state => state.notification.notifications);
+  const numberNoti = useMemo(() => {
+    return notifications.filter(i => i.unread).length;
+  }, [notifications]);
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -123,11 +134,21 @@ const TabNavigator = () => {
       })}
       tabBarOptions={{
         activeTintColor: '#1777F2',
-        inactiveTintColor: '#777',
+        inactiveTintColor: '#676356',
         showLabel: false,
       }}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Notification" component={Notification} />
+      <Tab.Screen
+        name="Notification"
+        component={Notification}
+        options={
+          numberNoti
+            ? {
+                tabBarBadge: numberNoti,
+              }
+            : {}
+        }
+      />
       <Tab.Screen name="Profile" component={StackNavigatorProfile} />
       <Tab.Screen name="Menu" component={StackNavigatorMenu} />
     </Tab.Navigator>
@@ -189,6 +210,7 @@ const TabNavigatorPay = () => {
 };
 export default function AppNavigator() {
   const user = useSelector(state => state.auth.user);
+
   const dispatch = useDispatch();
   const {roomChatList} = user;
   useEffect(() => {

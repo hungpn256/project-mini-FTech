@@ -2,7 +2,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
+import messaging from '@react-native-firebase/messaging';
 GoogleSignin.configure({
   webClientId:
     '49605558541-dqv3864n6hm810foab2v8p4rpabpm97f.apps.googleusercontent.com',
@@ -31,7 +31,18 @@ export const userDocument = async () => {
 
 const saveUser = async uid => {
   const user = await firestore().collection('user').doc(uid).get();
+  saveToken();
   return user.data();
+};
+
+export const saveToken = async () => {
+  const token = await messaging().getToken();
+  firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .update({
+      token: firestore.FieldValue.arrayUnion(token),
+    });
 };
 
 export async function loginGoogle() {
@@ -67,6 +78,13 @@ export const login = async ({email, pass}) => {
 };
 
 export const logout = async () => {
+  const token = await messaging().getToken();
+  await firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .update({
+      token: firestore.FieldValue.arrayRemove(token),
+    });
   try {
     // if (GoogleSignin.getTokens) {
     await GoogleSignin.revokeAccess();

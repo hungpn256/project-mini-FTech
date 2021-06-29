@@ -30,6 +30,24 @@ const getCmt = async id => {
   return cmt.data();
 };
 
+export const dataUser = async () => {
+  const user = await firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .get();
+  return user.data();
+};
+
+export const postReceived = async ({postId}) => {
+  console.log(postId + 'postIDDd');
+  const userPost = await firestore().collection('post').doc(postId).get();
+  const userData = await firestore()
+    .collection('user')
+    .doc(userPost.data().userId)
+    .get();
+  return userData.data();
+};
+
 export const createCmt = async ({text, uid, postId, imageCmt}) => {
   const img = imageCmt ? await uploadImg(imageCmt) : '';
   try {
@@ -41,8 +59,8 @@ export const createCmt = async ({text, uid, postId, imageCmt}) => {
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     const cmtId = cmt.id;
-    const cmtData = getCmt(cmtId);
-    return {id: cmtId, ...cmtData};
+    const cmtData = await cmt.get();
+    return {id: cmtId, ...cmtData.data()};
   } catch (error) {
     console.log(error);
     return false;
@@ -123,8 +141,6 @@ export const deletePost = async ({postId}) => {
       documentSnapshot.ref.delete();
     });
   }
-  const data = getAllAfterDel();
-  return data;
 };
 
 export const uploadPost = async ({text, image}) => {
