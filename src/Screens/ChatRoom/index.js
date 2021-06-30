@@ -117,7 +117,7 @@ export default function ChatRoom({navigation}) {
                 userOther.name.toLowerCase().match(filter.toLowerCase())
               )
                 return (
-                  <SwipeCustom key={index} item={i}>
+                  <SwipeCustom key={index} item={i} style={{marginVertical: 3}}>
                     <TouchableOpacity
                       activeOpacity={1}
                       onPress={() => {
@@ -126,7 +126,7 @@ export default function ChatRoom({navigation}) {
                           name: userOther.name,
                         });
                       }}>
-                      <Card style={styles.card}>
+                      <View style={styles.card}>
                         <List.Item
                           style={styles.item}
                           title={
@@ -170,7 +170,7 @@ export default function ChatRoom({navigation}) {
                             </View>
                           )}
                         />
-                      </Card>
+                      </View>
                     </TouchableOpacity>
                   </SwipeCustom>
                 );
