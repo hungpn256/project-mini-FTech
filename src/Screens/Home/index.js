@@ -119,7 +119,6 @@ const Home = () => {
         <PostArticle />
         {postData && postData.length > 0 ? (
           postData.map(item => {
-            console.log(item);
             return (
               <Article
                 time={moment(item.createAt?.toDate()).fromNow()}
