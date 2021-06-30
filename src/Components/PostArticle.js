@@ -13,9 +13,10 @@ export default function PostArticle({}) {
     launchImageLibrary({mediaType: 'photo'}, props => {
       console.log(props + 'Hello');
       if (
-        props.assets[0].type === 'image/jpeg' ||
-        props.assets[0].type === 'image/png' ||
-        props.assets[0].type === 'image/jpg'
+        props.assets &&
+        (props.assets[0].type === 'image/jpeg' ||
+          props.assets[0].type === 'image/png' ||
+          props.assets[0].type === 'image/jpg')
       ) {
         dispatch({
           type: MODAL_CREATE_POST_IMG,
@@ -42,9 +43,10 @@ export default function PostArticle({}) {
         launchCamera({mediaType: 'photo'}, props => {
           console.log(props + 'Hello');
           if (
-            props.assets[0].type === 'image/jpeg' ||
-            props.assets[0].type === 'image/png' ||
-            props.assets[0].type === 'image/jpg'
+            props.assets &&
+            (props.assets[0].type === 'image/jpeg' ||
+              props.assets[0].type === 'image/png' ||
+              props.assets[0].type === 'image/jpg')
           ) {
             dispatch({
               type: MODAL_CREATE_POST_IMG,

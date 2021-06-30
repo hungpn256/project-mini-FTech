@@ -55,7 +55,7 @@ export default function SetImage({setImage, style}) {
                     setVisible(false);
                     launchCamera({mediaType: 'photo'}, props => {
                       if (
-                        props.assets[0] &&
+                        props.assets &&
                         props.assets[0].type?.match('image')
                       ) {
                         setImage(props.assets[0]);
@@ -70,7 +70,7 @@ export default function SetImage({setImage, style}) {
                     setVisible(false);
                     launchImageLibrary({mediaType: 'photo'}, props => {
                       if (
-                        props.assets[0] &&
+                        props.assets &&
                         props.assets[0].type?.match('image')
                       ) {
                         setImage(props.assets[0]);

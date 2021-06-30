@@ -35,9 +35,10 @@ export default function Index() {
   const gallery = () => {
     launchImageLibrary({mediaType: 'photo'}, props => {
       if (
-        props.assets[0].type === 'image/jpeg' ||
-        props.assets[0].type === 'image/png' ||
-        props.assets[0].type === 'image/jpg'
+        props.assets &&
+        (props.assets[0].type === 'image/jpeg' ||
+          props.assets[0].type === 'image/png' ||
+          props.assets[0].type === 'image/jpg')
       ) {
         setImage(props.assets[0]);
       }
@@ -97,9 +98,10 @@ export default function Index() {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
           if (
-            props.assets[0].type === 'image/jpeg' ||
-            props.assets[0].type === 'image/png' ||
-            props.assets[0].type === 'image/jpg'
+            props.assets &&
+            (props.assets[0].type === 'image/jpeg' ||
+              props.assets[0].type === 'image/png' ||
+              props.assets[0].type === 'image/jpg')
           ) {
             setImage(props.assets[0]);
           }

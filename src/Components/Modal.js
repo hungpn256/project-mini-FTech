@@ -42,7 +42,7 @@ export default function Post({type, src, closeModal, closeImg}) {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props && props.assets[0].type?.match('image')) {
+      if (props.assets && props.assets[0].type?.match('image')) {
         setImage(props.assets[0]);
       }
     });
@@ -63,7 +63,7 @@ export default function Post({type, src, closeModal, closeImg}) {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props && props.assets[0].type?.match('image')) {
+          if (props.assets && props.assets[0].type?.match('image')) {
             setImage(props.assets[0]);
           }
         });

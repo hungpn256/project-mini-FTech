@@ -138,13 +138,13 @@ const Profile = ({navigation, route}) => {
                 onPress={() => {
                   dispatch({
                     type: MODAL_CHANGE_STATE,
-                    payload: {image: user.background || backgroundDefault},
+                    payload: {image: user.background},
                   });
                 }}>
                 <Image
                   style={styles.cover}
                   source={{
-                    uri: user.background,
+                    uri: user.background || backgroundDefault,
                   }}
                 />
               </Pressable>
@@ -153,7 +153,7 @@ const Profile = ({navigation, route}) => {
                   setImage={setBackground}
                   style={{
                     right: 20,
-                    bottom: user.background?.length > 0 ? 180 : -100,
+                    bottom: 180,
                   }}
                 />
               )}
