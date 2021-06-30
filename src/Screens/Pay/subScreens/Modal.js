@@ -1,4 +1,17 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import React from 'react';
+import {View, Text, Modal, StyleSheet, Dimensions} from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
+export default function Modal() {
+  return (
+    <Modal>
+      <View style={styles.header}>
+        <Text style={styles.textHeader}>User's info</Text>
+        <Icon name="close" size={22} style={styles.closeModal} />
+      </View>
+    </Modal>
+  );
+}
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
