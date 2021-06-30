@@ -73,12 +73,12 @@ export default function Messenger({route}) {
             style={styles.action}
             onPress={() => {
               launchImageLibrary({mediaType: 'photo'}, props => {
-                if (props.type === 'image/jpeg') {
+                if (props.assets[0].type === 'image/jpeg') {
                   const message = {
                     _id: uuid.v4(),
                     createAt: new Date(),
                     user: {_id: user.id, avatar: user.avatar, name: user.name},
-                    image: props,
+                    image: props.assets[0],
                     text: '',
                   };
                   onSend([message]);
