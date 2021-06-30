@@ -32,8 +32,8 @@ export const styles = StyleSheet.create({
     marginLeft: 10,
   },
   img: {
-    // resizeMode: 'contain',
-    // flex: 1,
+    resizeMode: 'contain',
+    flex: 1,
     width: 300,
     height: 300,
   },
