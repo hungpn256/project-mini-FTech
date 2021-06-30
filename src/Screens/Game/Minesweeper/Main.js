@@ -176,7 +176,6 @@ const MainGame = () => {
         </View>
       ) : (
         <View>
-          <CountTime isWin={isWin} />
           <View style={styles(dimension).mainGame}>
             {matrix.map((item, index) => {
               return item.map((subItem, subIndex) => {
