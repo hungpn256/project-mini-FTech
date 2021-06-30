@@ -54,8 +54,11 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchCamera({mediaType: 'photo'}, props => {
-                      if (props && props.type?.match('image')) {
-                        setImage(props);
+                      if (
+                        props.assets &&
+                        props.assets[0].type?.match('image')
+                      ) {
+                        setImage(props.assets[0]);
                       }
                     });
                   }}
@@ -66,8 +69,11 @@ export default function SetImage({setImage, style}) {
                   onPress={() => {
                     setVisible(false);
                     launchImageLibrary({mediaType: 'photo'}, props => {
-                      if (props && props.type?.match('image')) {
-                        setImage(props);
+                      if (
+                        props.assets &&
+                        props.assets[0].type?.match('image')
+                      ) {
+                        setImage(props.assets[0]);
                       }
                     });
                   }}
