@@ -1,32 +1,23 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-  Image,
-  Dimensions,
-} from 'react-native';
-import {styles} from './styles';
-import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import avatarImg from '../../../assets/Img/avatar.png';
-import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import InputEncloseAvatar from '../../Components/InputEncloseAvatar';
-import Comments from '../../Components/Comments';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {CMT, GET_CMT} from '@Screens/Home/constants';
+import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
+import moment from 'moment';
+import React, {useEffect, useRef, useState} from 'react';
+import {Pressable, ScrollView, Text, View} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Avatar, Card, Paragraph} from 'react-native-paper';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import Icon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useRoute} from '@react-navigation/native';
-import {CMT, GET_CMT} from '@Screens/Home/constants';
-import Loading from '../../Components/Loading/index';
-import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useSelector, useDispatch} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
-import auth, {firebase} from '@react-native-firebase/auth';
-import moment from 'moment';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {useDispatch, useSelector} from 'react-redux';
+import avatarImg from '../../../assets/Img/avatar.png';
+import Comments from '../../Components/Comments';
+import InputEncloseAvatar from '../../Components/InputEncloseAvatar';
+import {styles} from './styles';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -41,7 +32,7 @@ const LeftContent = (img, navi) => (
   </>
 );
 
-export default function index() {
+export default function PostDetail() {
   const navigate = useNavigation();
   const inputRef = useRef(null);
   const [like, setLike] = useState();
@@ -54,9 +45,6 @@ export default function index() {
   const [total, setTotal] = useState(0);
   const [postData, setPostData] = useState('');
   const [user, setUser] = useState('');
-  const [status, setStatus] = useState('');
-  const windowHeight = Dimensions.get('window').height;
-  const windowWidth = Dimensions.get('window').width;
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
