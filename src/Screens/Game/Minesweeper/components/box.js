@@ -74,7 +74,10 @@ const Box = ({index, open, value, handleClick}) => {
             {value === -1 ? (
               <Image source={boom} style={[styles.imageFlag]} />
             ) : (
-              <Text style={styles.text}>{value !== 0 && value}</Text>
+              <Text
+                style={[styles.text, {fontSize: dimension === 16 ? 14 : 20}]}>
+                {value !== 0 && value}
+              </Text>
             )}
           </Animated.View>
         ) : open === 2 ? (

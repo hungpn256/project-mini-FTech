@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   name: {
+    fontFamily: 'SourceSansPro-SemiBoldItalic',
     color: '#000',
     fontSize: 30,
     fontWeight: 'bold',

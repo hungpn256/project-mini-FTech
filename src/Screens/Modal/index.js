@@ -16,7 +16,12 @@ export default function ModalComponent() {
         dispatch({type: MODAL_CHANGE_STATE, payload: {image: null}});
       }}>
       <GestureRecognizer
-        style={{flex: 1}}
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(0,0,0,0.8)',
+        }}
         onSwipeDown={() => {
           dispatch({type: MODAL_CHANGE_STATE, payload: {image: null}});
         }}>
@@ -36,13 +41,14 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'contain',
+    marginTop: 50,
+    width: '100%',
   },
   close: {
     position: 'absolute',
-    right: 10,
+    left: 10,
     top: 10,
     padding: 3,
-    backgroundColor: '#1777f2',
     borderRadius: 999,
     borderColor: 'rgba(0,0,0,0.1)',
     borderWidth: 1,
