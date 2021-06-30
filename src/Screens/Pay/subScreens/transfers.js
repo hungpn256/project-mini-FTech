@@ -39,8 +39,10 @@ const Transfers = () => {
   }, [text]);
 
   const search = () => {
-    const data = allUser.filter(item =>
-      item.name.match(text) ? item.name.match(text) : item.email?.match(text),
+    const data = allUser.filter(
+      item =>
+        item.name.toLowerCase().match(text.toLowerCase()) ||
+        item.email?.toLowerCase().match(text.toLowerCase()),
     );
     setFilter(data);
   };
@@ -57,7 +59,7 @@ const Transfers = () => {
       <View style={{paddingHorizontal: 8, marginTop: 10}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {filter.length > 0 ? (
-            filter.map(item => {
+            filter.map((item, i) => {
               return (
                 <>
                   <View
@@ -88,6 +90,7 @@ const Transfers = () => {
                     </View>
                   </View>
                   <View
+                    key={i}
                     style={{
                       borderBottomColor: '#eee',
                       borderBottomWidth: 1,
@@ -99,7 +102,7 @@ const Transfers = () => {
           ) : (
             <>
               {allUser
-                ? allUser.map(item => {
+                ? allUser.map((item, i) => {
                     return (
                       <>
                         <View
@@ -133,6 +136,7 @@ const Transfers = () => {
                           </View>
                         </View>
                         <View
+                          key={i}
                           style={{
                             borderBottomColor: '#eee',
                             borderBottomWidth: 1,
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#EEEEEE',
     borderRadius: 23,
-    paddingHorizontal: 10,
+    paddingLeft: 15,
     flex: 1,
   },
   avatar: {
