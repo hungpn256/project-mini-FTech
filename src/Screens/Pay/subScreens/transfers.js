@@ -4,17 +4,15 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
-  Alert,
   ScrollView,
   Pressable,
 } from 'react-native';
-import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import firestore, {firebase} from '@react-native-firebase/firestore';
+import {Avatar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {ALL_USER_WALLET, WITHDRAW_MONEY} from '../constaints';
-import Feather from 'react-native-vector-icons/Feather';
 import avatarImg from '../../../../assets/Img/avatar.png';
+import User from './Modal';
+import {OPEN_MODAL_USER} from '../constaints';
 const handleMoney = (surplus, inputNumber) => {
   if (surplus >= inputNumber) {
     dispatch({type: WITHDRAW_MONEY, payload: inputNumber});
@@ -48,6 +46,7 @@ const Transfers = () => {
   };
   return (
     <View style={styles.container}>
+      <User />
       <View style={styles.inputGroup}>
         <TextInput
           onChangeText={e => setText(e)}
@@ -61,9 +60,11 @@ const Transfers = () => {
           {filter.length > 0 ? (
             filter.map((item, i) => {
               return (
-                <>
-                  <View
-                    key={item.id}
+                <View key={item.id}>
+                  <Pressable
+                    onPress={() =>
+                      dispatch({type: OPEN_MODAL_USER, payload: {item: item}})
+                    }
                     style={{
                       marginTop: 10,
                       flexDirection: 'row',
@@ -88,7 +89,7 @@ const Transfers = () => {
                         {item.email ? item.email : 'xx-xx-xx'}
                       </Text>
                     </View>
-                  </View>
+                  </Pressable>
                   <View
                     key={i}
                     style={{
@@ -96,7 +97,7 @@ const Transfers = () => {
                       borderBottomWidth: 1,
                       marginTop: 5,
                     }}></View>
-                </>
+                </View>
               );
             })
           ) : (
@@ -104,9 +105,14 @@ const Transfers = () => {
               {allUser
                 ? allUser.map((item, i) => {
                     return (
-                      <>
-                        <View
-                          key={item.id}
+                      <View key={item.id}>
+                        <Pressable
+                          onPress={() =>
+                            dispatch({
+                              type: OPEN_MODAL_USER,
+                              payload: {item: item},
+                            })
+                          }
                           style={{
                             marginTop: 10,
                             flexDirection: 'row',
@@ -134,7 +140,7 @@ const Transfers = () => {
                               {item.email ? item.email : 'xx-xx-xx'}
                             </Text>
                           </View>
-                        </View>
+                        </Pressable>
                         <View
                           key={i}
                           style={{
@@ -142,7 +148,7 @@ const Transfers = () => {
                             borderBottomWidth: 1,
                             marginTop: 5,
                           }}></View>
-                      </>
+                      </View>
                     );
                   })
                 : null}
