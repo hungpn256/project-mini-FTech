@@ -13,11 +13,15 @@ export default function PostArticle({}) {
     launchImageLibrary({mediaType: 'photo'}, props => {
       console.log(props + 'Hello');
       if (
-        props.type === 'image/jpeg' ||
-        props.type === 'image/png' ||
-        props.type === 'image/jpg'
+        props.assets &&
+        (props.assets[0].type === 'image/jpeg' ||
+          props.assets[0].type === 'image/png' ||
+          props.assets[0].type === 'image/jpg')
       ) {
-        dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
+        dispatch({
+          type: MODAL_CREATE_POST_IMG,
+          payload: {img: props.assets[0]},
+        });
       }
     });
   };
@@ -39,11 +43,15 @@ export default function PostArticle({}) {
         launchCamera({mediaType: 'photo'}, props => {
           console.log(props + 'Hello');
           if (
-            props.type === 'image/jpeg' ||
-            props.type === 'image/png' ||
-            props.type === 'image/jpg'
+            props.assets &&
+            (props.assets[0].type === 'image/jpeg' ||
+              props.assets[0].type === 'image/png' ||
+              props.assets[0].type === 'image/jpg')
           ) {
-            dispatch({type: MODAL_CREATE_POST_IMG, payload: {img: props}});
+            dispatch({
+              type: MODAL_CREATE_POST_IMG,
+              payload: {img: props.assets[0]},
+            });
           }
         });
       } else {

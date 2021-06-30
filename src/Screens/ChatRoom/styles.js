@@ -2,8 +2,11 @@ import {Dimensions, StyleSheet} from 'react-native';
 const widthWindow = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   card: {
-    marginTop: 3,
+    backgroundColor: '#fff',
     paddingHorizontal: 8,
+  },
+  item: {
+    width: widthWindow,
   },
   name: {
     fontSize: 18,
