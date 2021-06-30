@@ -11,6 +11,7 @@ export default function PostArticle({}) {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
+      console.log(props + 'Hello');
       if (
         props.type === 'image/jpeg' ||
         props.type === 'image/png' ||
@@ -35,8 +36,8 @@ export default function PostArticle({}) {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-       
         launchCamera({mediaType: 'photo'}, props => {
+          console.log(props + 'Hello');
           if (
             props.type === 'image/jpeg' ||
             props.type === 'image/png' ||

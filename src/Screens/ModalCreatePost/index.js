@@ -112,7 +112,6 @@ export default function index() {
       console.warn(err);
     }
   };
-  console.log(updateImg + '??????????????');
   return (
     <Modal animationType="fade" visible={modal}>
       <Loading loading={loading} />
