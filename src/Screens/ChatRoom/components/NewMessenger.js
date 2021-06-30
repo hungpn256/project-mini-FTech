@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Modal,
@@ -26,6 +26,7 @@ const NewMessenger = () => {
   const userSearch = useSelector(state => state.chat.userSearch);
   const dispatch = useDispatch();
   const [txtSearch, setTxtSearch] = useState('');
+  const ref = useRef(null);
   useEffect(() => {
     dispatch({
       type: GET_USER_BY_NAME,
@@ -33,11 +34,14 @@ const NewMessenger = () => {
     });
   }, [txtSearch]);
   useEffect(() => {
-    if (!visibleModal)
+    if (!visibleModal) {
       dispatch({
         type: GET_USER_BY_NAME,
         payload: '',
       });
+    } else {
+      ref.current.focus();
+    }
   }, [visibleModal]);
   return (
     <View>
@@ -68,7 +72,11 @@ const NewMessenger = () => {
                 alignItems: 'center',
               }}>
               <View style={{flex: 1}}>
-                <SearchBar txtSearch={txtSearch} setTxtSearch={setTxtSearch} />
+                <SearchBar
+                  txtSearch={txtSearch}
+                  setTxtSearch={setTxtSearch}
+                  reff={ref}
+                />
               </View>
               <TouchableOpacity onPress={() => setVisibleModal(false)}>
                 <AntDesign
@@ -135,6 +143,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: '#fff',
     height: '100%',
+    width: '100%',
     borderRadius: 10,
     paddingTop: 20,
   },
