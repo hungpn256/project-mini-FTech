@@ -23,8 +23,8 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    backgroundColor: '#E8E8E8',
-    borderRadius: 20,
+    borderBottomWidth: 1,
+    borderColor: '#DCDCDC',
   },
   userName: {
     fontSize: 16,

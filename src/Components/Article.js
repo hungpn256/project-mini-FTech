@@ -155,6 +155,7 @@ const Article = ({text, image, time, uid, postid}) => {
     });
     setCmt('');
     setImgCmt('');
+    setUserCmt('');
   };
 
   const handleLike = () => {
