@@ -62,7 +62,7 @@ export default function Index() {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.assets[0].type === 'image/jpeg') {
+          if (props.assets && props.assets[0].type === 'image/jpeg') {
             setImage(props.assets[0]);
           }
         });

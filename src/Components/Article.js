@@ -139,9 +139,10 @@ const Article = ({text, image, time, uid, postid}) => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
       if (
-        props.assets[0].type === 'image/jpeg' ||
-        props.assets[0].type === 'image/png' ||
-        props.assets[0].type === 'image/jpg'
+        props.assets &&
+        (props.assets[0].type === 'image/jpeg' ||
+          props.assets[0].type === 'image/png' ||
+          props.assets[0].type === 'image/jpg')
       ) {
         setImgCmt(props.assets[0]);
       }
