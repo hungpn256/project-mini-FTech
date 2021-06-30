@@ -90,7 +90,7 @@ const Friend = ({navigation}) => {
         <FlatList
           ListHeaderComponent={() => (
             <View>
-              <Text style={styles.requestText}>Friend Requests:</Text>
+              <Text style={styles.requestText}>Friend Requests</Text>
             </View>
           )}
           data={friend.pending}
@@ -109,7 +109,7 @@ const Friend = ({navigation}) => {
         <FlatList
           ListHeaderComponent={() => (
             <View>
-              <Text style={styles.requestText}>Friends:</Text>
+              <Text style={styles.requestText}>Friends</Text>
             </View>
           )}
           data={friend.accepted}

@@ -22,7 +22,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {USER_INFO, USER_SET} from '../../Screens/Auth/constants';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
-import {GET_CONVERSATION_SUCCESS} from '../../Screens/ChatRoom/constants';
+import {
+  GET_CONVERSATION_SUCCESS,
+  GET_USER_BY_NAME,
+} from '../../Screens/ChatRoom/constants';
 import EditProfile from '@Screens/Profile/components/FormEdit';
 import GameNavigator from './game';
 import PostDetail from '@Screens/PostDetail';
@@ -219,6 +222,10 @@ export default function AppNavigator() {
         dispatch({type: USER_SET});
       });
     dispatch({type: GET_FRIEND});
+    dispatch({
+      type: GET_USER_BY_NAME,
+      payload: '',
+    });
   }, []);
 
   useEffect(() => {
@@ -244,6 +251,7 @@ export default function AppNavigator() {
       });
     };
     connectChat();
+    return connectChat();
   }, [roomChatList.length]);
   return (
     <NavigationContainer>

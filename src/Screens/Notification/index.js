@@ -87,7 +87,7 @@ export default function NotificationScreen() {
             {friend && friend.length > 0 && (
               <>
                 <View>
-                  <Text style={styles.headerNoti}>Friend Requests:</Text>
+                  <Text style={styles.headerNoti}>Friend Requests</Text>
                 </View>
                 {friend.slice(0, 2).map(item => (
                   <PersonRequest
