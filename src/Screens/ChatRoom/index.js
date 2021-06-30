@@ -26,6 +26,7 @@ export default function ChatRoom({navigation}) {
   const user = useSelector(state => state.auth.user);
   const chat = useSelector(state => state.chat);
   const {conversation, userSearch} = chat;
+  const [filter, setFilter] = useState('');
   console.log('re-render');
   useEffect(() => {
     const x = async () => {
@@ -51,7 +52,7 @@ export default function ChatRoom({navigation}) {
       style={{backgroundColor: '#fff', flex: 1}}>
       <Loading loading={loading} />
       <ScrollView>
-        <SearchBar />
+        <SearchBar txtSearch={filter} setTxtSearch={setFilter} />
         <View style={styles.friendWrapper}>
           <ScrollView
             horizontal={true}
@@ -111,7 +112,10 @@ export default function ChatRoom({navigation}) {
               const userOther = i.users.find(i => i.id !== userId);
               const unread = i.unread.indexOf(userId) !== -1;
               const {messages} = i;
-              if (messages.length)
+              if (
+                messages.length &&
+                userOther.name.toLowerCase().match(filter.toLowerCase())
+              )
                 return (
                   <SwipeCustom key={index} item={i}>
                     <TouchableOpacity
@@ -131,7 +135,10 @@ export default function ChatRoom({navigation}) {
                               <Text
                                 style={[
                                   styles.time,
-                                  unread && styles.textUnread,
+                                  unread && {
+                                    ...styles.textUnread,
+                                    fontSize: 13,
+                                  },
                                 ]}>
                                 {moment(
                                   i.updatedAt?.toDate() ?? new Date(),
