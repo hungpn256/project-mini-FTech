@@ -1,12 +1,23 @@
-import {ALL_USER_WALLET_SUCCESS, WALLET_CHANGE_STATE} from './constaints';
+import {
+  ALL_USER_WALLET_SUCCESS,
+  WALLET_CHANGE_STATE,
+  OPEN_MODAL_USER,
+  CLOSE_MODAL_USER,
+} from './constaints';
 
 const initialState = {
   rechargeSuccess: false,
   withdrawSuccess: false,
   users: [],
+  modal: false,
+  user: '',
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case OPEN_MODAL_USER:
+      return {...state, modal: true, user: action.payload.item};
+    case CLOSE_MODAL_USER:
+      return {...state, modal: false, user: ''};
     case WALLET_CHANGE_STATE:
       return {
         ...state,

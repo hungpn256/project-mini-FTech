@@ -1,12 +1,52 @@
 import React from 'react';
-import {View, Text, Modal, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  StyleSheet,
+  Dimensions,
+  TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-export default function Modal() {
+import {Avatar} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import avatarImg from '../../../../assets/Img/avatar.png';
+export default function User() {
+  const status = useSelector(state => state.wallet.modal);
+  const user = useSelector(state => state.wallet.user);
+  const money = useSelector(state => state.auth.user);
   return (
-    <Modal>
+    <Modal animationType="fade" visible={status}>
       <View style={styles.header}>
-        <Text style={styles.textHeader}>User's info</Text>
+        <Text style={styles.textHeader}>{user.name}'s info</Text>
         <Icon name="close" size={22} style={styles.closeModal} />
+      </View>
+      <View style={styles.AvatarCmt}>
+        {user.avatar ? (
+          <View style={styles.avatar}>
+            <Avatar.Image source={{uri: user.avatar}} size={40} />
+          </View>
+        ) : (
+          <View style={styles.avatar}>
+            <Avatar.Image source={avatarImg} size={40} />
+          </View>
+        )}
+        <View style={styles.cmt}>
+          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={{marginLeft: 10}}>
+            {user.email ? user.email : 'xx-xx-xx'}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.money}>
+        <Text style={{fontSize: 18}}>Money</Text>
+        <Text style={{marginLeft: 5, color: '#696969'}}>
+          {'('}Balance : {money.money}
+          {')'}
+        </Text>
+      </View>
+      <View style={{paddingHorizontal: 10}}>
+        <TextInput placeholder="0đ" />
       </View>
     </Modal>
   );
@@ -19,6 +59,23 @@ export const styles = StyleSheet.create({
     padding: 15,
     flex: 1,
     marginHorizontal: 0,
+  },
+  avatar: {
+    borderRadius: 999,
+    borderColor: '#eee',
+    borderWidth: 1,
+  },
+  money: {
+    marginTop: 10,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  AvatarCmt: {
+    paddingHorizontal: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   userName: {
     marginLeft: 10,
