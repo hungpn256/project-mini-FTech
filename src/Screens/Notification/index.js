@@ -56,16 +56,7 @@ export default function NotificationScreen() {
   }, [getNoti]);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <Text
-        style={{
-          fontSize: 26,
-          fontWeight: '700',
-          padding: 10,
-          borderBottomColor: 'rgba(0,0,0,0.1)',
-          borderBottomWidth: 1,
-        }}>
-        Notifications
-      </Text>
+      <Text style={styles.navigation}>Notifications</Text>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={getNoti} />

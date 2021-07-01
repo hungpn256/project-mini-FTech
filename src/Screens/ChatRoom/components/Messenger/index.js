@@ -22,8 +22,8 @@ export default function Messenger({route}) {
       createdAt: message?.createdAt?.toDate?.() ?? new Date(),
     };
   });
-  console.log('messenge rerender');
   messages = messages.reverse();
+  console.log(messages, 'chat mess');
   const onSend = message => {
     dispatch({
       type: SEND_MESSAGE,

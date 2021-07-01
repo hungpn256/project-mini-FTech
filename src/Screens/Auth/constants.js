@@ -19,5 +19,5 @@ export const AUTH_GET_ME = 'AUTH_GET_ME';
 export const USER_INFO = 'USER_INFO';
 export const USER_DEL = 'USER_DEL';
 export const USER_CLEAR = 'USER_CLEAR';
-
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const SPLASH = 'SPLASH';

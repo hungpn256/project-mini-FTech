@@ -5,7 +5,8 @@ import auth, {firebase} from '@react-native-firebase/auth';
 export const rechargeMoney = async valueMoney => {
   const user = await firestore().collection('user').doc(auth().currentUser.uid);
   const getUser = await user.get();
-  const money = getUser.data().money;
+  let money = getUser.data().money;
+  money = parseInt(money);
   user.update({
     money: money + valueMoney,
   });

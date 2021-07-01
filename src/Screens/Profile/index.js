@@ -153,7 +153,7 @@ const Profile = ({navigation, route}) => {
                   setImage={setBackground}
                   style={{
                     right: 20,
-                    bottom: user.background?.length > 0 ? 180 : -100,
+                    bottom: 180,
                   }}
                 />
               )}
