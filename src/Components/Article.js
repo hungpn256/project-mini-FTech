@@ -84,13 +84,11 @@ const Article = ({text, image, time, uid, postid}) => {
       }
     };
 
-    const likeupdate = firestore()
+    firestore()
       .collection('post')
       .onSnapshot(() => {
         post();
       });
-    return likeupdate;
-
     // post();
   }, []);
 
@@ -127,13 +125,12 @@ const Article = ({text, image, time, uid, postid}) => {
     //   .onSnapshot(() => {
     //     post();
     //   });
-    const newLastCmt = firestore()
+    firestore()
       .collection('comments')
       .onSnapshot(() => {
         lastCmt();
         cmtSize();
       });
-    return newLastCmt;
   }, []);
   const gallery = () => {
     console.log('image');
@@ -152,7 +149,13 @@ const Article = ({text, image, time, uid, postid}) => {
   const handleCmt = async () => {
     dispatch({
       type: CMT,
-      payload: {text: cmt, uid: currentUser, postId: postid, imageCmt: imgCmt},
+      payload: {
+        text: cmt,
+        uid: currentUser,
+        curName: curUser.name,
+        postId: postid,
+        imageCmt: imgCmt,
+      },
     });
     setCmt('');
     setImgCmt('');

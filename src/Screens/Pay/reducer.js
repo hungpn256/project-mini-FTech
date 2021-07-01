@@ -3,14 +3,17 @@ import {
   WALLET_CHANGE_STATE,
   OPEN_MODAL_USER,
   CLOSE_MODAL_USER,
+  WALLET_TRANSFER_SUCCESS,
 } from './constaints';
 
 const initialState = {
   rechargeSuccess: false,
   withdrawSuccess: false,
+  transferSuccess: false,
   users: [],
   modal: false,
   user: '',
+  loading: false,
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -25,6 +28,8 @@ const reducer = (state = initialState, action) => {
       };
     case ALL_USER_WALLET_SUCCESS:
       return {...state, users: action.payload.res};
+    case WALLET_TRANSFER_SUCCESS:
+      return {...state};
     default:
       return state;
   }
