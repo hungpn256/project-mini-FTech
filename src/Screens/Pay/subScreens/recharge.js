@@ -37,7 +37,7 @@ const Recharge = () => {
           Số dư tài khoản: {formatMoney(userMoney.money)} đ
         </Text>
         <TextInput
-          placeholder="Nhập số tiền cần nạssp"
+          placeholder="Nhập số tiền cần nạp"
           keyboardType="numeric"
           style={styles.input}
           value={'' + money}
