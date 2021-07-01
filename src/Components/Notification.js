@@ -60,9 +60,7 @@ export default function Notification({item}) {
           <Text style={styles.name}>
             {item.users.map(u => u.name).join(', ')}
           </Text>{' '}
-          {item.type === 1
-            ? 'đã like bài viết của bạn'
-            : 'đã comment bài viết của bạn'}
+          {item.type === 1 ? 'liked your post' : 'commented on your post'}
         </Text>
         <Text style={styles.time}>
           {moment(item.updateAt.toDate?.()).fromNow()}

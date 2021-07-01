@@ -93,7 +93,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             navigation.navigate('LuckyWheel');
           }}>
-          <Ionicons name="game-controller" size={40} color={'#EC7063'} />
+          <Ionicons name="game-controller" size={50} color={'#EC7063'} />
           <Text style={styles.textBody}>Quay thưởng</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -101,7 +101,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             navigation.navigate('ExchangeRate');
           }}>
-          <FontAwesome name="balance-scale" size={40} color={'#839192'} />
+          <FontAwesome name="balance-scale" size={50} color={'#839192'} />
           <Text style={styles.textBody}>Tỉ giá</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -109,7 +109,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <FontAwesome name="mobile" size={40} color={'orange'} />
+          <FontAwesome name="mobile" size={50} color={'orange'} />
           <Text style={styles.textBody}>Thẻ điện thoại</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -117,7 +117,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <Fontisto name="film" size={40} color={'black'} />
+          <Fontisto name="film" size={50} color={'black'} />
           <Text style={styles.textBody}>Cinema</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -125,7 +125,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <FontAwesome name="plane" size={40} color={'#45B39D'} />
+          <FontAwesome name="plane" size={50} color={'#45B39D'} />
           <Text style={styles.textBody}>Vé máy bay</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -133,7 +133,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <FontAwesome5 name="money-bill" size={40} color={'#F7DC6F'} />
+          <FontAwesome5 name="money-bill" size={50} color={'#F7DC6F'} />
           <Text style={styles.textBody}>Hoá đơn</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -141,7 +141,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <FontAwesome name="coffee" size={40} color={'#7B241C'} />
+          <FontAwesome name="coffee" size={50} color={'#7B241C'} />
           <Text style={styles.textBody}>Cafe</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -149,7 +149,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <Ionicons name="fast-food" size={40} color={'#AF7AC5'} />
+          <Ionicons name="fast-food" size={50} color={'#AF7AC5'} />
           <Text style={styles.textBody}>Đồ ăn</Text>
         </TouchableOpacity>
 
@@ -158,7 +158,7 @@ export default function Pay({navigation}) {
           onPress={() => {
             Alert.alert('Chức năng đang phát triển');
           }}>
-          <Feather name="shopping-cart" size={40} color={'#27AE60'} />
+          <Feather name="shopping-cart" size={50} color={'#27AE60'} />
           <Text style={styles.textBody}>Dịch vụ khác</Text>
         </TouchableOpacity>
       </View>
