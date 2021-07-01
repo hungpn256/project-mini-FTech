@@ -11,16 +11,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 8,
     justifyContent: 'space-between',
-    height: 50,
-<<<<<<< HEAD
-    paddingBottom: 15,
+    height: 70,
   },
   pessableHome: {
     paddingLeft: 20,
     flexDirection: 'row',
     alignItems: 'center',
-=======
->>>>>>> 619032e7590768dc77016bb05ceda91d6e283214
   },
   header2: {
     flexDirection: 'row',
@@ -52,12 +48,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textBody: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#666869',
+    marginTop: 4,
   },
   body: {
     flex: 1,
+    maxHeight: 500,
     backgroundColor: 'white',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
   touchOpacityBody: {
     borderRadius: 5,
     width: windowWidth / 3 - 20,
-    height: 100,
+    height: '33%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -80,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 135,
     alignItems: 'center',
+    marginBottom: 10,
   },
 });
 
