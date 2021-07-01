@@ -8,11 +8,6 @@ Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.style = {fontFamily: 'SourceSansPro-Regular'};
 const theme = {
   ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'tomato',
-    accent: 'yellow',
-  },
 };
 
 const store = createStore();
