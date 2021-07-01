@@ -145,14 +145,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  formItem: {
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginTop: 16,
-    fontWeight: '700',
-  },
   input: {
     borderBottomWidth: 1,
     marginHorizontal: 10,
@@ -162,17 +154,13 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.7)',
   },
   textDate: {
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 4,
-    width: 50,
-    height: 30,
-    textAlign: 'center',
+    width: '100%',
     textAlignVertical: 'center',
-    paddingHorizontal: 5,
-    fontSize: 16,
+    paddingHorizontal: 15,
+    paddingTop: 8,
+    fontSize: 15,
     marginHorizontal: 2,
-    color: 'rgba(0,0,0,0.7)',
+    color: '#000',
   },
   textDone: {
     color: '#1777F2',
@@ -186,10 +174,6 @@ const styles = StyleSheet.create({
     top: 10,
     padding: 10,
     zIndex: 999,
-  },
-  picker: {
-    marginBottom: -16,
-    marginTop: -10,
   },
 });
 export default styles;

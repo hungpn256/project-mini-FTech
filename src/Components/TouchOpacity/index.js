@@ -1,11 +1,11 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Pressable, Text, TouchableOpacity} from 'react-native';
 import {Styles} from './style';
-const FButton = ({Name, handlePress}) => {
+const FButton = ({Name, handlePress, ...props}) => {
   return (
-    <TouchableOpacity style={Styles.btn} onPress={handlePress}>
+    <Pressable style={Styles.btn} onPress={handlePress} {...props}>
       <Text style={{color: 'white', fontSize: 18}}>{Name}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
