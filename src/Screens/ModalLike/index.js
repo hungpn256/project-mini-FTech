@@ -23,7 +23,6 @@ export default function index() {
       if (postId) {
         const query = await firestore().collection('post').doc(postId).get();
         const user = query.data().like;
-        console.log(user);
         const arr = [];
         if (user.length > 0) {
           for (let i = 0; i < user.length; i++) {
@@ -31,7 +30,6 @@ export default function index() {
               .collection('user')
               .doc(user[i])
               .get();
-            console.log(item.data().name + 'name');
             arr.push(item.data());
           }
           setAll(arr);

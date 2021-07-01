@@ -18,6 +18,7 @@ import avatarImg from '../../../assets/Img/avatar.png';
 import Comments from '../../Components/Comments';
 import InputEncloseAvatar from '../../Components/InputEncloseAvatar';
 import {styles} from './styles';
+import {addNoti, notiMes} from '../Notification/service';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -45,6 +46,15 @@ export default function PostDetail() {
   const [total, setTotal] = useState(0);
   const [postData, setPostData] = useState('');
   const [user, setUser] = useState('');
+  const curUser = useSelector(state => state.auth.user);
+  const payload = {
+    title: 'Bài viết của bạn đã có lượt thích mới',
+    body: `${curUser.name} đã thích bài viết của bạn`,
+    token: user.token,
+    data: {
+      article: route.params.postid,
+    },
+  };
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
@@ -99,13 +109,12 @@ export default function PostDetail() {
         setSize(size.size);
       }
     };
-    const cmtupdate = firestore()
+    firestore()
       .collection('comments')
       .onSnapshot(() => {
         dispatch({type: GET_CMT});
         cmtSize();
       });
-    return cmtupdate;
   }, []);
 
   const handleCmt = async () => {
@@ -116,6 +125,7 @@ export default function PostDetail() {
         uid: auth().currentUser.uid,
         postId: route.params.postid,
         imageCmt: imgCmt,
+        curName: curUser.name,
       },
     });
     setCmt('');
@@ -141,10 +151,16 @@ export default function PostDetail() {
     } else {
       setLike(true);
       setTotal(prev => prev + 1);
-
       likes.update({
         like: firestore.FieldValue.arrayUnion(auth().currentUser.uid),
       });
+      addNoti({
+        postId: route.params.postid,
+        type: 1,
+      });
+      if (user.token && user.token.length > 0) {
+        notiMes(payload);
+      }
     }
   };
   return user ? (

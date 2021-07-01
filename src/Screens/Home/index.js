@@ -46,6 +46,8 @@ const Home = () => {
           roomId: remoteMessage.data.messenger.id,
           name: remoteMessage.data.messenger.name,
         });
+      } else {
+        navigation.navigate(remoteMessage.data.navigate);
       }
     });
     messaging()
@@ -65,6 +67,8 @@ const Home = () => {
               roomId: remoteMessage.data.messenger,
               name: remoteMessage.data.name,
             });
+          } else {
+            navigation.navigate(remoteMessage.data.navigate);
           }
         }
       });
