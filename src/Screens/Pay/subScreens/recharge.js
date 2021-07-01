@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {RECHARGE_MONEY, WALLET_CHANGE_STATE} from '../constaints';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../../../Components/Loading';
 
 function formatMoney(n, currency = '') {
   return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -37,7 +38,7 @@ const Recharge = () => {
           Số dư tài khoản: {formatMoney(userMoney.money)} đ
         </Text>
         <TextInput
-          placeholder="Nhập số tiền cần nạssp"
+          placeholder="Nhập số tiền cần nạp"
           keyboardType="numeric"
           style={styles.input}
           value={'' + money}

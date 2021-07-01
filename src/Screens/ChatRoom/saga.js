@@ -48,14 +48,14 @@ function* getConversationSaga({payload}) {
   }
 }
 
-function* createConversationSaga({payload}) {
-  try {
-    const res = yield call(createConversation, payload);
-    yield put({type: CREATE_CONVERSATION_SUCCESS, payload: res});
-  } catch (e) {
-    console.log(e, 'room-create-fail');
-  }
-}
+// function* createConversationSaga({payload}) {
+//   try {
+//     const res = yield call(createConversation, payload);
+// yield put({type: CREATE_CONVERSATION_SUCCESS, payload: res});
+//   } catch (e) {
+//     console.log(e, 'room-create-fail');
+//   }
+// }
 
 function* sendMesSaga({payload}) {
   try {
@@ -103,7 +103,7 @@ function* markReadSaga({payload}) {
 function* watchChatSaga() {
   yield takeLatest(GET_USER_BY_NAME, getUserByNameSaga);
   yield takeLatest(GET_CONVERSATION, getConversationSaga);
-  yield takeLatest(CREATE_CONVERSATION, createConversationSaga);
+  // yield takeLatest(CREATE_CONVERSATION, createConversationSaga);
   yield takeEvery(SEND_MESSAGE, sendMesSaga);
   yield takeEvery(MARK_READ, markReadSaga);
 }

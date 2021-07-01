@@ -1,12 +1,10 @@
 import {
   ALL_POST,
-  UPLOAD_POST,
-  POST_LOADING,
   CREATE_CMT,
   GET_ALL_CMT,
-  CONFIRM_DELETE_POST,
-  CONFIRM_UPDATE_POST,
   HOME_CHANGE_STATE,
+  POST_LOADING,
+  UPLOAD_POST,
 } from './constants';
 const initialState = {
   post: [],
@@ -19,17 +17,8 @@ const reducer = (state = initialState, action) => {
       return {...state, post: action.payload.data};
     case GET_ALL_CMT:
       return {...state, comments: action.payload.data};
-    // case MORE_POST:
-    //   return {...state, post: [...state.post, ...action.payload.more]};
-    case UPLOAD_POST:
-      // return {...state, post: [...state.post, action.payload.new]};
-      return {...state};
     case POST_LOADING:
       return {...state, postLoad: action.payload.loading};
-    case CONFIRM_DELETE_POST:
-      return {...state};
-    case CONFIRM_UPDATE_POST:
-      return {...state};
     case HOME_CHANGE_STATE:
       return {
         ...state,

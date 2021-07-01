@@ -15,7 +15,7 @@ const ItemMenu = props => {
   return (
     <View style={styles.viewTouchopacityBody}>
       <TouchableOpacity style={styles.touchOpacityBody}>
-        <Text>{props.text}</Text>
+        <Text style={styles.textMenu}>{props.text}</Text>
       </TouchableOpacity>
       <Divider />
     </View>
@@ -52,7 +52,7 @@ const Wallet = () => {
 };
 const styles = StyleSheet.create({
   container: {flex: 1},
-  header: {flex: 2, backgroundColor: '#4169e1'},
+  header: {flex: 2, backgroundColor: '#1777F2'},
   touchOpacityHeader: {flex: 1, flexDirection: 'row', alignItems: 'center'},
   viewAvata: {
     width: windowWidth / 5,
@@ -61,9 +61,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: windowWidth / 10,
+    paddingLeft: 20,
   },
   viewInfo: {
-    paddingLeft: '2%',
+    paddingLeft: 20,
     flex: 1,
   },
   avatar: {
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     flex: 1,
   },
-  body: {flex: 11},
+  body: {flex: 11, paddingLeft: 10},
   viewTouchopacityBody: {
     height: '8%',
   },
@@ -81,6 +82,10 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: 'bold',
     color: 'white',
+  },
+  textMenu: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   touchOpacityBody: {flex: 1, justifyContent: 'center', padding: '2%'},
 });
