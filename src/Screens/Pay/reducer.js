@@ -11,11 +11,8 @@ const initialState = {
   withdrawSuccess: false,
   transferSuccess: false,
   users: [],
-<<<<<<< HEAD
   modal: false,
   user: '',
-=======
->>>>>>> 28ec77bd383ba405be24202d679f4d058b878b0e
   loading: false,
 };
 const reducer = (state = initialState, action) => {
