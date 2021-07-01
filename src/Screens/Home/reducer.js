@@ -22,11 +22,10 @@ const reducer = (state = initialState, action) => {
     // case MORE_POST:
     //   return {...state, post: [...state.post, ...action.payload.more]};
     case UPLOAD_POST:
-      return {...state, post: [...state.post, action.payload.new]};
+      // return {...state, post: [...state.post, action.payload.new]};
+      return {...state};
     case POST_LOADING:
       return {...state, postLoad: action.payload.loading};
-    case CREATE_CMT:
-      return {...state, comments: [...state.comments, action.payload.newCmt]};
     case CONFIRM_DELETE_POST:
       return {...state};
     case CONFIRM_UPDATE_POST:

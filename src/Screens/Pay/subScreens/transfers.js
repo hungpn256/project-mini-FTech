@@ -13,6 +13,7 @@ import {ALL_USER_WALLET, WITHDRAW_MONEY} from '../constaints';
 import avatarImg from '../../../../assets/Img/avatar.png';
 import User from './Modal';
 import {OPEN_MODAL_USER} from '../constaints';
+
 const handleMoney = (surplus, inputNumber) => {
   if (surplus >= inputNumber) {
     dispatch({type: WITHDRAW_MONEY, payload: inputNumber});
@@ -28,6 +29,7 @@ const Transfers = () => {
   const [text, setText] = useState('');
   const [filter, setFilter] = useState('');
   const allUser = useSelector(state => state.wallet.users);
+
   useEffect(() => {
     dispatch({type: ALL_USER_WALLET});
   }, []);
@@ -47,6 +49,7 @@ const Transfers = () => {
   return (
     <View style={styles.container}>
       <User />
+
       <View style={styles.inputGroup}>
         <TextInput
           onChangeText={e => setText(e)}

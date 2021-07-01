@@ -5,7 +5,11 @@ import {Modal} from 'react-native';
 
 export default function Loading({loading}) {
   return (
-    <Modal visible={loading} animationType="fade" transparent={true}>
+    <Modal
+      style={{zIndex: 1000}}
+      visible={loading}
+      animationType="fade"
+      transparent={true}>
       <View
         style={{
           flex: 1,
