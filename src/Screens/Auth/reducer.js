@@ -47,7 +47,10 @@ const reducer = (state = initialState, action) => {
     case RECHARGE_MONEY_SUCCESS:
       return {
         ...state,
-        user: {...state.user, money: state.user.money + action.payload},
+        user: {
+          ...state.user,
+          money: parseInt(state.user.money) + action.payload,
+        },
       };
     case GET_USER_SUCCESS:
       return {
