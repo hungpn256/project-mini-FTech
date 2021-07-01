@@ -22,11 +22,14 @@ export default function FormEdit({navigation}) {
   const updateSuccess = useSelector(state => state.profile.updateSuccess);
   const editing = useSelector(state => state.profile.editing);
   const [name, setName] = useState(user.name);
+  const [errName, setErrName] = useState('');
   const [gender, setGender] = useState(user?.gender ?? 0);
   const [dateOfBirth, setDateOfBirth] = useState(
     user.dateOfBirth || new Date().toString(),
   );
+  const [errDateOfBirth, setErrDateOfBirth] = useState('');
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber ?? '');
+  const [errPhoneNumber, setErrPhoneNumber] = useState('');
   const [visibleDatePicker, setVisibleDatePicker] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,6 +38,16 @@ export default function FormEdit({navigation}) {
       navigation.goBack();
     }
   }, [updateSuccess]);
+  useEffect(() => {
+    if (
+      moment(dateOfBirth).isSameOrAfter(new Date()) ||
+      moment(dateOfBirth).isSameOrBefore('01/01/1900')
+    ) {
+      setErrDateOfBirth('Time is invalid');
+    } else {
+      setErrDateOfBirth('');
+    }
+  }, [dateOfBirth]);
   if (editing) {
     return <Loading loading={true} />;
   }
@@ -46,19 +59,9 @@ export default function FormEdit({navigation}) {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Ionicons name="chevron-back" size={23} />
+          <Ionicons name="chevron-back" size={30} />
         </TouchableOpacity>
         <Text style={styleEdit.headerText}>Edit profile</Text>
-        {/* <Pressable
-      style={[styles.arrowBack, {right: 10}]}
-      onPress={() => {
-        dispatch({
-          type: UPDATE_ME,
-          payload: {name, gender, dateOfBirth, phoneNumber},
-        });
-      }}>
-      <Text style={styles.textDone}>Done</Text>
-    </Pressable> */}
       </View>
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <View style={{marginTop: 10}}>
@@ -67,9 +70,10 @@ export default function FormEdit({navigation}) {
               label="Email"
               mode="outlined"
               outlineColor="#DCDCDC"
-              style={styleEdit.TextInput}
+              style={[styleEdit.TextInput]}
+              selectionColor="#333"
               value={user.email}
-              editable={false}
+              disabled={true}
             />
           </View>
           <View style={styleEdit.input}>
@@ -79,8 +83,18 @@ export default function FormEdit({navigation}) {
               outlineColor="#DCDCDC"
               value={name}
               style={styleEdit.TextInput}
-              onChangeText={setName}
+              maxLength={20}
+              error={errName.length}
+              onChangeText={text => {
+                if (!text.match(/^[a-zA-Z ]+$/)) {
+                  setErrName('Require and contain a-z A-Z letter');
+                } else {
+                  setErrName('');
+                }
+                setName(text);
+              }}
             />
+            {errName.length > 0 && <Text style={styleEdit.err}>{errName}</Text>}
           </View>
           <View style={styleEdit.input}>
             <TextInput
@@ -89,54 +103,93 @@ export default function FormEdit({navigation}) {
               outlineColor="#DCDCDC"
               keyboardType="numeric"
               value={phoneNumber}
+              error={errPhoneNumber.length}
               style={styleEdit.TextInput}
-              onChangeText={setPhoneNumber}
+              onChangeText={text => {
+                if (!text.match(/^(84|0[3|5|7|8|9])+([0-9]{8})\b$/)) {
+                  setErrPhoneNumber('Your phone number is invalid');
+                } else {
+                  setErrPhoneNumber('');
+                }
+                setPhoneNumber(text);
+              }}
+            />
+            {errPhoneNumber.length > 0 && (
+              <Text style={styleEdit.err}>{errPhoneNumber}</Text>
+            )}
+          </View>
+          <View style={[styleEdit.input]}>
+            <TextInput
+              label="Gender"
+              mode="outlined"
+              outlineColor="#DCDCDC"
+              style={styleEdit.TextInput}
+              value={'12'}
+              render={() => {
+                return (
+                  <Picker
+                    style={styles.picker}
+                    selectedValue={gender}
+                    onValueChange={value => {
+                      setGender(value);
+                    }}>
+                    <Picker.Item label="Male" value={0} />
+                    <Picker.Item label="Female" value={1} />
+                    <Picker.Item label="Other" value={2} />
+                  </Picker>
+                );
+              }}
             />
           </View>
-          <View style={styleEdit.formItem}>
-            <Text style={styleEdit.label}>Gender:</Text>
-            <Picker
-              style={styles.picker}
-              selectedValue={gender}
-              onValueChange={value => {
-                setGender(value);
-              }}>
-              <Picker.Item label="Male" value={0} />
-              <Picker.Item label="Female" value={1} />
-              <Picker.Item label="Other" value={2} />
-            </Picker>
-          </View>
-          <View style={styleEdit.formItem}>
-            <Text style={styleEdit.label}>Date of Birth:</Text>
-            <Pressable
-              style={{flexDirection: 'row', marginTop: 8, marginLeft: 8}}
-              onPress={() => {
-                setVisibleDatePicker(true);
-              }}>
-              <Text style={styles.textDate}>
-                {moment(dateOfBirth).get('month') + 1}
-              </Text>
-              <Text style={styles.textDate}>
-                {moment(dateOfBirth).get('date')}
-              </Text>
-              <Text style={styles.textDate}>
-                {moment(dateOfBirth).get('year')}
-              </Text>
-            </Pressable>
+          <View style={[styleEdit.input]}>
+            <TextInput
+              label="Date of Birth"
+              mode="outlined"
+              outlineColor="#DCDCDC"
+              style={styleEdit.TextInput}
+              value={'12'}
+              render={() => {
+                return (
+                  <Pressable
+                    style={{flexDirection: 'row', marginTop: 10}}
+                    onPress={() => {
+                      setVisibleDatePicker(true);
+                    }}>
+                    <Text style={styles.textDate}>
+                      {moment(dateOfBirth).get('month') + 1}/
+                      {moment(dateOfBirth).get('date')}/
+                      {moment(dateOfBirth).get('year')}
+                    </Text>
+                  </Pressable>
+                );
+              }}
+            />
+
+            {errDateOfBirth.length > 0 && (
+              <Text style={[styleEdit.err, {left: 15}]}>{errDateOfBirth}</Text>
+            )}
           </View>
         </View>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{flex: 1}}></View>
+        <View style={{paddingHorizontal: 15, marginBottom: 30}}>
           <FButton
             Name="Submit"
-            handlePress={() =>
-              dispatch({
-                type: UPDATE_ME,
-                payload: {name, gender, dateOfBirth, phoneNumber},
-              })
-            }
+            handlePress={() => {
+              if (
+                !(
+                  errName.length ||
+                  errPhoneNumber.length ||
+                  errDateOfBirth.length
+                )
+              ) {
+                dispatch({
+                  type: UPDATE_ME,
+                  payload: {name, gender, dateOfBirth, phoneNumber},
+                });
+              }
+            }}
           />
         </View>
-
         <Modal
           transparent={true}
           visible={visibleDatePicker}
@@ -162,7 +215,7 @@ export default function FormEdit({navigation}) {
               </View>
               <DatePicker
                 mode="date"
-                date={moment(dateOfBirth)}
+                date={new Date(dateOfBirth)}
                 onDateChange={value => {
                   setDateOfBirth(value.toString());
                 }}
@@ -187,7 +240,14 @@ const styleEdit = StyleSheet.create({
   },
   label: {
     color: '#696969',
-    fontSize: 12,
+    fontSize: 13,
+    position: 'absolute',
+    top: -10,
+    left: 10,
+    borderRadius: 999,
+  },
+  input: {
+    marginVertical: 10,
   },
   formItem: {
     borderColor: '#DCDCDC',
@@ -195,9 +255,11 @@ const styleEdit = StyleSheet.create({
     borderRadius: 5,
     marginTop: 8,
     marginHorizontal: 15,
+    marginVertical: 24,
     paddingHorizontal: 8,
     paddingVertical: 5,
     backgroundColor: '#F4F4F4',
+    height: 60,
   },
   headerText: {
     color: 'black',
@@ -207,7 +269,7 @@ const styleEdit = StyleSheet.create({
   arrowBack: {
     padding: 5,
     position: 'absolute',
-    top: '50%',
+    top: 6,
     zIndex: 999,
     left: 0,
     marginLeft: 1,
@@ -215,5 +277,12 @@ const styleEdit = StyleSheet.create({
   TextInput: {
     marginTop: 5,
     paddingHorizontal: 15,
+  },
+  err: {
+    position: 'absolute',
+    bottom: -18,
+    left: 30,
+    color: 'red',
+    fontSize: 12,
   },
 });

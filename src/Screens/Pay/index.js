@@ -42,7 +42,7 @@ export default function Pay({navigation}) {
             console.log('sda');
             navigation.navigate('#');
           }}>
-          <Ionicons name="chevron-back" color="#fff" size={40} />
+          <Ionicons name="chevron-back" size={30} color="#fff" />
           <Text style={styles.textHeader1}>Home</Text>
         </Pressable>
         <Text style={styles.textHeader1}>Số dư : {userMoney.money} đ</Text>

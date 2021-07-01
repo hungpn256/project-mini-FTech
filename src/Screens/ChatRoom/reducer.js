@@ -5,6 +5,7 @@ import {
   GET_CONVERSATION_FAILURE,
   SEND_MESSAGE_SUCCESS,
   DELETE_CONVERSION,
+  CREATE_CONVERSATION_SUCCESS,
 } from './constants';
 
 const initialState = {
@@ -31,10 +32,19 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case CREATE_CONVERSATION_SUCCESS: {
+      return {
+        ...state,
+        conversation: {
+          ...state.conversation,
+          ...action.payload,
+        },
+      };
+    }
     case GET_CONVERSATION_FAILURE: {
       return {
         ...state,
-        conversation: action.payload,
+        conversation: {},
       };
     }
     case SEND_MESSAGE_SUCCESS: {
