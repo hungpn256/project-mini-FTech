@@ -12,15 +12,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     justifyContent: 'space-between',
     height: 50,
-<<<<<<< HEAD
-    paddingBottom: 15,
-  },
-  pessableHome: {
-    paddingLeft: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-=======
->>>>>>> 619032e7590768dc77016bb05ceda91d6e283214
   },
   header2: {
     flexDirection: 'row',
