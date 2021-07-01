@@ -17,12 +17,8 @@ const reducer = (state = initialState, action) => {
       return {...state, post: action.payload.data};
     case GET_ALL_CMT:
       return {...state, comments: action.payload.data};
-    case UPLOAD_POST:
-      return {...state, post: [...state.post, action.payload.new]};
     case POST_LOADING:
       return {...state, postLoad: action.payload.loading};
-    case CREATE_CMT:
-      return {...state, comments: [...state.comments, action.payload.newCmt]};
     case HOME_CHANGE_STATE:
       return {
         ...state,

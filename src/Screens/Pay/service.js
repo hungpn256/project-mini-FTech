@@ -20,7 +20,29 @@ export const withdrawMoney = async valueMoney => {
     money: money - valueMoney,
   });
 };
-export const transfersMoney = async () => {};
+export const transfersMoney = async payload => {
+  console.log(payload.moneyReceived + 'aloaloalo');
+  await firestore()
+    .collection('user')
+    .doc(payload.sender)
+    .update({
+      money: parseInt(payload.moneySender),
+    });
+};
+
+export const received = async payload => {
+  const money = await firestore()
+    .collection('user')
+    .doc(payload.received)
+    .get();
+  const mon = parseInt(money.data().money);
+  await firestore()
+    .collection('user')
+    .doc(payload.received)
+    .update({
+      money: mon + parseInt(payload.moneyReceived),
+    });
+};
 
 export const getUsers = async () => {
   const users = [];
