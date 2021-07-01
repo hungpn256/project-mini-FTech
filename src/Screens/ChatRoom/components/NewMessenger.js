@@ -14,10 +14,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
 import {avatarDefault} from '../../../index_Constant';
-import {GET_USER_BY_NAME} from '../constants';
+import {CREATE_CONVERSATION_SUCCESS, GET_USER_BY_NAME} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
 import Loading from '@Components/Loading';
+import firestore from '@react-native-firebase/firestore';
+
 const NewMessenger = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -105,6 +107,18 @@ const NewMessenger = () => {
                           user.id,
                           item.id,
                         ]);
+                        dispatch({
+                          type: CREATE_CONVERSATION_SUCCESS,
+                          payload: {
+                            [res.id]: {
+                              users: [user, item],
+                              isTyping: false,
+                              messages: [],
+                              unread: [],
+                              updatedAt: firestore.FieldValue.serverTimestamp(),
+                            },
+                          },
+                        });
                         room.push(res.id);
                         setLoading(false);
                       }

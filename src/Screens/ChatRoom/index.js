@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {Avatar, Card, List} from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../Helper/function';
 import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
@@ -19,6 +19,8 @@ import SwipeCustom from './components/SwipeCustom';
 import {createConversation} from './service';
 import styles from './styles';
 import Loading from '@Components/Loading';
+import {CREATE_CONVERSATION_SUCCESS} from './constants';
+import firestore from '@react-native-firebase/firestore';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,7 @@ export default function ChatRoom({navigation}) {
   const chat = useSelector(state => state.chat);
   const {conversation, userSearch} = chat;
   const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
   console.log('re-render');
   useEffect(() => {
     const x = async () => {
@@ -73,6 +76,18 @@ export default function ChatRoom({navigation}) {
                           item.id,
                         ]);
                         room.push(res.id);
+                        dispatch({
+                          type: CREATE_CONVERSATION_SUCCESS,
+                          payload: {
+                            [res.id]: {
+                              users: [user, item],
+                              isTyping: false,
+                              messages: [],
+                              unread: [],
+                              updatedAt: firestore.FieldValue.serverTimestamp(),
+                            },
+                          },
+                        });
                         setLoading(false);
                       }
                       navigation.navigate('Messenger', {
@@ -141,7 +156,7 @@ export default function ChatRoom({navigation}) {
                                   },
                                 ]}>
                                 {moment(
-                                  i.updatedAt?.toDate() ?? new Date(),
+                                  i.updatedAt?.toDate?.() ?? new Date(),
                                 ).fromNow()}
                               </Text>
                             </View>

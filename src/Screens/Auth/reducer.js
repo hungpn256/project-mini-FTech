@@ -13,6 +13,7 @@ import {
   USER_INFO,
   USER_CLEAR,
   SPLASH,
+  GET_USER_SUCCESS,
 } from './constants';
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -33,11 +34,11 @@ const reducer = (state = initialState, action) => {
         isLogged: action.payload.status,
       };
     }
-    case CREATE_CONVERSATION_SUCCESS: {
-      let newUser = {...state.user};
-      newUser.roomChatList = [...newUser.roomChatList, action.payload.id];
-      return {...state, user: newUser};
-    }
+    // case CREATE_CONVERSATION_SUCCESS: {
+    //   let newUser = {...state.user};
+    //   newUser.roomChatList = [...newUser.roomChatList, action.payload.id];
+    //   return {...state, user: newUser};
+    // }
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -50,6 +51,11 @@ const reducer = (state = initialState, action) => {
           ...state.user,
           money: parseInt(state.user.money) + action.payload,
         },
+      };
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

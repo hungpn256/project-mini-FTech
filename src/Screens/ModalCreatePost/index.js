@@ -30,7 +30,7 @@ export default function Index() {
   const updateImg = useSelector(state => state.modalPostConfig.image);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
   const postid = useSelector(state => state.modalPostConfig.postId);
   const gallery = () => {
     launchImageLibrary({mediaType: 'photo'}, props => {
@@ -218,7 +218,11 @@ export default function Index() {
         {!checkUpdate ? <CameraGroup cam={cam} gallery={gallery} /> : null}
 
         <View>
-          <FButton handlePress={handlePost} Name="Post" />
+          <FButton
+            handlePress={handlePost}
+            Name="Post"
+            disabled={!((text && text.length > 0) || image)}
+          />
         </View>
       </View>
     </Modal>
