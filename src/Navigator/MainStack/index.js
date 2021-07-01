@@ -207,8 +207,8 @@ const TabNavigatorPay = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#3498DB',
-        inactiveTintColor: '#777',
+        activeTintColor: '#1777F2',
+        inactiveTintColor: '#676356',
         showLabel: false,
       }}>
       <Tab.Screen name="Home-Pay" component={Pay} />
