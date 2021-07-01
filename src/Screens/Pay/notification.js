@@ -6,7 +6,7 @@ const PayNotification = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.viewHeader}>
-        <Entypo name="bell" size={30} color="#2E86C1" />
+        <Entypo name="bell" size={30} color="#1777F2" />
         <Text style={styles.textHeader}>Thông báo</Text>
       </View>
       <View style={styles.view}>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#2E86C1',
+    color: '#1777F2',
   },
   view: {
     padding: '2%',
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 18,
   },
-  text: {color: '#2E86C1', fontSize: 16},
+  text: {color: '#1777F2', fontSize: 16},
 });
 export default PayNotification;

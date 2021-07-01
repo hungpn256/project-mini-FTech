@@ -201,8 +201,8 @@ const TabNavigatorPay = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#3498DB',
-        inactiveTintColor: '#777',
+        activeTintColor: '#1777F2',
+        inactiveTintColor: '#676356',
         showLabel: false,
       }}>
       <Tab.Screen name="Home" component={Pay} />
@@ -296,8 +296,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Recharge" component={Recharge} />
         <Stack.Screen name="Transfers" component={Transfers} />
         <Stack.Screen name="WithDraw" component={WithDraw} />
-        <Stack.Screen name="LuckyWheel" component={LuckyWheel}/>
-        <Stack.Screen name="ExchangeRate" component={ExchangeRate}/>
+        <Stack.Screen name="LuckyWheel" component={LuckyWheel} />
+        <Stack.Screen name="ExchangeRate" component={ExchangeRate} />
         <Stack.Screen
           options={{
             headerShown: false,

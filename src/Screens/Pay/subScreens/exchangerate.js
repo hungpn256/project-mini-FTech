@@ -123,7 +123,9 @@ const ExchangeRate = () => {
         />
         <FontAwesome name="forward" size={30} color="#b9b8ba" />
         <View style={styles.textOutput}>
-          <Text style={styles.textOutputFont}>{valueOutput}</Text>
+          <Text style={styles.textOutputFont}>
+            {valueOutput} {value2}
+          </Text>
         </View>
       </View>
       <View style={styles.viewTouch}>
