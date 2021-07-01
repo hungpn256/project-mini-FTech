@@ -20,7 +20,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {USER_INFO, USER_SET} from '../../Screens/Auth/constants';
+import {
+  GET_USER_SUCCESS,
+  USER_INFO,
+  USER_SET,
+} from '../../Screens/Auth/constants';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import {
   GET_CONVERSATION_SUCCESS,
@@ -46,7 +50,11 @@ const StackNavigatorProfile = () => {
         name="ProfileMain"
         component={Profile}
       />
-
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Friends"
+        component={Friend}
+      />
       <Stack.Screen
         options={{headerShown: false}}
         name="EditProfile"
@@ -131,8 +139,6 @@ const TabNavigator = () => {
               </View>
             );
           }
-
-          // You can return any component that you like here!
         },
       })}
       tabBarOptions={{
@@ -163,7 +169,7 @@ const TabNavigatorPay = () => {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
-          if (route.name === 'Home') {
+          if (route.name === 'Home-Pay') {
             iconName = focused ? 'home' : 'home-outline';
             return (
               <View
@@ -174,7 +180,7 @@ const TabNavigatorPay = () => {
                 <Ionicons name={iconName} size={size} color={color} />
               </View>
             );
-          } else if (route.name === 'Notification') {
+          } else if (route.name === 'Notification-Pay') {
             iconName = focused ? 'bell-alt' : 'bell';
             return (
               <View
@@ -205,8 +211,8 @@ const TabNavigatorPay = () => {
         inactiveTintColor: '#676356',
         showLabel: false,
       }}>
-      <Tab.Screen name="Home" component={Pay} />
-      <Tab.Screen name="Notification" component={PayNotification} />
+      <Tab.Screen name="Home-Pay" component={Pay} />
+      <Tab.Screen name="Notification-Pay" component={PayNotification} />
       <Tab.Screen name="Wallet" component={Wallet} />
     </Tab.Navigator>
   );
@@ -220,8 +226,11 @@ export default function AppNavigator() {
     firestore()
       .collection('user')
       .doc(user.id)
-      .onSnapshot(() => {
-        dispatch({type: USER_SET});
+      .onSnapshot(res => {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          payload: {user: res.data()},
+        });
       });
     dispatch({type: GET_FRIEND});
     dispatch({
@@ -231,29 +240,33 @@ export default function AppNavigator() {
   }, []);
 
   useEffect(() => {
+    console.log(roomChatList);
     const connectChat = async () => {
       roomChatList.forEach(item => {
         firestore()
           .collection('room-chat')
           .doc(item)
           .onSnapshot(res => {
+            console.log(item, 'sss', res);
             let data = res.data();
-            let users = [];
-            data.users[0].get().then(res1 => {
-              users.push({id: res1.id, ...res1.data()});
-            });
-            data.users[1].get().then(res2 => {
-              users.push({id: res2.id, ...res2.data()});
-              dispatch({
-                type: GET_CONVERSATION_SUCCESS,
-                payload: {[item]: {...res.data(), users}},
-              });
-            });
+            if (data && data.messages?.length > 0) {
+              let users = [];
+              Promise.all([data.users[0].get(), data.users[1].get()]).then(
+                ([res1, res2]) => {
+                  users.push({id: res1.id, ...res1.data()});
+                  users.push({id: res2.id, ...res2.data()});
+                  console.log({[item]: {...res.data(), users}}, 'mess');
+                  dispatch({
+                    type: GET_CONVERSATION_SUCCESS,
+                    payload: {[item]: {...res.data(), users}},
+                  });
+                },
+              );
+            }
           });
       });
     };
     connectChat();
-    return connectChat();
   }, [roomChatList.length]);
   return (
     <NavigationContainer>
