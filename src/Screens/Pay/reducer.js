@@ -4,6 +4,7 @@ const initialState = {
   rechargeSuccess: false,
   withdrawSuccess: false,
   users: [],
+  loading: false,
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
