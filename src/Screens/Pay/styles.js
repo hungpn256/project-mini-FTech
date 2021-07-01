@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     marginLeft: '1.5%',
     marginRight: '1.5%',
     justifyContent: 'space-between',
+    height: 50,
   },
 
   header2: {

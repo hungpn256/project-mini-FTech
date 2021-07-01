@@ -1,3 +1,4 @@
+import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
 import {
   OPEN_POST_CONFIG,
   CLOSE_POST_CONFIG,
@@ -29,11 +30,20 @@ const reducer = (state = initialState, action) => {
     case OPEN_CONFIRM:
       return {...state, confirm: true};
     case CLOSE_CONFIRM:
-      return {...state, confirm: false};
+      return {
+        ...state,
+        confirm: false,
+        status: false,
+        image: '',
+        content: '',
+        update: false,
+      };
     case CLOSE_UPDATE_IMG:
       return {...state, image: ''};
     case CLEAR_UPDATE_TEXT:
-      return {...state, content: ''};
+      return {...initialState};
+    case CLOSE_MODAL_POST:
+      return {...state, status: false, image: '', update: false};
     default:
       return state;
   }
