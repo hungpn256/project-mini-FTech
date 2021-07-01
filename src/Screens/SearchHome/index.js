@@ -1,13 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, ScrollView} from 'react-native';
-import {styles} from './styles';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {Avatar} from 'react-native-paper';
-import Info from './userInfo';
-import {log} from 'react-native-reanimated';
-import {USERINFO_SEARCH} from './constants';
-import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, Text, TextInput, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import {USERINFO_SEARCH} from './constants';
+import {styles} from './styles';
+import Info from './userInfo';
 export default function index() {
   const [value, setValue] = useState('');
   const navigation = useNavigation();

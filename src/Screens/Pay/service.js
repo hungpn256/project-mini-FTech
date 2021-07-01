@@ -20,3 +20,12 @@ export const withdrawMoney = async valueMoney => {
   });
 };
 export const transfersMoney = async () => {};
+
+export const getUsers = async () => {
+  const users = [];
+  const data = await firestore().collection('user').get();
+  data.forEach(item => {
+    users.push(item.data());
+  });
+  return users;
+};

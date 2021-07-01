@@ -1,14 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
+import ImageModal from 'react-native-image-modal';
+import {launchImageLibrary} from 'react-native-image-picker';
+import uuid from 'react-native-uuid';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {MARK_READ, SEND_MESSAGE} from '../../constants';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {launchImageLibrary} from 'react-native-image-picker';
-import firestore from '@react-native-firebase/firestore';
-import uuid from 'react-native-uuid';
-import ImageModal from 'react-native-image-modal';
 
 export default function Messenger({route}) {
   const dispatch = useDispatch();
@@ -74,12 +73,12 @@ export default function Messenger({route}) {
             style={styles.action}
             onPress={() => {
               launchImageLibrary({mediaType: 'photo'}, props => {
-                if (props.type === 'image/jpeg') {
+                if (props.assets && props.assets[0].type === 'image/jpeg') {
                   const message = {
                     _id: uuid.v4(),
                     createAt: new Date(),
                     user: {_id: user.id, avatar: user.avatar, name: user.name},
-                    image: props,
+                    image: props.assets[0],
                     text: '',
                   };
                   onSend([message]);
