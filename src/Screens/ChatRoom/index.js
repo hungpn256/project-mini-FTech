@@ -11,19 +11,22 @@ import {
 } from 'react-native';
 import {Avatar, Card, List} from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {commonRoom} from '../../Helper/function';
 import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
 import SwipeCustom from './components/SwipeCustom';
 import {createConversation} from './service';
 import styles from './styles';
+import Loading from '@Components/Loading';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const userId = auth().currentUser.uid;
   const user = useSelector(state => state.auth.user);
   const chat = useSelector(state => state.chat);
   const {conversation, userSearch} = chat;
+  const [filter, setFilter] = useState('');
   console.log('re-render');
   useEffect(() => {
     const x = async () => {
@@ -39,7 +42,7 @@ export default function ChatRoom({navigation}) {
       setRoomList(conversationOrdered);
     };
     x();
-  }, [Object.keys(conversation).length]);
+  }, [conversation]);
 
   return (
     <GestureRecognizer
@@ -47,8 +50,9 @@ export default function ChatRoom({navigation}) {
         navigation.goBack();
       }}
       style={{backgroundColor: '#fff', flex: 1}}>
+      <Loading loading={loading} />
       <ScrollView>
-        <SearchBar />
+        <SearchBar txtSearch={filter} setTxtSearch={setFilter} />
         <View style={styles.friendWrapper}>
           <ScrollView
             horizontal={true}
@@ -63,11 +67,13 @@ export default function ChatRoom({navigation}) {
                     onPress={async () => {
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
+                        setLoading(true);
                         const res = await createConversation([
                           user.id,
                           item.id,
                         ]);
                         room.push(res.id);
+                        setLoading(false);
                       }
                       navigation.navigate('Messenger', {
                         roomId: room[0],
@@ -106,9 +112,12 @@ export default function ChatRoom({navigation}) {
               const userOther = i.users.find(i => i.id !== userId);
               const unread = i.unread.indexOf(userId) !== -1;
               const {messages} = i;
-              if (messages.length)
+              if (
+                messages.length &&
+                userOther.name.toLowerCase().match(filter.toLowerCase())
+              )
                 return (
-                  <SwipeCustom key={index} item={i}>
+                  <SwipeCustom key={index} item={i} style={{marginVertical: 3}}>
                     <TouchableOpacity
                       activeOpacity={1}
                       onPress={() => {
@@ -117,7 +126,7 @@ export default function ChatRoom({navigation}) {
                           name: userOther.name,
                         });
                       }}>
-                      <Card style={styles.card}>
+                      <View style={styles.card}>
                         <List.Item
                           style={styles.item}
                           title={
@@ -126,7 +135,10 @@ export default function ChatRoom({navigation}) {
                               <Text
                                 style={[
                                   styles.time,
-                                  unread && styles.textUnread,
+                                  unread && {
+                                    ...styles.textUnread,
+                                    fontSize: 13,
+                                  },
                                 ]}>
                                 {moment(
                                   i.updatedAt?.toDate() ?? new Date(),
@@ -158,7 +170,7 @@ export default function ChatRoom({navigation}) {
                             </View>
                           )}
                         />
-                      </Card>
+                      </View>
                     </TouchableOpacity>
                   </SwipeCustom>
                 );

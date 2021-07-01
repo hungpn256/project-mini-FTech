@@ -81,7 +81,7 @@ const Home = () => {
             color: '#1777F2',
             backgroundColor: '#fff',
           }}>
-          Fscocial
+          Fsocial
         </Text>
         <View style={styles.groupBtn}>
           <View style={styles.wrapperIcon}>
@@ -119,7 +119,6 @@ const Home = () => {
         <PostArticle />
         {postData && postData.length > 0 ? (
           postData.map(item => {
-            console.log(item);
             return (
               <Article
                 time={moment(item.createAt?.toDate()).fromNow()}

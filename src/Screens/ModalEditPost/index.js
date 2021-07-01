@@ -19,7 +19,7 @@ import avatarImg from '../../../assets/Img/avatar.png';
 import FButton from '../../Components/TouchOpacity/index';
 import Loading from '../../Components/Loading';
 import {CREATE_POST} from '../Home/constants';
-export default function index() {
+export default function Index() {
   const modal = useSelector(state => state.modalEditPost.status);
   const userData = useSelector(state => state.auth.user);
   const loading = useSelector(state => state.home.postLoad);
@@ -62,8 +62,8 @@ export default function index() {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.type === 'image/jpeg') {
-            setImage(props);
+          if (props.assets && props.assets[0].type === 'image/jpeg') {
+            setImage(props.assets[0]);
           }
         });
       } else {
@@ -73,7 +73,6 @@ export default function index() {
       console.warn(err);
     }
   };
-  console.log(imageCmt + '??????????????');
   return (
     <Modal animationType="fade" visible={modal}>
       <Loading loading={loading} />

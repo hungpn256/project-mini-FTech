@@ -17,8 +17,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import Article from '../../Components/Article.js';
+import Loading from '../../Components/Loading/index.js';
 import Nothing from '../../Components/Nothing.js';
-import {avatarDefault} from '../../index_Constant.js';
+import {avatarDefault, backgroundDefault} from '../../index_Constant.js';
 import {MODAL_CHANGE_STATE} from '../Modal/constant.js';
 import About from './components/About.js';
 import ImageComponent from './components/Image';
@@ -61,6 +62,7 @@ const Profile = ({navigation, route}) => {
     postsProfile,
     role,
     loadingPost,
+    editing,
   } = profile;
   useEffect(() => {
     setRoleFriend(role);
@@ -84,6 +86,9 @@ const Profile = ({navigation, route}) => {
       setLimit(l => l + 5);
     }
   }, [loadPost]);
+  if (editing) {
+    return <Loading loading={true} />;
+  }
   if (!user || loading) {
     return (
       <SkeletonPlaceholder>
@@ -129,28 +134,26 @@ const Profile = ({navigation, route}) => {
         <View style={styles.body}>
           <View style={styles.image}>
             <View style={styles.wrapperCover}>
-              {user.background?.length > 0 && (
-                <Pressable
-                  onPress={() => {
-                    dispatch({
-                      type: MODAL_CHANGE_STATE,
-                      payload: {image: user.background},
-                    });
-                  }}>
-                  <Image
-                    style={styles.cover}
-                    source={{
-                      uri: user.background,
-                    }}
-                  />
-                </Pressable>
-              )}
+              <Pressable
+                onPress={() => {
+                  dispatch({
+                    type: MODAL_CHANGE_STATE,
+                    payload: {image: user.background},
+                  });
+                }}>
+                <Image
+                  style={styles.cover}
+                  source={{
+                    uri: user.background || backgroundDefault,
+                  }}
+                />
+              </Pressable>
               {!id && (
                 <SetImage
                   setImage={setBackground}
                   style={{
                     right: 20,
-                    bottom: user.background?.length > 0 ? 180 : -100,
+                    bottom: 180,
                   }}
                 />
               )}

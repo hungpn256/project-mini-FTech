@@ -87,6 +87,7 @@ export default function FormEdit({navigation}) {
               label="Phone number"
               mode="outlined"
               outlineColor="#DCDCDC"
+              keyboardType="numeric"
               value={phoneNumber}
               style={styleEdit.TextInput}
               onChangeText={setPhoneNumber}
