@@ -148,18 +148,18 @@ export const uploadPost = async ({text, image}) => {
   const likes = [];
   const id = auth().currentUser.uid;
   try {
-    const data = await firestore().collection('post').add({
+    await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
       content: text,
       imageUrl: img,
       like: likes,
       userId: id,
     });
-    const postDataId = data.id;
-    const post = getPost(postDataId);
-    return {id: postDataId, ...post};
+    // const postDataId = data.id;
+    // const post = getPost(postDataId);
+    // return {id: postDataId, ...post};
   } catch (error) {
     console.log(error);
-    return false;
+    // return false;
   }
 };
