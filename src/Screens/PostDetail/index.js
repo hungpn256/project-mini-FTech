@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {CMT, GET_CMT} from '@Screens/Home/constants';
 import {MODAL_CHANGE_STATE} from '@Screens/Modal/constant';
+import {OPEN_LIKE_MODAL} from '../ModalLike/constants';
 import moment from 'moment';
 import React, {useEffect, useRef, useState} from 'react';
 import {Pressable, ScrollView, Text, View} from 'react-native';
@@ -19,6 +20,7 @@ import Comments from '../../Components/Comments';
 import InputEncloseAvatar from '../../Components/InputEncloseAvatar';
 import {styles} from './styles';
 import {addNoti, notiMes} from '../Notification/service';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
@@ -208,7 +210,14 @@ export default function PostDetail() {
               </Pressable>
             ) : null}
             <View style={styles.infoPost}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Pressable
+                onPress={() => {
+                  dispatch({
+                    type: OPEN_LIKE_MODAL,
+                    payload: {postId: route.params.postid},
+                  });
+                }}
+                style={{flexDirection: 'row', alignItems: 'center'}}>
                 <AntDesignIcon
                   style={{
                     padding: 4,
@@ -220,7 +229,7 @@ export default function PostDetail() {
                   size={12}
                 />
                 <Text style={styles.like}>{total} </Text>
-              </View>
+              </Pressable>
               <Text style={styles.cmts}>
                 {size > 1 ? size + '' + ' Comments' : size + '' + ' Comment'}
               </Text>
@@ -256,7 +265,11 @@ export default function PostDetail() {
                 style={styles.Icon}
                 onPress={() => inputRef.current.focus()}>
                 <View style={styles.actionBtn}>
-                  <SimpleLineIcons name="share" color="#696969" size={20} />
+                  <MaterialCommunityIcons
+                    name="share-outline"
+                    color="#696969"
+                    size={20}
+                  />
                   <Text style={[styles.actionText, {color: '#696969'}]}>
                     Share
                   </Text>
