@@ -102,7 +102,7 @@ export default function index() {
                     key={item.id}
                     style={styles.avatarLike}>
                     {item.avatar ? (
-                      <View>
+                      <View style={{marginBottom: 10}}>
                         <Avatar.Image
                           size={45}
                           source={{
@@ -124,7 +124,7 @@ export default function index() {
                         />
                       </View>
                     ) : (
-                      <View>
+                      <View style={{marginBottom: 10}}>
                         <Avatar.Image size={45} source={avatarImg} />
                         <AntDesignIcon
                           style={{

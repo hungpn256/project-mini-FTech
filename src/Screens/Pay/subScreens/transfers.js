@@ -49,7 +49,6 @@ const Transfers = () => {
   return (
     <View style={styles.container}>
       <User />
-
       <View style={styles.inputGroup}>
         <TextInput
           onChangeText={e => setText(e)}
