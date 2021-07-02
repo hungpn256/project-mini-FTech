@@ -175,7 +175,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Ionicons name={iconName} size={size} color={color} />
               </View>
@@ -186,7 +186,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Fontisto name={iconName} size={size} color={color} />
               </View>
@@ -197,7 +197,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Fontisto name={iconName} size={size - 4} color={color} />
               </View>
