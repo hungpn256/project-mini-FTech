@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import avatarImg from '../../../../assets/Img/avatar.png';
+import avatarImg from '../../../../assets/Img/avatar.jpg';
 import {CLOSE_MODAL_USER, WALLET_TRANSFER} from '../constaints';
 import FButton from '../../../Components/TouchOpacity/index';
 export default function User() {
@@ -25,6 +25,10 @@ export default function User() {
   const [coin, setCoin] = useState('');
   const loading = useSelector(state => state.wallet.tranferSuccess);
   const dispatch = useDispatch();
+
+  function formatMoney(n, currency = '') {
+    return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
 
   const handleSubmit = () => {
     console.log(coin + 'coin');
@@ -102,7 +106,7 @@ export default function User() {
           <View style={styles.money}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>Money</Text>
             <Text style={{marginLeft: 5, color: '#696969'}}>
-              {'('}Balance : {money} {''}đ{')'}
+              {'('}Balance : {formatMoney(money)} {''}đ{')'}
             </Text>
           </View>
           <View
@@ -116,7 +120,7 @@ export default function User() {
               style={{color: '#D35400', fontSize: 30, fontWeight: 'bold'}}
               placeholder="0đ"
               keyboardType="numeric"
-              value={'' + coin}
+              value={'' + formatMoney(coin)}
               onChangeText={e => setCoin(e)}
             />
           </View>

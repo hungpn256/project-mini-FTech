@@ -10,7 +10,7 @@ import {
 import {Avatar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {ALL_USER_WALLET, WITHDRAW_MONEY} from '../constaints';
-import avatarImg from '../../../../assets/Img/avatar.png';
+import avatarImg from '../../../../assets/Img/avatar.jpg';
 import User from './Modal';
 import {OPEN_MODAL_USER} from '../constaints';
 
@@ -49,7 +49,6 @@ const Transfers = () => {
   return (
     <View style={styles.container}>
       <User />
-
       <View style={styles.inputGroup}>
         <TextInput
           onChangeText={e => setText(e)}

@@ -5,14 +5,18 @@ import {createStackNavigator} from '@react-navigation/stack';
 import ChatRoom from '@Screens/ChatRoom';
 import Messenger from '@Screens/ChatRoom/components/Messenger';
 import Home from '@Screens/Home';
+import LuckyWheel from '@Screens/LuckyWheel/index';
 import Menu from '@Screens/Menu';
 import Pay from '@Screens/Pay/index';
 import PayNotification from '@Screens/Pay/notification';
+import ExchangeRate from '@Screens/Pay/subScreens/exchangerate';
 import Recharge from '@Screens/Pay/subScreens/recharge';
 import Transfers from '@Screens/Pay/subScreens/transfers';
 import WithDraw from '@Screens/Pay/subScreens/withdraw';
 import Wallet from '@Screens/Pay/wallet';
+import PostDetail from '@Screens/PostDetail';
 import Profile from '@Screens/Profile';
+import EditProfile from '@Screens/Profile/components/FormEdit';
 import Search from '@Screens/SearchHome';
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
@@ -20,26 +24,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  GET_USER_SUCCESS,
-  USER_INFO,
-  USER_SET,
-} from '../../Screens/Auth/constants';
+import {GET_USER_SUCCESS} from '../../Screens/Auth/constants';
 import NewMessenger from '../../Screens/ChatRoom/components/NewMessenger';
 import {
   GET_CONVERSATION_SUCCESS,
   GET_USER_BY_NAME,
 } from '../../Screens/ChatRoom/constants';
-import EditProfile from '@Screens/Profile/components/FormEdit';
-import GameNavigator from './game';
-import PostDetail from '@Screens/PostDetail';
 import Friend from '../../Screens/Friend';
-import Notification from '../../Screens/Notification';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
-import LuckyWheel from '@Screens/LuckyWheel/index';
-import ExchangeRate from '@Screens/Pay/subScreens/exchangerate';
+import Notification from '../../Screens/Notification';
 import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
 import {notiMes} from '../../Screens/Notification/service';
+import GameNavigator from './game';
+import auth from '@react-native-firebase/auth';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -86,6 +83,7 @@ const TabNavigator = () => {
     dispatch({type: GET_NOTIFICATIONS});
   }, []);
   const notifications = useSelector(state => state.notification.notifications);
+  console.log(notifications, 'noti number');
   const numberNoti = useMemo(() => {
     return notifications.filter(i => i.unread).length;
   }, [notifications]);
@@ -175,7 +173,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Ionicons name={iconName} size={size} color={color} />
               </View>
@@ -186,7 +184,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Fontisto name={iconName} size={size} color={color} />
               </View>
@@ -197,7 +195,7 @@ const TabNavigatorPay = () => {
               <View
                 style={[
                   styles.tabBottom,
-                  focused && styles.tabBottomFocus(color),
+                  // focused && styles.tabBottomFocus(color),
                 ]}>
                 <Fontisto name={iconName} size={size - 4} color={color} />
               </View>
@@ -237,6 +235,31 @@ export default function AppNavigator() {
       type: GET_USER_BY_NAME,
       payload: '',
     });
+    firestore()
+      .collection('notification')
+      .where('received', '==', auth().currentUser.uid)
+      .orderBy('updateAt', 'desc')
+      .onSnapshot(async noti => {
+        let res = [];
+        for (let i = 0; i < noti.size; i++) {
+          let users = [];
+          const data = noti.docs[i].data();
+          const usersFirebase = data.userId.slice(-2);
+          for (let j = usersFirebase.length - 1; j >= 0; j--) {
+            const user = await firestore()
+              .collection('user')
+              .doc(usersFirebase[j])
+              .get();
+            users.push(user.data());
+          }
+          const post = await firestore()
+            .collection('post')
+            .doc(data.postId)
+            .get();
+          res.push({id: noti.docs[i].id, ...data, users, post: post.data()});
+        }
+        dispatch({type: GET_NOTIFICATIONS_SUCCESS, payload: res});
+      });
   }, []);
 
   useEffect(() => {
@@ -304,7 +327,7 @@ export default function AppNavigator() {
             headerShown: false,
           }}
           name="Pay"
-          component={TabNavigatorPay}
+          component={Pay}
         />
         <Stack.Screen name="Recharge" component={Recharge} />
         <Stack.Screen name="Transfers" component={Transfers} />

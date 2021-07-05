@@ -85,6 +85,9 @@ const MainGame = () => {
   }
   useEffect(() => {
     playAgain();
+    return () => {
+      setPositionRecentlyClick({x: 0, y: 0});
+    };
   }, [dimension]);
 
   useEffect(() => {
