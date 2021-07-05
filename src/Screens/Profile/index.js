@@ -86,9 +86,9 @@ const Profile = ({navigation, route}) => {
       setLimit(l => l + 5);
     }
   }, [loadPost]);
-  if (editing) {
-    return <Loading loading={true} />;
-  }
+  // if (editing) {
+  //   return <Loading loading={true} />;
+  // }
   if (!user || loading) {
     return (
       <SkeletonPlaceholder>
@@ -131,6 +131,7 @@ const Profile = ({navigation, route}) => {
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
         }>
+        <Loading loading={editing} />
         <View style={styles.body}>
           <View style={styles.image}>
             <View style={styles.wrapperCover}>

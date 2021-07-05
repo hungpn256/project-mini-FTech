@@ -24,24 +24,33 @@ import {notiMes} from '../Notification/service';
 
 function* rechargeMoneySaga({payload}) {
   try {
-    yield put({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: true}});
+    yield put({
+      type: WALLET_CHANGE_STATE,
+      payload: {loading: true},
+    });
     yield call(rechargeMoney, payload);
     yield put({type: RECHARGE_MONEY_SUCCESS, payload});
   } catch (e) {
     console.log(e);
   } finally {
-    yield put({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: false}});
+    yield put({
+      type: WALLET_CHANGE_STATE,
+      payload: {loading: false},
+    });
   }
 }
 function* withdrawMoneySaga({payload}) {
   try {
-    yield put({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: true}});
+    yield put({type: WALLET_CHANGE_STATE, payload: {loading: true}});
     yield call(withdrawMoney, payload);
     yield put({type: WITHDRAW_MONEY_SUCCESS, payload});
   } catch (e) {
     console.log(e);
   } finally {
-    yield put({type: WALLET_CHANGE_STATE, payload: {withdrawSuccess: false}});
+    yield put({
+      type: WALLET_CHANGE_STATE,
+      payload: {loading: false},
+    });
   }
 }
 
