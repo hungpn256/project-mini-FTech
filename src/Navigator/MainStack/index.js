@@ -33,7 +33,10 @@ import {
 import Friend from '../../Screens/Friend';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
 import Notification from '../../Screens/Notification';
-import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
+import {
+  GET_NOTIFICATIONS,
+  GET_NOTIFICATIONS_SUCCESS,
+} from '../../Screens/Notification/constants';
 import {notiMes} from '../../Screens/Notification/service';
 import GameNavigator from './game';
 import auth from '@react-native-firebase/auth';
