@@ -16,7 +16,7 @@ const GameStart = ({navigation}) => {
           }}>
           <Picker.Item label="5x5" value={5} />
           <Picker.Item label="9x9" value={9} />
-          <Picker.Item label="16x16" value={16} />
+          <Picker.Item label="12x12" value={12} />
         </Picker>
         <Pressable
           style={styles.btnStartGame}

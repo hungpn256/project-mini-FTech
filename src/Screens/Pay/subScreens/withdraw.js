@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {WITHDRAW_MONEY, WALLET_CHANGE_STATE} from '../constaints';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../../../Components/Loading';
 
 function formatMoney(n, currency = '') {
   return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -19,20 +20,22 @@ function formatMoney(n, currency = '') {
 const Recharge = () => {
   const navigation = useNavigation();
   const userMoney = useSelector(state => state.auth.user);
-  const rechargeSuccess = useSelector(state => state.wallet.rechargeSuccess);
+  const loading = useSelector(state => state.wallet.loading);
+  const withdrawSuccess = useSelector(state => state.wallet.withdrawSuccess);
   const dispatch = useDispatch();
   const [money, setMoney] = useState(0);
 
   useEffect(() => {
-    if (rechargeSuccess) {
+    if (withdrawSuccess) {
       navigation.goBack();
     }
     return () => {
-      dispatch({type: WALLET_CHANGE_STATE, payload: {rechargeSuccess: false}});
+      dispatch({type: WALLET_CHANGE_STATE, payload: {withdrawSuccess: false}});
     };
-  }, [rechargeSuccess]);
+  }, [withdrawSuccess]);
   return (
     <View style={styles.container}>
+      <Loading loading={loading} />
       <View style={styles.content}>
         <Text style={styles.textHeader}>
           Số dư tài khoản: {formatMoney(userMoney.money)} đ
