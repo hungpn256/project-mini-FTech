@@ -10,7 +10,7 @@ import {
 import {Avatar} from 'react-native-paper';
 import {log} from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
-import avatarImg from '../../assets/Img/avatar.png';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import SendIcon from 'react-native-vector-icons/FontAwesome';
 import GalleryIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/AntDesign';

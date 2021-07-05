@@ -15,7 +15,7 @@ import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import avatarImg from '../../../assets/Img/avatar.png';
+import avatarImg from '../../../assets/Img/avatar.jpg';
 import Comments from '../../Components/Comments';
 import InputEncloseAvatar from '../../Components/InputEncloseAvatar';
 import {styles} from './styles';

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import auth, {firebase} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import avatarImg from '../../../assets/Img/avatar.png';
+import avatarImg from '../../../assets/Img/avatar.jpg';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import {CLOSE_LIKE_MODAL} from './constants';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';

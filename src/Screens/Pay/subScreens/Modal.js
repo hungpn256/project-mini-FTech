@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import {Avatar} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import avatarImg from '../../../../assets/Img/avatar.png';
+import avatarImg from '../../../../assets/Img/avatar.jpg';
 import {CLOSE_MODAL_USER, WALLET_TRANSFER} from '../constaints';
 import FButton from '../../../Components/TouchOpacity/index';
 export default function User() {

@@ -19,7 +19,7 @@ import ThreeDot from 'react-native-vector-icons/Entypo';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
-import avatarImg from '../../assets/Img/avatar.png';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import {addNoti, notiMes} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
 import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
