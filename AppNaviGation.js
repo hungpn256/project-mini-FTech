@@ -13,11 +13,14 @@ import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
+import SQLite from 'react-native-sqlite-storage';
+
+SQLite.enablePromise(true);
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const dispatch = useDispatch();
   const load = useSelector(state => state.auth.splashScreen);
-
+  const [loadDb, setLoadDb] = useState(false);
   const saveId = async uid => {
     const token = await messaging().getToken();
     console.log(token + 'TOKEN');
@@ -47,6 +50,42 @@ export default function AppNavigator() {
       }
     };
     check();
+    const db = SQLite.openDatabase(
+      {name: 'FTechProject', location: 'default'},
+      () => {
+        setLoadDb(true);
+        console.log('connected sqlite');
+      },
+      e => {
+        setLoadDb(false);
+        console.log('connect sqlite error', e);
+      },
+    );
+    if (loadDb) {
+      db.transaction(tx => {
+        tx.executeSql(
+          " INSERT INTO User (id,avatar,background,gender,email,name,money,phoneNumber,dateOfBirth) VALUES ('" +
+            userData.id +
+            "','" +
+            userData.avatar +
+            "','" +
+            userData.background +
+            "'," +
+            userData.gender +
+            ",'" +
+            userData.email +
+            "','" +
+            userData.name +
+            "'," +
+            userData.money +
+            ',' +
+            userData.phoneNumber +
+            ",'" +
+            userData.dateOfBirth +
+            "',) ",
+        );
+      });
+    }
     // dispatch({type: LOGOUT});
   }, []);
   const [isOffline, setOfflineStatus] = useState(false);
