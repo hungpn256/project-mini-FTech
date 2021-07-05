@@ -4,7 +4,6 @@ import {Text} from 'react-native';
 import {Provider} from 'react-redux';
 import AppNavigation from './AppNaviGation';
 import createStore from './src/Redux/storeConfigure';
-import db from './index';
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.style = {fontFamily: 'SourceSansPro-Regular'};
 const theme = {

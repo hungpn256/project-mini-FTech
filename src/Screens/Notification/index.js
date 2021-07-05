@@ -42,7 +42,6 @@ export default function NotificationScreen() {
     },
     [user.id],
   );
-
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Text style={styles.navigation}>Notifications</Text>
