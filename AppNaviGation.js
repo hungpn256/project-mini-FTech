@@ -90,12 +90,16 @@ export default function AppNavigator() {
   }, []);
   const [isOffline, setOfflineStatus] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     const removeNetInfoSubscription = NetInfo.addEventListener(state => {
       const offline = !(state.isConnected && state.isInternetReachable);
       setOfflineStatus(offline);
       console.log('sdasd', offline);
     });
+    setTimeout(() => {
+      setReady(true);
+    }, 3000);
     return () => removeNetInfoSubscription();
   }, []);
   const fetchUsers = useCallback(() => {
@@ -110,7 +114,7 @@ export default function AppNavigator() {
         setLoading(false);
       });
   }, [isOffline]);
-  return load || isOffline ? (
+  return load || isOffline || !ready ? (
     <>
       <Loading />
       {isOffline && (

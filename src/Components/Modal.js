@@ -16,7 +16,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
-import avatarImg from '../../assets/Img/avatar.png';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import {CREATE_POST} from '../Screens/Home/constants';
 import CameraGroup from './CameraGroup';
 export default function Post({type, src, closeModal, closeImg}) {
