@@ -26,6 +26,10 @@ export default function User() {
   const loading = useSelector(state => state.wallet.tranferSuccess);
   const dispatch = useDispatch();
 
+  function formatMoney(n, currency = '') {
+    return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
   const handleSubmit = () => {
     console.log(coin + 'coin');
     if (!isNaN(parseInt(coin)) && parseInt(coin) > 0 && coin.length > 0) {
@@ -102,7 +106,7 @@ export default function User() {
           <View style={styles.money}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>Money</Text>
             <Text style={{marginLeft: 5, color: '#696969'}}>
-              {'('}Balance : {money} {''}đ{')'}
+              {'('}Balance : {formatMoney(money)} {''}đ{')'}
             </Text>
           </View>
           <View
@@ -116,7 +120,7 @@ export default function User() {
               style={{color: '#D35400', fontSize: 30, fontWeight: 'bold'}}
               placeholder="0đ"
               keyboardType="numeric"
-              value={'' + coin}
+              value={'' + formatMoney(coin)}
               onChangeText={e => setCoin(e)}
             />
           </View>
