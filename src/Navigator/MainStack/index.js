@@ -304,7 +304,7 @@ export default function AppNavigator() {
             headerShown: false,
           }}
           name="Pay"
-          component={TabNavigatorPay}
+          component={Pay}
         />
         <Stack.Screen name="Recharge" component={Recharge} />
         <Stack.Screen name="Transfers" component={Transfers} />

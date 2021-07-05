@@ -21,6 +21,7 @@ const Recharge = () => {
   const navigation = useNavigation();
   const userMoney = useSelector(state => state.auth.user);
   const rechargeSuccess = useSelector(state => state.wallet.rechargeSuccess);
+  const loading = useSelector(state => state.wallet.loading);
   const dispatch = useDispatch();
   const [money, setMoney] = useState(0);
   useEffect(() => {
@@ -33,6 +34,7 @@ const Recharge = () => {
   }, [rechargeSuccess]);
   return (
     <View style={styles.container}>
+      <Loading loading={loading} />
       <View style={styles.content}>
         <Text style={styles.textHeader}>
           Số dư tài khoản: {formatMoney(userMoney.money)} đ

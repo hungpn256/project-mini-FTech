@@ -5,7 +5,10 @@ const initialState = {
   user: null,
 };
 import {CREATE_CONVERSATION_SUCCESS} from '../ChatRoom/constants';
-import {RECHARGE_MONEY_SUCCESS} from '../Pay/constaints';
+import {
+  RECHARGE_MONEY_SUCCESS,
+  WITHDRAW_MONEY_SUCCESS,
+} from '../Pay/constaints';
 import {
   AUTH_CHANGE_STATE,
   LOGIN_SUCCESS,
@@ -50,6 +53,14 @@ const reducer = (state = initialState, action) => {
         user: {
           ...state.user,
           money: parseInt(state.user.money) + action.payload,
+        },
+      };
+    case WITHDRAW_MONEY_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          money: parseInt(state.user.money) - action.payload,
         },
       };
     case GET_USER_SUCCESS:
