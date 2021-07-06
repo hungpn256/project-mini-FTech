@@ -9,16 +9,21 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 import SQLite from 'react-native-sqlite-storage';
 
-SQLite.enablePromise(true);
-export const db = SQLite.openDatabase(
-  {name: 'cache'},
-  () => {
-    console.log('connected sqlite');
-  },
-  e => {
-    console.log('connect sqlite error', e);
-  },
-);
+SQLite.enablePromise(false);
+
+// console.log(db);
+// function tesst(db) {
+//   db.executeSql(
+//     'CREATE TABLE IF NOT EXISTS Version( ' +
+//       'version_id INTEGER PRIMARY KEY NOT NULL); ',
+//     [],
+//     () => {
+
+//     },
+//     e => console.log('e', e),
+//   );
+// }
+
 // import admin from 'firebase-admin';
 // // Register background handler
 // import serviceAccount from './src/Configs/serviceadmin.json'

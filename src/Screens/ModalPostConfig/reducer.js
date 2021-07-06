@@ -1,4 +1,8 @@
-import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
+import {
+  CLOSE_MODAL_POST,
+  MODAL_CREATE_POST,
+  MODAL_CREATE_POST_IMG,
+} from '../ModalCreatePost/contants';
 import {
   OPEN_POST_CONFIG,
   CLOSE_POST_CONFIG,
@@ -7,6 +11,7 @@ import {
   CLOSE_UPDATE_IMG,
   CLEAR_UPDATE_TEXT,
 } from './contants';
+
 const initialState = {
   status: false,
   postId: '',
@@ -17,6 +22,24 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case MODAL_CREATE_POST:
+      return {
+        ...state,
+        confirm: false,
+        status: false,
+        image: '',
+        content: '',
+        update: false,
+      };
+    case MODAL_CREATE_POST_IMG:
+      return {
+        ...state,
+        confirm: false,
+        status: false,
+        image: '',
+        content: '',
+        update: false,
+      };
     case OPEN_POST_CONFIG:
       return {
         ...state,
@@ -26,7 +49,7 @@ const reducer = (state = initialState, action) => {
         image: action.payload.image,
       };
     case CLOSE_POST_CONFIG:
-      return {...state, status: false};
+      return {...state, status: false, update: false};
     case OPEN_CONFIRM:
       return {...state, confirm: true};
     case CLOSE_CONFIRM:

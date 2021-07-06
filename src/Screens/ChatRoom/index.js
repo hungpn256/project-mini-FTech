@@ -62,63 +62,66 @@ export default function ChatRoom({navigation}) {
             style={styles.friendWrapper}
             showsHorizontalScrollIndicator={false}>
             {userSearch &&
-              userSearch.map(item => {
-                return (
-                  <Pressable
-                    key={item.id}
-                    style={styles.wrapperAvatar}
-                    onPress={async () => {
-                      let room = commonRoom(item, user);
-                      if (room.length === 0) {
-                        setLoading(true);
-                        const res = await createConversation([
-                          user.id,
-                          item.id,
-                        ]);
-                        room.push(res.id);
-                        dispatch({
-                          type: CREATE_CONVERSATION_SUCCESS,
-                          payload: {
-                            [res.id]: {
-                              users: [user, item],
-                              isTyping: false,
-                              messages: [],
-                              unread: [],
-                              updatedAt: firestore.FieldValue.serverTimestamp(),
+              userSearch
+                .filter(item => item.id !== auth().currentUser.uid)
+                .map(item => {
+                  return (
+                    <Pressable
+                      key={item.id}
+                      style={styles.wrapperAvatar}
+                      onPress={async () => {
+                        let room = commonRoom(item, user);
+                        if (room.length === 0) {
+                          setLoading(true);
+                          const res = await createConversation([
+                            user.id,
+                            item.id,
+                          ]);
+                          room.push(res.id);
+                          dispatch({
+                            type: CREATE_CONVERSATION_SUCCESS,
+                            payload: {
+                              [res.id]: {
+                                users: [user, item],
+                                isTyping: false,
+                                messages: [],
+                                unread: [],
+                                updatedAt:
+                                  firestore.FieldValue.serverTimestamp(),
+                              },
                             },
-                          },
+                          });
+                          setLoading(false);
+                        }
+                        navigation.navigate('Messenger', {
+                          roomId: room[0],
+                          name: userSearch.name,
                         });
-                        setLoading(false);
-                      }
-                      navigation.navigate('Messenger', {
-                        roomId: room[0],
-                        name: userSearch.name,
-                      });
-                    }}>
-                    <View
-                      style={{
-                        borderColor: '#EEEEEE',
-                        borderWidth: 1,
-                        borderRadius: 999,
                       }}>
-                      <Avatar.Image
-                        source={{
-                          uri:
-                            item.avatar.length > 0
-                              ? item.avatar
-                              : avatarDefault,
-                        }}
-                        style={styles.avatar}
-                        size={65}
-                      />
-                    </View>
+                      <View
+                        style={{
+                          borderColor: '#EEEEEE',
+                          borderWidth: 1,
+                          borderRadius: 999,
+                        }}>
+                        <Avatar.Image
+                          source={{
+                            uri:
+                              item.avatar.length > 0
+                                ? item.avatar
+                                : avatarDefault,
+                          }}
+                          style={styles.avatar}
+                          size={65}
+                        />
+                      </View>
 
-                    <Text style={[styles.name, {fontSize: 16}]}>
-                      {item.name}
-                    </Text>
-                  </Pressable>
-                );
-              })}
+                      <Text style={[styles.name, {fontSize: 16}]}>
+                        {item.name}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
           </ScrollView>
         </View>
         <View>

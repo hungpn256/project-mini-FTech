@@ -3,8 +3,9 @@ import firestore from '@react-native-firebase/firestore';
 import {useNavigation} from '@react-navigation/native';
 import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
+  Animated,
   Dimensions,
   Image,
   Pressable,
@@ -52,6 +53,23 @@ const Article = ({text, image, time, uid, postid}) => {
   const [user, setUser] = useState('');
   const [size, setSize] = useState('');
   const [total, setTotal] = useState(0);
+  const animatedLike = useRef(new Animated.Value(1)).current;
+  const likeout = useCallback(() => {
+    Animated.timing(animatedLike, {
+      toValue: 1.3,
+      duration: 200,
+    }).start(({finished}) => {
+      if (finished) {
+        likein();
+      }
+    });
+  }, []);
+  const likein = useCallback(() => {
+    Animated.timing(animatedLike, {
+      toValue: 1,
+      duration: 200,
+    }).start();
+  }, []);
   const payload = {
     title: 'Bài viết của bạn đã có lượt thích mới',
     body: `${curUser.name} đã thích bài viết của bạn`,
@@ -265,8 +283,16 @@ const Article = ({text, image, time, uid, postid}) => {
         </Text>
       </View>
       <Card.Actions style={styles.cardAction}>
-        <Pressable style={styles.Icon} onPress={handleLike}>
-          <View style={styles.actionBtn}>
+        <Pressable
+          style={styles.Icon}
+          onPress={() => {
+            handleLike();
+            if (!like) {
+              likeout();
+            }
+          }}>
+          <Animated.View
+            style={[styles.actionBtn, {transform: [{scale: animatedLike}]}]}>
             <AntDesignIcon
               color={like ? '#1777F2' : '#696969'}
               name={!like ? 'like2' : 'like1'}
@@ -279,7 +305,7 @@ const Article = ({text, image, time, uid, postid}) => {
               ]}>
               Like
             </Text>
-          </View>
+          </Animated.View>
         </Pressable>
         <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
@@ -339,7 +365,9 @@ const Article = ({text, image, time, uid, postid}) => {
               ) : null}
               <Text style={{color: '#696969', fontSize: 12, marginLeft: 5}}>
                 {content.createAt
-                  ? moment(content.createAt?.toDate()).fromNow()
+                  ? moment(
+                      content.createAt?.toDate?.() ?? content.createAt,
+                    ).fromNow()
                   : 'loading'}
               </Text>
             </View>

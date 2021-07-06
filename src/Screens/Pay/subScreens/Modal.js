@@ -30,6 +30,17 @@ export default function User() {
     return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
+  function formatNumber(n, currency = '') {
+    // format number 1000000 to 1,234,567
+    return (
+      currency +
+      n
+        .toString()
+        .replace(/\D/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    );
+  }
+
   const handleSubmit = () => {
     console.log(coin + 'coin');
     if (!isNaN(parseInt(coin)) && parseInt(coin) > 0 && coin.length > 0) {
@@ -120,7 +131,7 @@ export default function User() {
               style={{color: '#D35400', fontSize: 30, fontWeight: 'bold'}}
               placeholder="0đ"
               keyboardType="numeric"
-              value={'' + formatMoney(coin)}
+              value={'' + coin}
               onChangeText={e => setCoin(e)}
             />
           </View>

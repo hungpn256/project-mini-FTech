@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -33,10 +34,12 @@ import {
 import Friend from '../../Screens/Friend';
 import {GET_FRIEND} from '../../Screens/Friend/constants';
 import Notification from '../../Screens/Notification';
-import {GET_NOTIFICATIONS} from '../../Screens/Notification/constants';
+import {
+  GET_NOTIFICATIONS,
+  GET_NOTIFICATIONS_SUCCESS,
+} from '../../Screens/Notification/constants';
 import {notiMes} from '../../Screens/Notification/service';
 import GameNavigator from './game';
-import auth from '@react-native-firebase/auth';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const StackNavigatorProfile = () => {
@@ -265,32 +268,33 @@ export default function AppNavigator() {
   useEffect(() => {
     console.log(roomChatList);
     const connectChat = async () => {
-      roomChatList.forEach(item => {
-        firestore()
-          .collection('room-chat')
-          .doc(item)
-          .onSnapshot(res => {
-            console.log(item, 'sss', res);
-            let data = res.data();
-            if (data && data.messages?.length > 0) {
-              let users = [];
-              Promise.all([data.users[0].get(), data.users[1].get()]).then(
-                ([res1, res2]) => {
-                  users.push({id: res1.id, ...res1.data()});
-                  users.push({id: res2.id, ...res2.data()});
-                  console.log({[item]: {...res.data(), users}}, 'mess');
-                  dispatch({
-                    type: GET_CONVERSATION_SUCCESS,
-                    payload: {[item]: {...res.data(), users}},
-                  });
-                },
-              );
-            }
-          });
-      });
+      roomChatList &&
+        roomChatList.forEach(item => {
+          firestore()
+            .collection('room-chat')
+            .doc(item)
+            .onSnapshot(res => {
+              console.log(item, 'sss', res);
+              let data = res.data();
+              if (data && data.messages?.length > 0) {
+                let users = [];
+                Promise.all([data.users[0].get(), data.users[1].get()]).then(
+                  ([res1, res2]) => {
+                    users.push({id: res1.id, ...res1.data()});
+                    users.push({id: res2.id, ...res2.data()});
+                    console.log({[item]: {...res.data(), users}}, 'mess');
+                    dispatch({
+                      type: GET_CONVERSATION_SUCCESS,
+                      payload: {[item]: {...res.data(), users}},
+                    });
+                  },
+                );
+              }
+            });
+        });
     };
     connectChat();
-  }, [roomChatList.length]);
+  }, [roomChatList?.length]);
   return (
     <NavigationContainer>
       <Stack.Navigator>

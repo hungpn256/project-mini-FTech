@@ -1,22 +1,27 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/Entypo';
 export default function CameraGroup({cam, gallery}) {
   return (
     <View style={styles.actionBottom}>
       <Button
         style={styles.actionBtn}
-        icon="camera"
-        color="#696969"
+        // icon="camera"
+        color="#000"
         onPress={cam}>
-        <Text style={styles.colorText}>Camera</Text>
+        <Text style={styles.colorText}>
+          <Entypo name="camera" size={18} color="#E74C3C" /> Camera
+        </Text>
       </Button>
       <Button
         style={styles.actionBtn}
-        icon="folder-image"
-        color="#696969"
+        // icon="folder-image"
+        color="#000"
         onPress={gallery}>
-        <Text style={styles.colorText}>Photo/Video</Text>
+        <Text style={styles.colorText}>
+          <Entypo name="folder-images" size={18} color="#58D68D" /> Photo/Video
+        </Text>
       </Button>
     </View>
   );
@@ -28,7 +33,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   colorText: {
-    color: '#696969',
+    color: '#555',
     fontWeight: '700',
     fontSize: 13,
   },

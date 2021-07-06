@@ -15,6 +15,7 @@ import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
 import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
 import ModalLike from '@Screens/ModalLike';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Home = () => {
   const navigation = useNavigation();
   const postData = useSelector(state => state.home.post);
@@ -125,7 +126,9 @@ const Home = () => {
           postData.map(item => {
             return (
               <Article
-                time={moment(item.createAt?.toDate()).fromNow()}
+                time={moment(
+                  item.createAt?.toDate?.() ?? item.createAt,
+                ).fromNow()}
                 key={item.id}
                 text={item.content}
                 image={item.imageUrl}
