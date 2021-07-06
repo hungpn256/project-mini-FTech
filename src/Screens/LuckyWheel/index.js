@@ -85,7 +85,8 @@ const LuckyWheel = () => {
             height: 50,
             width: 50,
             alignSelf: 'center',
-            top: 115,
+            top: 108,
+            resizeMode: 'contain',
           }}
         />
       </View>
