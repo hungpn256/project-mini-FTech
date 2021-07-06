@@ -141,6 +141,15 @@ export const deletePost = async ({postId}) => {
       documentSnapshot.ref.delete();
     });
   }
+  const noti = await firestore()
+    .collection('notification')
+    .where('postId', '==', postId)
+    .get();
+  if (noti.size > 0) {
+    noti.forEach(snap => {
+      snap.ref.delete();
+    });
+  }
 };
 
 export const uploadPost = async ({text, image}) => {

@@ -47,9 +47,8 @@ function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
   try {
     const res = yield call(uploadPost, payload);
-    // yield put({type: UPLOAD_POST, payload: {new: res}});
-    yield put({type: UPLOAD_POST});
-    // yield delay(100);
+    yield put({type: UPLOAD_POST, payload: {new: res}});
+    yield delay(100);
   } catch (err) {
     console.log(err);
   } finally {
@@ -70,15 +69,18 @@ function* handleGetPost() {
 function* handleCmt({payload}) {
   try {
     const res = yield call(createCmt, payload);
+    const userCmt = yield call(dataUser);
     const received = yield call(postReceived, {postId: payload.postId});
+    console.log(received + 'receiveddd');
+    yield put({type: CREATE_CMT, payload: {newCmt: res}});
     yield call(addNoti, {postId: payload.postId, type: 0});
     if (received.token && received.token.length > 0) {
       yield call(notiMes, {
-        title: `${payload.curName} đã bình luận vào bài viết của bạn`,
+        title: `${userCmt.name} đã bình luận vào bài viết của bạn`,
         body:
-          payload.text?.length > 0
-            ? payload.text
-            : `${payload.curName} đã bình luận một hình ảnh`,
+          res.content?.length > 0
+            ? res.content
+            : `${userCmt.name} đã bình luận một hình ảnh`,
         token: received.token,
         image: res?.image ?? null,
         data: {

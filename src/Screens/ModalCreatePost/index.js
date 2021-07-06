@@ -15,7 +15,7 @@ import CameraGroup from '../../Components/CameraGroup';
 import {Avatar, Button, Card, Divider} from 'react-native-paper';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {styles} from './styles';
-import avatarImg from '../../../assets/Img/avatar.png';
+import avatarImg from '../../../assets/Img/avatar.jpg';
 import FButton from '../../Components/TouchOpacity/index';
 import Loading from '../../Components/Loading';
 import {CREATE_POST, UPDATE_POST} from '../Home/constants';

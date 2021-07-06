@@ -27,6 +27,7 @@ export default class CarouselComponent extends React.Component {
             loop={true}
             autoplay={true}
             autoplayInterval={4000}
+            
           />
         </View>
       </SafeAreaView>

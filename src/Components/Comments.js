@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Image, Pressable} from 'react-native';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import avatarImg from '../../assets/Img/avatar.png';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import auth, {firebase} from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';

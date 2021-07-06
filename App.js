@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Text} from 'react-native';
 import {Provider} from 'react-redux';
@@ -12,6 +12,7 @@ const theme = {
 
 const store = createStore();
 function App() {
+  useEffect(() => {}, []);
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>

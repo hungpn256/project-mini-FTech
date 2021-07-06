@@ -28,7 +28,8 @@ export const styles = StyleSheet.create({
   },
   avatarLike: {
     borderRadius: 23,
-    backgroundColor: '#EEEEEE',
+    borderBottomColor: '#EEE',
+    borderBottomWidth: 1,
     marginTop: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
