@@ -1,70 +1,95 @@
-import React, {Fragment} from 'react';
-import {View, Text, Button} from 'react-native';
-import styles from './styles';
-import {line} from 'https://cdn.skypack.dev/d3-shape@3';
-import {animated, useSpring} from 'react-spring';
-import Svg, {Line, G, Circle, Polygon} from 'react-native-svg';
-
-// const OFFSET = Math.random();
-function LuckyWheel() {
-  // const r = 200;
-  // const cx = 250;
-  // const cy = 250;
-  // const rederItems = numOfItems => {
-  //   let items = [];
-  //   for (let i = 0; i < numOfItems; i++) {
-  //     let xLength = Math.cos(2 * Math.PI * (i / numOfItems + OFFSET)) * (r - 5);
-  //     let yLength = Math.sin(2 * Math.PI * (i / numOfItems + OFFSET)) * (r - 5);
-  //     let txLength =
-  //       Math.cos(2 * Math.PI * ((i + 0.5) / numOfItems + OFFSET)) * (r / 2);
-  //     let tyLength =
-  //       Math.sin(2 * Math.PI * ((i + 0.5) / numOfItems + OFFSET)) * (r / 2);
-  //     items.push(
-  //       <Fragment key={i}>
-  //         <Line
-  //           stroke="rgb(255,0,0)"
-  //           strokeWidth="2"
-  //           x1={cx + xLength}
-  //           y1={cy + yLength}
-  //           x2={cx}
-  //           y2={cy}
-  //         />
-  //         <Text
-  //           x={cx + txLength}
-  //           y={cy + tyLength}
-  //           fontSize="15px"
-  //           transform={`rotate(${((i + 0.5) / numOfItems + OFFSET) * 360}
-  //                 ${cx + txLength},
-  //                 ${cy + tyLength})`}>
-  //           {i}
-  //         </Text>
-  //       </Fragment>,
-  //     );
-  //   }
-  //   return items;
-  // };
+import LuckyWheelImg from '*/Assets/luckywheel.png';
+import moment from 'moment';
+import React, {useRef, useState} from 'react';
+import {Animated, Easing, Image, View, Alert} from 'react-native';
+import {Button} from 'react-native-paper';
+import Arrow from '*/Assets/arrow.jpg';
+import {useDispatch} from 'react-redux';
+import {RECHARGE_MONEY} from '../Pay/constaints';
+const LuckyWheel = () => {
+  const ani = useRef(new Animated.Value(0)).current;
+  const [toValue, setToValue] = useState(1);
+  const [spining, setSpining] = useState(false);
+  const spin = ani.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', (toValue * 360).toString() + 'deg'],
+  });
+  const dispatch = useDispatch();
+  const start = () => {
+    ani.setValue(0);
+    setSpining(true);
+    const rotate = Math.random() * (20 - 19) + 19;
+    console.log(rotate);
+    setToValue(rotate);
+    Animated.timing(ani, {
+      duration: 5000,
+      toValue: 1,
+      easing: Easing.inOut(Easing.cubic),
+      useNativeDriver: true,
+    }).start(() => {
+      setTimeout(() => {
+        setSpining(false);
+        const tmp = (rotate - Math.floor(rotate)) * 1000;
+        console.log(tmp);
+        let prize;
+        if (tmp < 125) {
+          prize = 20000;
+        } else if (tmp < 250) {
+          prize = 10000;
+        } else if (tmp < 375) {
+          prize = 5000;
+        } else if (tmp < 500) {
+          prize = 2000;
+        } else if (tmp < 625) {
+          prize = 1000;
+        } else if (tmp < 750) {
+          prize = 0;
+        } else if (tmp < 875) {
+          prize = 100000;
+        } else {
+          prize = 50000;
+        }
+        if (prize !== 0) {
+          Alert.alert(`you win ${prize}vnd!!!! `);
+          dispatch({type: RECHARGE_MONEY, payload: prize});
+        } else {
+          Alert.alert(`Wish you luck next time`);
+        }
+      }, 500);
+    });
+  };
 
   return (
-    <View>
-      {/* <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 500 500 "
-        style={{with: '100vw', height: '80vh'}}>
-        <G fill="white" stroke="green" strokeWidth="10">
-          <Circle cx="250" cy="250" r={r} />
-        </G>
-        <G>{rederItems(1)}</G>
-        <G fill="#61DAFB">
-          <Circle cx="250" cy="250" r="15" />
-        </G>
-        <G fill="black">
-          <Circle cx="250" cy="250" r="5" />
-        </G>
-        <G fill="lime" stroke="purple" strokeWidth="2">
-          <Polygon points="250,70 230,30 270,30" />
-        </G>
-      </Svg> */}
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFF',
+      }}>
+      <View>
+        <Animated.View style={{transform: [{rotateZ: spin}]}}>
+          <Image source={LuckyWheelImg} style={{width: 300, height: 300}} />
+        </Animated.View>
+        <Button
+          mode="contained"
+          onPress={start}
+          disabled={spining}
+          style={{marginTop: 20}}>
+          Spin
+        </Button>
+        <Image
+          source={Arrow}
+          style={{
+            position: 'absolute',
+            height: 50,
+            width: 50,
+            alignSelf: 'center',
+            top: 115,
+          }}
+        />
+      </View>
     </View>
   );
-}
+};
 export default LuckyWheel;
