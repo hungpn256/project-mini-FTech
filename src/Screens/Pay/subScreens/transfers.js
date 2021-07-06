@@ -13,7 +13,7 @@ import {ALL_USER_WALLET, WITHDRAW_MONEY} from '../constaints';
 import avatarImg from '../../../../assets/Img/avatar.jpg';
 import User from './Modal';
 import {OPEN_MODAL_USER} from '../constaints';
-
+import auth, {firebase} from '@react-native-firebase/auth';
 const handleMoney = (surplus, inputNumber) => {
   if (surplus >= inputNumber) {
     dispatch({type: WITHDRAW_MONEY, payload: inputNumber});
@@ -54,105 +54,112 @@ const Transfers = () => {
           onChangeText={e => setText(e)}
           style={styles.textInput}
           value={text}
-          placeholder="Name"
+          placeholder="Name or email"
         />
       </View>
       <View style={{paddingHorizontal: 8, marginTop: 10}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {filter.length > 0 ? (
-            filter.map((item, i) => {
-              return (
-                <View key={item.id}>
-                  <Pressable
-                    onPress={() =>
-                      dispatch({type: OPEN_MODAL_USER, payload: {item: item}})
-                    }
-                    style={{
-                      marginTop: 10,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    {item.avatar ? (
-                      <Pressable>
-                        <View style={styles.avatar}>
-                          <Avatar.Image source={{uri: item.avatar}} size={45} />
-                        </View>
-                      </Pressable>
-                    ) : (
-                      <Pressable>
-                        <View style={styles.avatar}>
-                          <Avatar.Image source={avatarImg} size={45} />
-                        </View>
-                      </Pressable>
-                    )}
-                    <View style={{flexDirection: 'column'}}>
-                      <Text style={styles.userName}>{item.name}</Text>
-                      <Text style={styles.userName}>
-                        {item.email ? item.email : 'xx-xx-xx'}
-                      </Text>
-                    </View>
-                  </Pressable>
-                  <View
-                    key={i}
-                    style={{
-                      borderBottomColor: '#eee',
-                      borderBottomWidth: 1,
-                      marginTop: 5,
-                    }}></View>
-                </View>
-              );
-            })
+            filter
+              .filter(item => item.id !== auth().currentUser.uid)
+              .map((item, i) => {
+                return (
+                  <View key={item.id}>
+                    <Pressable
+                      onPress={() =>
+                        dispatch({type: OPEN_MODAL_USER, payload: {item: item}})
+                      }
+                      style={{
+                        marginTop: 10,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      {item.avatar ? (
+                        <Pressable>
+                          <View style={styles.avatar}>
+                            <Avatar.Image
+                              source={{uri: item.avatar}}
+                              size={45}
+                            />
+                          </View>
+                        </Pressable>
+                      ) : (
+                        <Pressable>
+                          <View style={styles.avatar}>
+                            <Avatar.Image source={avatarImg} size={45} />
+                          </View>
+                        </Pressable>
+                      )}
+                      <View style={{flexDirection: 'column'}}>
+                        <Text style={styles.userName}>{item.name}</Text>
+                        <Text style={styles.userName}>
+                          {item.email ? item.email : 'xx-xx-xx'}
+                        </Text>
+                      </View>
+                    </Pressable>
+                    <View
+                      key={i}
+                      style={{
+                        borderBottomColor: '#eee',
+                        borderBottomWidth: 1,
+                        marginTop: 5,
+                      }}></View>
+                  </View>
+                );
+              })
           ) : (
             <>
               {allUser
-                ? allUser.map((item, i) => {
-                    return (
-                      <View key={item.id}>
-                        <Pressable
-                          onPress={() =>
-                            dispatch({
-                              type: OPEN_MODAL_USER,
-                              payload: {item: item},
-                            })
-                          }
-                          style={{
-                            marginTop: 10,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                          }}>
-                          {item.avatar ? (
-                            <Pressable>
-                              <View style={styles.avatar}>
-                                <Avatar.Image
-                                  source={{uri: item.avatar}}
-                                  size={45}
-                                />
-                              </View>
-                            </Pressable>
-                          ) : (
-                            <Pressable>
-                              <View style={styles.avatar}>
-                                <Avatar.Image source={avatarImg} size={45} />
-                              </View>
-                            </Pressable>
-                          )}
-                          <View style={{flexDirection: 'column'}}>
-                            <Text style={styles.userName}>{item.name}</Text>
-                            <Text style={styles.userName}>
-                              {item.email ? item.email : 'xx-xx-xx'}
-                            </Text>
-                          </View>
-                        </Pressable>
-                        <View
-                          key={i}
-                          style={{
-                            borderBottomColor: '#eee',
-                            borderBottomWidth: 1,
-                            marginTop: 5,
-                          }}></View>
-                      </View>
-                    );
-                  })
+                ? allUser
+                    .filter(item => item.id !== auth().currentUser.uid)
+                    .map((item, i) => {
+                      return (
+                        <View key={item.id}>
+                          <Pressable
+                            onPress={() =>
+                              dispatch({
+                                type: OPEN_MODAL_USER,
+                                payload: {item: item},
+                              })
+                            }
+                            style={{
+                              marginTop: 10,
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            {item.avatar ? (
+                              <Pressable>
+                                <View style={styles.avatar}>
+                                  <Avatar.Image
+                                    source={{uri: item.avatar}}
+                                    size={45}
+                                  />
+                                </View>
+                              </Pressable>
+                            ) : (
+                              <Pressable>
+                                <View style={styles.avatar}>
+                                  <Avatar.Image source={avatarImg} size={45} />
+                                </View>
+                              </Pressable>
+                            )}
+                            <View style={{flexDirection: 'column'}}>
+                              <Text style={styles.userName}>{item.name}</Text>
+                              <Text style={styles.userName}>
+                                {item.email ? item.email : 'xx-xx-xx'}
+                              </Text>
+                            </View>
+                          </Pressable>
+                          <View
+                            key={i}
+                            style={{
+                              borderBottomColor: '#eee',
+                              borderBottomWidth: 1,
+                              marginTop: 5,
+                            }}></View>
+                        </View>
+                      );
+                    })
                 : null}
             </>
           )}
