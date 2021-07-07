@@ -1,4 +1,5 @@
-import auth from '@react-native-firebase/auth';
+import Loading from '@Components/Loading';
+import firestore from '@react-native-firebase/firestore';
 import {orderBy} from 'lodash';
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
@@ -9,24 +10,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Avatar, Card, List} from 'react-native-paper';
+import {Avatar, List} from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../Helper/function';
 import {avatarDefault} from '../../index_Constant';
 import SearchBar from './components/SearchBar';
 import SwipeCustom from './components/SwipeCustom';
+import {CREATE_CONVERSATION_SUCCESS} from './constants';
 import {createConversation} from './service';
 import styles from './styles';
-import Loading from '@Components/Loading';
-import {CREATE_CONVERSATION_SUCCESS} from './constants';
-import firestore from '@react-native-firebase/firestore';
 export default function ChatRoom({navigation}) {
   const [roomList, setRoomList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const userId = auth().currentUser.uid;
   const user = useSelector(state => state.auth.user);
   const chat = useSelector(state => state.chat);
+  const userId = user.id;
   const {conversation, userSearch} = chat;
   const [filter, setFilter] = useState('');
   const dispatch = useDispatch();
@@ -63,7 +62,7 @@ export default function ChatRoom({navigation}) {
             showsHorizontalScrollIndicator={false}>
             {userSearch &&
               userSearch
-                .filter(item => item.id !== auth().currentUser.uid)
+                .filter(item => item.id !== userId)
                 .map(item => {
                   return (
                     <Pressable
@@ -95,7 +94,7 @@ export default function ChatRoom({navigation}) {
                         }
                         navigation.navigate('Messenger', {
                           roomId: room[0],
-                          name: userSearch.name,
+                          name: item.name,
                         });
                       }}>
                       <View

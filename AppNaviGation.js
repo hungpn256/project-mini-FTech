@@ -5,18 +5,13 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Loading from './src/Components/SplashScreen/index';
 import NoInternetModal from './src/Components/NoInternetModal';
+import Loading from './src/Components/SplashScreen/index';
 import AuthStack from './src/Navigator/AuthStack';
 import MainStack from './src/Navigator/MainStack';
-import {
-  GET_USER_SUCCESS,
-  USER_DEL,
-  USER_SET,
-} from './src/Screens/Auth/constants';
+import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
 import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
-import {ALL_POST} from '@Screens/Home/constants';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
 import SQLite from 'react-native-sqlite-storage';
 
@@ -38,25 +33,25 @@ export default function AppNavigator() {
   };
 
   useEffect(() => {
-    (async () => {
-      let user, getpost;
-      try {
-        user = JSON.parse(await AsyncStorage.getItem('user'));
-        getpost = JSON.parse(await AsyncStorage.getItem('post'));
-      } catch (e) {
-        console.log(e, 'get data fail');
-      }
-      console.log('get', user, getpost);
-      if (user) {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          payload: {user},
-        });
-      }
-      if (getpost) {
-        dispatch({type: ALL_POST, payload: {data: getpost}});
-      }
-    })();
+    // (async () => {
+    // let user, getpost;
+    // try {
+    // user = JSON.parse(await AsyncStorage.getItem('user'));
+    // getpost = JSON.parse(await AsyncStorage.getItem('post'));
+    // } catch (e) {
+    // console.log(e, 'get data fail');
+    // }
+    // console.log('get', user, getpost);
+    // if (user) {
+    // dispatch({
+    //   type: GET_USER_SUCCESS,
+    //   payload: {user},
+    // });
+    // }
+    // if (getpost) {
+    // dispatch({type: ALL_POST, payload: {data: getpost}});
+    // }
+    // })();
     (() => {
       auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -77,42 +72,42 @@ export default function AppNavigator() {
     check();
     // dispatch({type: LOGOUT});
   }, []);
-  useEffect(() => {
-    (async () => {
-      if (userData) {
-        const userData_ = {...userData};
-        delete userData_.friend;
-        try {
-          await AsyncStorage.setItem('user', JSON.stringify(userData_));
-        } catch (error) {
-          console.log('user', error);
-        }
-      } else {
-        console.log('user remove');
-        // await AsyncStorage.removeItem('user');
-      }
-    })();
-  }, [userData]);
-  useEffect(() => {
-    console.log(post, 'post change');
-    (async () => {
-      if (userData && post) {
-        console.log('post set local');
-        try {
-          let post_ = [...post];
-          post_ = post_.slice(0, 2).map(item => {
-            return {...item, createAt: item.createAt?.toDate()};
-          });
-          await AsyncStorage.setItem('post', JSON.stringify(post_));
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        console.log('post remove');
-        // await AsyncStorage.removeItem('post');
-      }
-    })();
-  }, [post]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (userData) {
+  //       const userData_ = {...userData};
+  //       delete userData_.friend;
+  //       try {
+  //         await AsyncStorage.setItem('user', JSON.stringify(userData_));
+  //       } catch (error) {
+  //         console.log('user', error);
+  //       }
+  //     } else {
+  //       console.log('user remove');
+  //       // await AsyncStorage.removeItem('user');
+  //     }
+  //   })();
+  // }, [userData]);
+  // useEffect(() => {
+  //   console.log(post, 'post change');
+  //   (async () => {
+  //     if (userData && post) {
+  //       console.log('post set local');
+  //       try {
+  //         let post_ = [...post];
+  //         post_ = post_.slice(0, 2).map(item => {
+  //           return {...item, createAt: item.createAt?.toDate()};
+  //         });
+  //         await AsyncStorage.setItem('post', JSON.stringify(post_));
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     } else {
+  //       console.log('post remove');
+  //       // await AsyncStorage.removeItem('post');
+  //     }
+  //   })();
+  // }, [post]);
   const [isOffline, setOfflineStatus] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);

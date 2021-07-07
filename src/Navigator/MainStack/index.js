@@ -228,10 +228,13 @@ export default function AppNavigator() {
       .collection('user')
       .doc(user.id)
       .onSnapshot(res => {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          payload: {user: res.data()},
-        });
+        if (auth()?.currentUser?.uid) {
+          console.log('get usseerrrr');
+          dispatch({
+            type: GET_USER_SUCCESS,
+            payload: {user: res.data()},
+          });
+        }
       });
     dispatch({type: GET_FRIEND});
     dispatch({
@@ -243,25 +246,27 @@ export default function AppNavigator() {
       .where('received', '==', auth().currentUser.uid)
       .orderBy('updateAt', 'desc')
       .onSnapshot(async noti => {
-        let res = [];
-        for (let i = 0; i < noti.size; i++) {
-          let users = [];
-          const data = noti.docs[i].data();
-          const usersFirebase = data.userId.slice(-2);
-          for (let j = usersFirebase.length - 1; j >= 0; j--) {
-            const user = await firestore()
-              .collection('user')
-              .doc(usersFirebase[j])
+        if (auth()?.currentUser?.uid) {
+          let res = [];
+          for (let i = 0; i < noti.size; i++) {
+            let users = [];
+            const data = noti.docs[i].data();
+            const usersFirebase = data.userId.slice(-2);
+            for (let j = usersFirebase.length - 1; j >= 0; j--) {
+              const user = await firestore()
+                .collection('user')
+                .doc(usersFirebase[j])
+                .get();
+              users.push(user.data());
+            }
+            const post = await firestore()
+              .collection('post')
+              .doc(data.postId)
               .get();
-            users.push(user.data());
+            res.push({id: noti.docs[i].id, ...data, users, post: post.data()});
           }
-          const post = await firestore()
-            .collection('post')
-            .doc(data.postId)
-            .get();
-          res.push({id: noti.docs[i].id, ...data, users, post: post.data()});
+          dispatch({type: GET_NOTIFICATIONS_SUCCESS, payload: res});
         }
-        dispatch({type: GET_NOTIFICATIONS_SUCCESS, payload: res});
       });
   }, []);
 
@@ -274,21 +279,23 @@ export default function AppNavigator() {
             .collection('room-chat')
             .doc(item)
             .onSnapshot(res => {
-              console.log(item, 'sss', res);
-              let data = res.data();
-              if (data && data.messages?.length > 0) {
-                let users = [];
-                Promise.all([data.users[0].get(), data.users[1].get()]).then(
-                  ([res1, res2]) => {
-                    users.push({id: res1.id, ...res1.data()});
-                    users.push({id: res2.id, ...res2.data()});
-                    console.log({[item]: {...res.data(), users}}, 'mess');
-                    dispatch({
-                      type: GET_CONVERSATION_SUCCESS,
-                      payload: {[item]: {...res.data(), users}},
-                    });
-                  },
-                );
+              if (auth()?.currentUser?.uid) {
+                console.log(item, 'sss', res);
+                let data = res.data();
+                if (data && data.messages?.length > 0) {
+                  let users = [];
+                  Promise.all([data.users[0].get(), data.users[1].get()]).then(
+                    ([res1, res2]) => {
+                      users.push({id: res1.id, ...res1.data()});
+                      users.push({id: res2.id, ...res2.data()});
+                      console.log({[item]: {...res.data(), users}}, 'mess');
+                      dispatch({
+                        type: GET_CONVERSATION_SUCCESS,
+                        payload: {[item]: {...res.data(), users}},
+                      });
+                    },
+                  );
+                }
               }
             });
         });

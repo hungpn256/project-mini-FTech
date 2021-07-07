@@ -20,9 +20,10 @@ const Home = () => {
   const navigation = useNavigation();
   const postData = useSelector(state => state.home.post);
   const conversation = useSelector(state => state.chat.conversation);
+  const userId = useSelector(state => state.auth.user.id);
   let unread = 0;
   for (let i in conversation) {
-    if (conversation[i].unread.indexOf(auth().currentUser.uid) !== -1) {
+    if (conversation[i].unread.indexOf(userId) !== -1) {
       unread++;
     }
   }
@@ -48,6 +49,7 @@ const Home = () => {
           name: remoteMessage.data.messenger.name,
         });
       } else {
+        console.log(remoteMessage, 'naaa');
         navigation.navigate(remoteMessage.data.navigate);
       }
     });
@@ -59,16 +61,17 @@ const Home = () => {
             'Notification caused app to open from quit state:',
             remoteMessage,
           );
-          if (remoteMessage.data.article) {
+          if (remoteMessage?.data?.article) {
             navigation.navigate('PostDetail', {
               postid: remoteMessage.data.article,
             });
-          } else if (remoteMessage.data.messenger) {
+          } else if (remoteMessage?.data?.messenger) {
             navigation.navigate('Messenger', {
               roomId: remoteMessage.data.messenger,
               name: remoteMessage.data.name,
             });
           } else {
+            console.log(remoteMessage, 'naaa');
             navigation.navigate(remoteMessage.data.navigate);
           }
         }
