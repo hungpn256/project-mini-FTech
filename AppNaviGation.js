@@ -18,12 +18,15 @@ import ModalComponent from './src/Screens/Modal';
 import ModalCreatePost from './src/Screens/ModalCreatePost';
 import {ALL_POST} from '@Screens/Home/constants';
 import ModalPostConfig from './src/Screens/ModalPostConfig';
+import SQLite from 'react-native-sqlite-storage';
+
+SQLite.enablePromise(true);
 export default function AppNavigator() {
   const userData = useSelector(state => state.auth.user);
   const post = useSelector(state => state.home.post);
   const dispatch = useDispatch();
   const load = useSelector(state => state.auth.splashScreen);
-
+  const [loadDb, setLoadDb] = useState(false);
   const saveId = async uid => {
     const token = await messaging().getToken();
     console.log(token + 'TOKEN');
