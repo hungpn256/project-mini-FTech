@@ -50,42 +50,6 @@ export default function AppNavigator() {
       }
     };
     check();
-    const db = SQLite.openDatabase(
-      {name: 'FTechProject', location: 'default'},
-      () => {
-        setLoadDb(true);
-        console.log('connected sqlite');
-      },
-      e => {
-        setLoadDb(false);
-        console.log('connect sqlite error', e);
-      },
-    );
-    if (loadDb) {
-      db.transaction(tx => {
-        tx.executeSql(
-          " INSERT INTO User (id,avatar,background,gender,email,name,money,phoneNumber,dateOfBirth) VALUES ('" +
-            userData.id +
-            "','" +
-            userData.avatar +
-            "','" +
-            userData.background +
-            "'," +
-            userData.gender +
-            ",'" +
-            userData.email +
-            "','" +
-            userData.name +
-            "'," +
-            userData.money +
-            ',' +
-            userData.phoneNumber +
-            ",'" +
-            userData.dateOfBirth +
-            "',) ",
-        );
-      });
-    }
     // dispatch({type: LOGOUT});
   }, []);
   const [isOffline, setOfflineStatus] = useState(false);
