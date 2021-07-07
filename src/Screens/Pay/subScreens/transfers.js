@@ -14,10 +14,6 @@ import avatarImg from '../../../../assets/Img/avatar.jpg';
 import User from './Modal';
 import {OPEN_MODAL_USER} from '../constaints';
 import auth, {firebase} from '@react-native-firebase/auth';
-<<<<<<< HEAD
-
-=======
->>>>>>> 5373a4309b80eb920237592c8a59601e57126a15
 const handleMoney = (surplus, inputNumber) => {
   if (surplus >= inputNumber) {
     dispatch({type: WITHDRAW_MONEY, payload: inputNumber});
