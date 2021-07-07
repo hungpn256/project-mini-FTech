@@ -1,9 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Image, ImageBackground, ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import BG from '../../../assets/Img/BG.jpg';
-import Logo from '../../../assets/Img/logo.png';
 import Decor from '../../Components/Decor/index';
 import Loading from '../../Components/Loading';
 import TextInput from '../../Components/TextInput/index';

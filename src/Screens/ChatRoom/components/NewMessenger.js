@@ -19,7 +19,7 @@ import {createConversation} from '../service';
 import SearchBar from './SearchBar';
 import Loading from '@Components/Loading';
 import firestore from '@react-native-firebase/firestore';
-
+import auth from '@react-native-firebase/auth';
 const NewMessenger = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -92,7 +92,9 @@ const NewMessenger = () => {
             <List.Section style={styles.result}>
               <List.Subheader>Result:</List.Subheader>
               <FlatList
-                data={userSearch}
+                data={userSearch.filter(
+                  item => item.id !== auth().currentUser.uid,
+                )}
                 renderItem={({item}) => (
                   <List.Item
                     style={styles.user}

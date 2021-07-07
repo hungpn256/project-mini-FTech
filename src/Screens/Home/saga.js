@@ -122,9 +122,9 @@ function* handleUpdatePost({payload}) {
   } catch (error) {
     console.log(error);
   } finally {
-    yield put({type: POST_LOADING, payload: {loading: false}});
     yield put({type: CLEAR_UPDATE_TEXT});
     yield put({type: CLOSE_UPDATE_IMG});
+    yield put({type: POST_LOADING, payload: {loading: false}});
     yield put({type: CLOSE_MODAL_POST});
   }
 }

@@ -4,19 +4,18 @@ const initialState = {
   splashScreen: true,
   user: null,
 };
-import {CREATE_CONVERSATION_SUCCESS} from '../ChatRoom/constants';
 import {
   RECHARGE_MONEY_SUCCESS,
   WITHDRAW_MONEY_SUCCESS,
 } from '../Pay/constaints';
 import {
   AUTH_CHANGE_STATE,
-  LOGIN_SUCCESS,
-  USER_STATUS,
-  USER_INFO,
-  USER_CLEAR,
-  SPLASH,
   GET_USER_SUCCESS,
+  LOGIN_SUCCESS,
+  SPLASH,
+  USER_CLEAR,
+  USER_INFO,
+  USER_STATUS,
 } from './constants';
 const reducer = (state = initialState, action) => {
   switch (action.type) {
