@@ -2,7 +2,11 @@ import {Dimensions, StyleSheet} from 'react-native';
 const widthWindow = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   card: {
-    paddingVertical: 3,
+    backgroundColor: '#fff',
+    paddingHorizontal: 8,
+  },
+  item: {
+    width: widthWindow,
   },
   name: {
     fontSize: 18,
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
   friendWrapper: {
     backgroundColor: '#fff',
     minWidth: widthWindow,
+    marginTop: 5,
   },
   titleStyle: {
     width: '100%',

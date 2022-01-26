@@ -15,24 +15,29 @@ import {LOGOUT} from '../Auth/constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {avatarDefault} from '../../index_Constant';
+import {avatarDefault, backgroundDefault} from '../../index_Constant';
 import styles from './styles';
+import Loading from '../../Components/Loading';
 
 export default function Menu({navigation}) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const loading = useSelector(state => state.auth.loading);
   const handleLogout = () => {
     dispatch({
       type: LOGOUT,
     });
   };
+  if (loading) {
+    return <Loading loading={loading} />;
+  }
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.wrapperBackground}>
           <ImageBackground
             source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/mini-project-a64a1.appspot.com/o/seamless-gold-rhombus-grid-pattern-black-background_53876-97589.jpg?alt=media&token=d6de4415-db4e-4b00-a67a-8c8c4045e399',
+              uri: backgroundDefault,
             }}
             style={styles.background}
           />

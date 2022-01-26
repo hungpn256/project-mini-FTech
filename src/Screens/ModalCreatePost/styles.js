@@ -33,6 +33,9 @@ export const styles = StyleSheet.create({
   },
   img: {
     resizeMode: 'contain',
+    flex: 1,
+    width: 300,
+    height: 300,
   },
 
   imgWrapper: {

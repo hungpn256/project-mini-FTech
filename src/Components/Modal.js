@@ -1,29 +1,24 @@
 import FButton from '@Components/TouchOpacity/index.js';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Modal,
+  PermissionsAndroid,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
-  PermissionsAndroid,
-  ActivityIndicator,
 } from 'react-native';
-import {Avatar, Button, Card, Divider} from 'react-native-paper';
-import InputEncloseAvatar from './InputEncloseAvatar';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
-import ModalPost from './ModalPost';
+import {useDispatch, useSelector} from 'react-redux';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import {CREATE_POST} from '../Screens/Home/constants';
-import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
-import avatarImg from '../../assets/Img/avatar.png';
 import CameraGroup from './CameraGroup';
-import {set} from 'lodash';
-import auth, {firebase} from '@react-native-firebase/auth';
 export default function Post({type, src, closeModal, closeImg}) {
   const [image, setImage] = useState(src);
   const [text, setText] = useState('');
@@ -47,8 +42,8 @@ export default function Post({type, src, closeModal, closeImg}) {
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
-        setImage(props);
+      if (props.assets && props.assets[0].type?.match('image')) {
+        setImage(props.assets[0]);
       }
     });
   };
@@ -68,8 +63,8 @@ export default function Post({type, src, closeModal, closeImg}) {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         launchCamera({mediaType: 'photo'}, props => {
-          if (props.type === 'image/jpeg') {
-            setImage(props);
+          if (props.assets && props.assets[0].type?.match('image')) {
+            setImage(props.assets[0]);
           }
         });
       } else {

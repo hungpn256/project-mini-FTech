@@ -13,17 +13,19 @@ const styles = StyleSheet.create({
   },
   wrapperCover: {
     width: '100%',
-    height: 250,
+    height: 240,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 2,
   },
   cover: {
     width: '100%',
-    height: 250,
+    height: 240,
   },
   wrapperAvatar: {
     position: 'absolute',
     borderRadius: 999,
-    borderColor: '#fff',
-    borderWidth: 5,
+    borderColor: '#EEEEEE',
+    borderWidth: 4,
     left: '50%',
     bottom: 0,
     transform: [{translateX: -90}],
@@ -34,6 +36,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   name: {
+    fontFamily: 'SourceSansPro-SemiBoldItalic',
     color: '#000',
     fontSize: 30,
     fontWeight: 'bold',
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 16,
+    marginTop: 8,
   },
   photosItem: {
     width: windowWidth / 3 - 2,
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   viewContent: {
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#eeeeee',
   },
   btnGroup: {
     flexDirection: 'row',
@@ -142,14 +145,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  formItem: {
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginTop: 16,
-    fontWeight: '700',
-  },
   input: {
     borderBottomWidth: 1,
     marginHorizontal: 10,
@@ -159,17 +154,13 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.7)',
   },
   textDate: {
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 4,
-    width: 50,
-    height: 30,
-    textAlign: 'center',
+    width: '100%',
     textAlignVertical: 'center',
-    paddingHorizontal: 5,
-    fontSize: 16,
+    paddingHorizontal: 15,
+    paddingTop: 8,
+    fontSize: 15,
     marginHorizontal: 2,
-    color: 'rgba(0,0,0,0.7)',
+    color: '#000',
   },
   textDone: {
     color: '#1777F2',
@@ -183,10 +174,6 @@ const styles = StyleSheet.create({
     top: 10,
     padding: 10,
     zIndex: 999,
-  },
-  picker: {
-    marginBottom: -16,
-    marginTop: -5,
   },
 });
 export default styles;

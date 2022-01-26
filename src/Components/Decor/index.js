@@ -22,15 +22,15 @@ const style = StyleSheet.create({
   text: {
     fontSize: 16,
     margin: 5,
-    color: 'white',
+    color: '#696969',
   },
   left: {
-    backgroundColor: 'white',
+    backgroundColor: '#696969',
     height: 1,
     width: 130,
   },
   right: {
-    backgroundColor: 'white',
+    backgroundColor: '#696969',
     height: 1,
     width: 130,
   },

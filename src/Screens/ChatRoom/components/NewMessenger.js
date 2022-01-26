@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Modal,
@@ -14,17 +14,21 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {commonRoom} from '../../../Helper/function';
 import {avatarDefault} from '../../../index_Constant';
-import {GET_USER_BY_NAME} from '../constants';
+import {CREATE_CONVERSATION_SUCCESS, GET_USER_BY_NAME} from '../constants';
 import {createConversation} from '../service';
 import SearchBar from './SearchBar';
-
+import Loading from '@Components/Loading';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 const NewMessenger = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.auth.user);
   const [visibleModal, setVisibleModal] = useState(false);
   const userSearch = useSelector(state => state.chat.userSearch);
   const dispatch = useDispatch();
   const [txtSearch, setTxtSearch] = useState('');
+  const ref = useRef(null);
   useEffect(() => {
     dispatch({
       type: GET_USER_BY_NAME,
@@ -32,14 +36,18 @@ const NewMessenger = () => {
     });
   }, [txtSearch]);
   useEffect(() => {
-    if (!visibleModal)
+    if (!visibleModal) {
       dispatch({
         type: GET_USER_BY_NAME,
         payload: '',
       });
+    } else {
+      ref.current.focus();
+    }
   }, [visibleModal]);
   return (
     <View>
+      <Loading loading={loading} />
       <TouchableOpacity
         style={styles.headerRight}
         onPress={() => {
@@ -66,7 +74,11 @@ const NewMessenger = () => {
                 alignItems: 'center',
               }}>
               <View style={{flex: 1}}>
-                <SearchBar txtSearch={txtSearch} setTxtSearch={setTxtSearch} />
+                <SearchBar
+                  txtSearch={txtSearch}
+                  setTxtSearch={setTxtSearch}
+                  reff={ref}
+                />
               </View>
               <TouchableOpacity onPress={() => setVisibleModal(false)}>
                 <AntDesign
@@ -80,7 +92,9 @@ const NewMessenger = () => {
             <List.Section style={styles.result}>
               <List.Subheader>Result:</List.Subheader>
               <FlatList
-                data={userSearch}
+                data={userSearch.filter(
+                  item => item.id !== auth().currentUser.uid,
+                )}
                 renderItem={({item}) => (
                   <List.Item
                     style={styles.user}
@@ -90,11 +104,25 @@ const NewMessenger = () => {
                       setVisibleModal(false);
                       let room = commonRoom(item, user);
                       if (room.length === 0) {
+                        setLoading(true);
                         const res = await createConversation([
                           user.id,
                           item.id,
                         ]);
+                        dispatch({
+                          type: CREATE_CONVERSATION_SUCCESS,
+                          payload: {
+                            [res.id]: {
+                              users: [user, item],
+                              isTyping: false,
+                              messages: [],
+                              unread: [],
+                              updatedAt: firestore.FieldValue.serverTimestamp(),
+                            },
+                          },
+                        });
                         room.push(res.id);
+                        setLoading(false);
                       }
                       navigation.navigate('Messenger', {
                         roomId: room[0],
@@ -131,6 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: '#fff',
     height: '100%',
+    width: '100%',
     borderRadius: 10,
     paddingTop: 20,
   },

@@ -11,12 +11,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {DimensionContext} from '*/Navigator/MainStack/game';
 import cuoc from '*/Assets/cuoc.png';
 import flagImage from '*/Assets/flag.png';
 import Box from './components/box';
 import CountTime from './components/CountTime';
+import {RECHARGE_MONEY} from '../../Pay/constaints';
 
 const matrixInit = dimension => {
   let mt = [];
@@ -60,7 +61,7 @@ const MainGame = () => {
   const [boxOpenedNumber, setBoxOpenedNumber] = useState(0);
   const [flag, setFlag] = useState(false);
   const [isWin, setIsWin] = useState(0);
-
+  const dispatch = useDispatch();
   function openBox(arrayOpen, x, y, dimensionsMatrix, arrayValue) {
     if (arrayOpen[x][y] === 0) {
       arrayOpen[x][y] = 1;
@@ -84,6 +85,9 @@ const MainGame = () => {
   }
   useEffect(() => {
     playAgain();
+    return () => {
+      setPositionRecentlyClick({x: 0, y: 0});
+    };
   }, [dimension]);
 
   useEffect(() => {
@@ -99,6 +103,7 @@ const MainGame = () => {
   useEffect(() => {
     if (boxOpenedNumber >= dimension * dimension - AmountBoom(dimension)) {
       setIsWin(1);
+      dispatch({type: RECHARGE_MONEY, payload: 100});
     }
   }, [boxOpenedNumber]);
 
@@ -174,7 +179,6 @@ const MainGame = () => {
         </View>
       ) : (
         <View>
-          <CountTime isWin={isWin} />
           <View style={styles(dimension).mainGame}>
             {matrix.map((item, index) => {
               return item.map((subItem, subIndex) => {

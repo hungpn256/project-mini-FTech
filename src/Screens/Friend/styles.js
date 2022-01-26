@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     marginLeft: 12,
-    marginTop: 4,
   },
   action: {
     flexDirection: 'row',
@@ -41,6 +40,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     padding: 10,
+  },
+  wrapperTab: {
+    flexDirection: 'row',
+  },
+  tabBtn: {},
+  tabTxt: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    backgroundColor: '#dde',
+    margin: 5,
+    marginBottom: 0,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });
 export default styles;

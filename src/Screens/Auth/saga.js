@@ -8,7 +8,6 @@ function* handleLoginSaga({payload}) {
   try {
     const res = yield call(login, payload);
     yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
-    yield delay(200);
   } catch (err) {
     console.log(err);
   } finally {
@@ -28,11 +27,14 @@ function* handleLoginSaga({payload}) {
 
 // log out
 function* handleLogoutSaga() {
+  yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: true}});
   try {
     yield call(logout);
     yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: false}});
   } catch (err) {
     console.log(err);
+  } finally {
+    yield put({type: AUTH_CONST.AUTH_CHANGE_STATE, payload: {loading: false}});
   }
 }
 
@@ -41,7 +43,6 @@ function* handleRegisterSaga({payload}) {
   try {
     const res = yield call(register, payload);
     yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
-    yield delay(200);
   } catch (err) {
     console.log(err);
   } finally {
@@ -54,9 +55,8 @@ function* handleGoogle() {
   try {
     const res = yield call(loginGoogle);
     if (res) {
-      yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: true}});
+      yield put({type: AUTH_CONST.LOGIN_SUCCESS, payload: {status: res}});
     }
-    yield delay(200);
   } catch (err) {
     console.log(err);
   } finally {

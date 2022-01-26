@@ -30,6 +30,24 @@ const getCmt = async id => {
   return cmt.data();
 };
 
+export const dataUser = async () => {
+  const user = await firestore()
+    .collection('user')
+    .doc(auth().currentUser.uid)
+    .get();
+  return user.data();
+};
+
+export const postReceived = async ({postId}) => {
+  console.log(postId + 'postIDDd');
+  const userPost = await firestore().collection('post').doc(postId).get();
+  const userData = await firestore()
+    .collection('user')
+    .doc(userPost.data().userId)
+    .get();
+  return userData.data();
+};
+
 export const createCmt = async ({text, uid, postId, imageCmt}) => {
   const img = imageCmt ? await uploadImg(imageCmt) : '';
   try {
@@ -41,8 +59,8 @@ export const createCmt = async ({text, uid, postId, imageCmt}) => {
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     const cmtId = cmt.id;
-    const cmtData = getCmt(cmtId);
-    return {id: cmtId, ...cmtData};
+    const cmtData = await cmt.get();
+    return {id: cmtId, ...cmtData.data()};
   } catch (error) {
     console.log(error);
     return false;
@@ -87,15 +105,49 @@ export const getAll = async () => {
   }
 };
 
+const getAllAfterDel = async () => {
+  const data = [];
+  try {
+    const post = await firestore()
+      .collection('post')
+      .orderBy('createAt', 'desc')
+      .get();
+    post.forEach(documentSnapshot => {
+      data.push({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data(),
+      });
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePost = async ({postId, content}) => {
+  await firestore().collection('post').doc(postId).update({
+    content: content,
+  });
+};
+
 export const deletePost = async ({postId}) => {
   await firestore().collection('post').doc(postId).delete();
   const cmt = await firestore()
-    .collection('comment')
+    .collection('comments')
     .where('postId', '==', postId)
     .get();
-  if (cmt.size !== 0) {
+  if (cmt.size > 0) {
     cmt.forEach(documentSnapshot => {
       documentSnapshot.ref.delete();
+    });
+  }
+  const noti = await firestore()
+    .collection('notification')
+    .where('postId', '==', postId)
+    .get();
+  if (noti.size > 0) {
+    noti.forEach(snap => {
+      snap.ref.delete();
     });
   }
 };
@@ -105,18 +157,18 @@ export const uploadPost = async ({text, image}) => {
   const likes = [];
   const id = auth().currentUser.uid;
   try {
-    const data = await firestore().collection('post').add({
+    await firestore().collection('post').add({
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
       content: text,
       imageUrl: img,
       like: likes,
       userId: id,
     });
-    const postDataId = data.id;
-    const post = getPost(postDataId);
-    return {id: postDataId, ...post};
+    // const postDataId = data.id;
+    // const post = getPost(postDataId);
+    // return {id: postDataId, ...post};
   } catch (error) {
     console.log(error);
-    return false;
+    // return false;
   }
 };

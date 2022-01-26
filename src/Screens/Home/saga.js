@@ -20,6 +20,9 @@ import {
   GET_ALL_CMT,
   DELETE_POST,
   CONFIRM_DELETE_POST,
+  CONFIRM_UPDATE_POST,
+  UPDATE_POST,
+  HOME_CHANGE_STATE,
 } from './constants';
 import {CLOSE_MODAL_POST} from '../ModalCreatePost/contants';
 import {
@@ -29,7 +32,16 @@ import {
   createCmt,
   getAllCmt,
   deletePost,
+  updatePost,
+  dataUser,
+  postReceived,
 } from './service';
+import {
+  CLEAR_UPDATE_TEXT,
+  CLOSE_CONFIRM,
+  CLOSE_UPDATE_IMG,
+} from '../ModalPostConfig/contants';
+import {addNoti, notiMes} from '../Notification/service';
 
 function* handleCreatePost({payload}) {
   yield put({type: POST_LOADING, payload: {loading: true}});
@@ -57,7 +69,26 @@ function* handleGetPost() {
 function* handleCmt({payload}) {
   try {
     const res = yield call(createCmt, payload);
+    const userCmt = yield call(dataUser);
+    const received = yield call(postReceived, {postId: payload.postId});
+    console.log(received + 'receiveddd');
     yield put({type: CREATE_CMT, payload: {newCmt: res}});
+    yield call(addNoti, {postId: payload.postId, type: 0});
+    if (received.token && received.token.length > 0) {
+      yield call(notiMes, {
+        title: `${userCmt.name} đã bình luận vào bài viết của bạn`,
+        body:
+          res.content?.length > 0
+            ? res.content
+            : `${userCmt.name} đã bình luận một hình ảnh`,
+        token: received.token,
+        image: res?.image ?? null,
+        data: {
+          article: payload.postId,
+        },
+      });
+    }
+    console.log(res, 'ré cmt');
   } catch (error) {
     console.log(error);
   }
@@ -72,6 +103,7 @@ function* handleAllCmt() {
   }
 }
 function* handleDeletePost({payload}) {
+  yield put({type: POST_LOADING, payload: {loading: true}});
   try {
     yield call(deletePost, payload);
     yield put({type: CONFIRM_DELETE_POST});
@@ -79,14 +111,23 @@ function* handleDeletePost({payload}) {
     console.log(error);
   } finally {
     yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_CONFIRM});
   }
 }
-// function* handleGetMore() {
-//   try {
-//     const res = yield call(getMore);
-//     yield put({type: MORE_POST, payload: {more: res}});
-//   } catch (error) {}
-// }
+function* handleUpdatePost({payload}) {
+  yield put({type: POST_LOADING, payload: {loading: true}});
+  try {
+    yield call(updatePost, payload);
+    yield put({type: CONFIRM_UPDATE_POST});
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put({type: CLEAR_UPDATE_TEXT});
+    yield put({type: CLOSE_UPDATE_IMG});
+    yield put({type: POST_LOADING, payload: {loading: false}});
+    yield put({type: CLOSE_MODAL_POST});
+  }
+}
 function* watchPostSaga() {
   yield takeLatest(CREATE_POST, handleCreatePost);
   yield takeLatest(GET_POST, handleGetPost);
@@ -94,5 +135,6 @@ function* watchPostSaga() {
   yield takeLatest(CMT, handleCmt);
   yield takeLatest(GET_CMT, handleAllCmt);
   yield takeLatest(DELETE_POST, handleDeletePost);
+  yield takeLatest(UPDATE_POST, handleUpdatePost);
 }
 export default watchPostSaga;

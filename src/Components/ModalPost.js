@@ -1,17 +1,8 @@
 import React, {useState} from 'react';
-import {
-  TextInput,
-  View,
-  StyleSheet,
-  Text,
-  ActivityIndicator,
-  Pressable,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {Avatar} from 'react-native-paper';
-import {useSelector, useDispatch} from 'react-redux';
-import Post from './Modal';
-import avatarImg from '../../assets/Img/avatar.png';
-import Modal from '@Screens/ModalCreatePost';
+import {useDispatch, useSelector} from 'react-redux';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import {MODAL_CREATE_POST} from '../Screens/ModalCreatePost/contants';
 export default function ModalPost() {
   const [modal, setModal] = useState(false);
@@ -27,14 +18,18 @@ export default function ModalPost() {
   return (
     <View style={styles.inputWrapper}>
       {userData.avatar ? (
-        <Avatar.Image
-          size={40}
-          source={{
-            uri: userData.avatar,
-          }}
-        />
+        <View style={styles.avatar}>
+          <Avatar.Image
+            size={40}
+            source={{
+              uri: userData.avatar,
+            }}
+          />
+        </View>
       ) : (
-        <Avatar.Image size={40} source={avatarImg} />
+        <View style={styles.avatar}>
+          <Avatar.Image size={40} source={avatarImg} />
+        </View>
       )}
       <Pressable
         style={{flex: 1}}
@@ -50,6 +45,11 @@ export default function ModalPost() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
   },
   text: {
     fontSize: 14,

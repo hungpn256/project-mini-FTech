@@ -4,14 +4,18 @@ const initialState = {
   splashScreen: true,
   user: null,
 };
-import {CREATE_CONVERSATION_SUCCESS} from '../ChatRoom/constants';
+import {
+  RECHARGE_MONEY_SUCCESS,
+  WITHDRAW_MONEY_SUCCESS,
+} from '../Pay/constaints';
 import {
   AUTH_CHANGE_STATE,
+  GET_USER_SUCCESS,
   LOGIN_SUCCESS,
-  USER_STATUS,
-  USER_INFO,
-  USER_CLEAR,
   SPLASH,
+  USER_CLEAR,
+  USER_INFO,
+  USER_STATUS,
 } from './constants';
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -32,15 +36,36 @@ const reducer = (state = initialState, action) => {
         isLogged: action.payload.status,
       };
     }
-    case CREATE_CONVERSATION_SUCCESS: {
-      let newUser = {...state.user};
-      newUser.roomChatList = [...newUser.roomChatList, action.payload.id];
-      return {...state, user: newUser};
-    }
+    // case CREATE_CONVERSATION_SUCCESS: {
+    //   let newUser = {...state.user};
+    //   newUser.roomChatList = [...newUser.roomChatList, action.payload.id];
+    //   return {...state, user: newUser};
+    // }
     case LOGIN_SUCCESS:
       return {
         ...state,
         user: action.payload.status,
+      };
+    case RECHARGE_MONEY_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          money: parseInt(state.user.money) + action.payload,
+        },
+      };
+    case WITHDRAW_MONEY_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          money: parseInt(state.user.money) - action.payload,
+        },
+      };
+    case GET_USER_SUCCESS:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

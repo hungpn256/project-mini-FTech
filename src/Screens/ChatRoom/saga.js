@@ -16,6 +16,7 @@ import {
   CREATE_CONVERSATION_SUCCESS,
   SEND_MESSAGE,
   MARK_READ,
+  SEND_MESSAGE_SUCCESS,
 } from './constants';
 import {
   createConversation,
@@ -26,6 +27,7 @@ import {
   markRead,
 } from './service';
 import auth from '@react-native-firebase/auth';
+import {notiMes} from '../Notification/service';
 
 function* getUserByNameSaga({payload}) {
   try {
@@ -46,14 +48,14 @@ function* getConversationSaga({payload}) {
   }
 }
 
-function* createConversationSaga({payload}) {
-  try {
-    const res = yield call(createConversation, payload);
-    yield put({type: CREATE_CONVERSATION_SUCCESS, payload: res});
-  } catch (e) {
-    console.log(e, 'room-create-fail');
-  }
-}
+// function* createConversationSaga({payload}) {
+//   try {
+//     const res = yield call(createConversation, payload);
+// yield put({type: CREATE_CONVERSATION_SUCCESS, payload: res});
+//   } catch (e) {
+//     console.log(e, 'room-create-fail');
+//   }
+// }
 
 function* sendMesSaga({payload}) {
   try {
@@ -61,13 +63,30 @@ function* sendMesSaga({payload}) {
       const url = yield call(uploadImg, payload.messages[0].image);
       payload.messages[0].image = url;
     }
-    const res = yield call(sendMes, payload);
+    yield put({type: SEND_MESSAGE_SUCCESS, payload});
+    yield call(sendMes, payload);
     const user = yield select(
       state => state.chat.conversation[payload.roomId].users,
     );
+    const me = yield select(state => state.auth.user);
     const oUser = user.find(user => user.id !== auth().currentUser.uid);
-    console.log(oUser, 'o');
     yield call(markUnread, {roomId: payload.roomId, uid: oUser.id});
+    if (oUser.token && oUser.token.length > 0) {
+      yield call(notiMes, {
+        title: `${me.name} đã gửi tin nhắn cho bạn`,
+        body: payload.messages[0].image
+          ? 'bạn đã nhận được 1 hình ảnh'
+          : payload.messages[0].text,
+        token: oUser.token,
+        image: payload.messages[0]?.image ?? null,
+        data: {
+          messenger: payload.roomId,
+          name: me.name,
+        },
+      });
+      console.log('success send noti');
+    }
+    console.log('send done');
   } catch (e) {
     console.log('err send mes', e);
   }
@@ -84,7 +103,7 @@ function* markReadSaga({payload}) {
 function* watchChatSaga() {
   yield takeLatest(GET_USER_BY_NAME, getUserByNameSaga);
   yield takeLatest(GET_CONVERSATION, getConversationSaga);
-  yield takeLatest(CREATE_CONVERSATION, createConversationSaga);
+  // yield takeLatest(CREATE_CONVERSATION, createConversationSaga);
   yield takeEvery(SEND_MESSAGE, sendMesSaga);
   yield takeEvery(MARK_READ, markReadSaga);
 }

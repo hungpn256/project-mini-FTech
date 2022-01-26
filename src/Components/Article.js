@@ -1,32 +1,38 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {StyleSheet, TextInput, Image, Dimensions} from 'react-native';
-import {Avatar, Card, Paragraph, Title, Button} from 'react-native-paper';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useSelector, useDispatch} from 'react-redux';
-import ThreeDot from 'react-native-vector-icons/Entypo';
-import InputEncloseAvatar from './InputEncloseAvatar';
-import avatarImg from '../../assets/Img/avatar.png';
-import {Text} from 'react-native';
-import {View} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Pressable} from 'react-native';
-import auth, {firebase} from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
+import {useNavigation} from '@react-navigation/native';
 import {CMT} from '@Screens/Home/constants';
 import moment from 'moment';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  Animated,
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Avatar, Card, Paragraph} from 'react-native-paper';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import ThreeDot from 'react-native-vector-icons/Entypo';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import avatarImg from '../../assets/Img/avatar.jpg';
+import {addNoti, notiMes} from '../Screens/Notification/service';
 import {OPEN_POST_CONFIG} from '../Screens/ModalPostConfig/contants';
+import {OPEN_LIKE_MODAL} from '../Screens/ModalLike/constants';
+import InputEncloseAvatar from './InputEncloseAvatar';
 const LeftContent = (img, navi) => (
   <>
     {img ? (
-      <Pressable onPress={navi}>
+      <Pressable style={styles.avatar} onPress={navi}>
         <Avatar.Image source={{uri: img}} size={40} />
       </Pressable>
     ) : (
-      <Pressable onPress={navi}>
+      <Pressable style={styles.avatar} onPress={navi}>
         <Avatar.Image source={avatarImg} size={40} />
       </Pressable>
     )}
@@ -40,13 +46,38 @@ const Article = ({text, image, time, uid, postid}) => {
   const [cmt, setCmt] = useState('');
   const [imgCmt, setImgCmt] = useState('');
   const currentUser = auth().currentUser.uid;
+  const curUser = useSelector(state => state.auth.user);
   const [content, setContent] = useState('');
   const [userCmt, setUserCmt] = useState('');
   const navigate = useNavigation();
   const [user, setUser] = useState('');
   const [size, setSize] = useState('');
   const [total, setTotal] = useState(0);
-
+  const animatedLike = useRef(new Animated.Value(1)).current;
+  const likeout = useCallback(() => {
+    Animated.timing(animatedLike, {
+      toValue: 1.3,
+      duration: 200,
+    }).start(({finished}) => {
+      if (finished) {
+        likein();
+      }
+    });
+  }, []);
+  const likein = useCallback(() => {
+    Animated.timing(animatedLike, {
+      toValue: 1,
+      duration: 200,
+    }).start();
+  }, []);
+  const payload = {
+    title: 'Bài viết của bạn đã có lượt thích mới',
+    body: `${curUser.name} đã thích bài viết của bạn`,
+    token: user.token,
+    data: {
+      article: postid,
+    },
+  };
   useEffect(() => {
     const userInfo = async () => {
       if (uid) {
@@ -56,6 +87,7 @@ const Article = ({text, image, time, uid, postid}) => {
     };
     userInfo();
   });
+
   useEffect(() => {
     const post = async () => {
       if (postid) {
@@ -70,12 +102,12 @@ const Article = ({text, image, time, uid, postid}) => {
       }
     };
 
-    const likeupdate = firestore()
+    firestore()
       .collection('post')
       .onSnapshot(() => {
         post();
       });
-    return likeupdate;
+    // post();
   }, []);
 
   useEffect(() => {
@@ -111,19 +143,23 @@ const Article = ({text, image, time, uid, postid}) => {
     //   .onSnapshot(() => {
     //     post();
     //   });
-    const newLastCmt = firestore()
+    firestore()
       .collection('comments')
       .onSnapshot(() => {
         lastCmt();
         cmtSize();
       });
-    return newLastCmt;
   }, []);
   const gallery = () => {
     console.log('image');
     launchImageLibrary({mediaType: 'photo'}, props => {
-      if (props.type === 'image/jpeg') {
-        setImgCmt(props);
+      if (
+        props.assets &&
+        (props.assets[0].type === 'image/jpeg' ||
+          props.assets[0].type === 'image/png' ||
+          props.assets[0].type === 'image/jpg')
+      ) {
+        setImgCmt(props.assets[0]);
       }
     });
   };
@@ -131,10 +167,17 @@ const Article = ({text, image, time, uid, postid}) => {
   const handleCmt = async () => {
     dispatch({
       type: CMT,
-      payload: {text: cmt, uid: currentUser, postId: postid, imageCmt: imgCmt},
+      payload: {
+        text: cmt,
+        uid: currentUser,
+        curName: curUser.name,
+        postId: postid,
+        imageCmt: imgCmt,
+      },
     });
     setCmt('');
     setImgCmt('');
+    setUserCmt('');
   };
 
   const handleLike = () => {
@@ -147,23 +190,36 @@ const Article = ({text, image, time, uid, postid}) => {
       setLike(true);
       setTotal(prev => prev + 1);
       likes.update({like: firestore.FieldValue.arrayUnion(currentUser)});
+      addNoti({
+        postId: postid,
+        type: 1,
+      });
+      if (user.token && user.token.length > 0) {
+        notiMes(payload);
+      }
     }
   };
-
   const handleNavi = () => {
     if (uid === currentUser) {
       navigate.navigate('Profile', {id: uid});
     } else {
-      navigate.navigate('Profile-o', {id: uid});
+      navigate.navigate('Profile-o', {id: uid, name: user.name});
     }
   };
 
   const handleConfig = () => {
-    dispatch({type: OPEN_POST_CONFIG, payload: {postId: postid}});
+    dispatch({
+      type: OPEN_POST_CONFIG,
+      payload: {postId: postid, content: text, image: image},
+    });
+  };
+
+  const handleLikeModal = () => {
+    dispatch({type: OPEN_LIKE_MODAL, payload: {postId: postid}});
   };
 
   return user ? (
-    <Card mode="outlined" style={styles.container}>
+    <Card style={styles.container}>
       <Card.Title
         titleStyle={{fontSize: 16, fontWeight: '400'}}
         title={user.name}
@@ -187,14 +243,7 @@ const Article = ({text, image, time, uid, postid}) => {
       <Pressable
         onPress={() =>
           navigate.navigate('PostDetail', {
-            text: text,
-            image: image,
-            currentUser: currentUser,
-            avatar: user.avatar,
-            name: user.name,
-            time: time,
             postid: postid,
-            size: size,
           })
         }>
         {text ? (
@@ -207,7 +256,9 @@ const Article = ({text, image, time, uid, postid}) => {
         ) : null}
       </Pressable>
       <View style={styles.infoPost}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Pressable
+          onPress={() => handleLikeModal()}
+          style={{flexDirection: 'row', alignItems: 'center'}}>
           <AntDesignIcon
             style={{
               padding: 4,
@@ -219,19 +270,12 @@ const Article = ({text, image, time, uid, postid}) => {
             size={11}
           />
           <Text style={styles.like}>{total < 0 ? 0 : total} </Text>
-        </View>
+        </Pressable>
 
         <Text
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }
           style={styles.cmts}>
@@ -239,8 +283,16 @@ const Article = ({text, image, time, uid, postid}) => {
         </Text>
       </View>
       <Card.Actions style={styles.cardAction}>
-        <Pressable style={styles.Icon} onPress={handleLike}>
-          <View style={styles.actionBtn}>
+        <Pressable
+          style={styles.Icon}
+          onPress={() => {
+            handleLike();
+            if (!like) {
+              likeout();
+            }
+          }}>
+          <Animated.View
+            style={[styles.actionBtn, {transform: [{scale: animatedLike}]}]}>
             <AntDesignIcon
               color={like ? '#1777F2' : '#696969'}
               name={!like ? 'like2' : 'like1'}
@@ -253,17 +305,21 @@ const Article = ({text, image, time, uid, postid}) => {
               ]}>
               Like
             </Text>
-          </View>
+          </Animated.View>
         </Pressable>
         <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
-            <FontistoIcon color="#696969" name="comment" size={20} />
+            <FontistoIcon color="#696969" name="comment" size={18} />
             <Text style={[styles.actionText, {color: '#696969'}]}>Comment</Text>
           </View>
         </Pressable>
         <Pressable style={styles.Icon} onPress={() => inputRef.current.focus()}>
           <View style={styles.actionBtn}>
-            <SimpleLineIcons name="share" color="#696969" size={20} />
+            <MaterialCommunityIcons
+              name="share-outline"
+              color="#696969"
+              size={20}
+            />
             <Text style={[styles.actionText, {color: '#696969'}]}>Share</Text>
           </View>
         </Pressable>
@@ -285,14 +341,7 @@ const Article = ({text, image, time, uid, postid}) => {
         <Pressable
           onPress={() =>
             navigate.navigate('PostDetail', {
-              text: text,
-              image: image,
-              currentUser: currentUser,
-              avatar: user.avatar,
-              name: user.name,
-              time: time,
               postid: postid,
-              size: size,
             })
           }>
           <View style={styles.cmtWrapper}>
@@ -316,7 +365,9 @@ const Article = ({text, image, time, uid, postid}) => {
               ) : null}
               <Text style={{color: '#696969', fontSize: 12, marginLeft: 5}}>
                 {content.createAt
-                  ? moment(content.createAt?.toDate()).fromNow()
+                  ? moment(
+                      content.createAt?.toDate?.() ?? content.createAt,
+                    ).fromNow()
                   : 'loading'}
               </Text>
             </View>
@@ -326,11 +377,18 @@ const Article = ({text, image, time, uid, postid}) => {
     </Card>
   ) : null;
 };
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     marginVertical: 4,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
+    position: 'absolute',
   },
   cmts: {
     color: '#696969',

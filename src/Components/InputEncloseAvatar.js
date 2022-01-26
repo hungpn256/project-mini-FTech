@@ -10,7 +10,7 @@ import {
 import {Avatar} from 'react-native-paper';
 import {log} from 'react-native-reanimated';
 import {useSelector} from 'react-redux';
-import avatarImg from '../../assets/Img/avatar.png';
+import avatarImg from '../../assets/Img/avatar.jpg';
 import SendIcon from 'react-native-vector-icons/FontAwesome';
 import GalleryIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -31,14 +31,18 @@ export default function InputEncloseAvatar({
     <View style={{flex: 1}}>
       <View style={styles.inputWrapper}>
         {userData.avatar ? (
-          <Avatar.Image
-            size={40}
-            source={{
-              uri: userData.avatar,
-            }}
-          />
+          <View style={styles.avatar}>
+            <Avatar.Image
+              size={40}
+              source={{
+                uri: userData.avatar,
+              }}
+            />
+          </View>
         ) : (
-          <Avatar.Image size={40} source={avatarImg} />
+          <View style={styles.avatar}>
+            <Avatar.Image size={40} source={avatarImg} />
+          </View>
         )}
         <View style={styles.groupCmt}>
           <View style={styles.inputCmt}>
@@ -103,6 +107,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 8,
+  },
+  avatar: {
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    borderRadius: 999,
   },
   icon: {
     position: 'absolute',

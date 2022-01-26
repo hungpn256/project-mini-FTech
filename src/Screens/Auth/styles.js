@@ -9,18 +9,18 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'center',
     minHeight: heightWindow,
+    backgroundColor: '#fff',
   },
   overlay: {
     flex: 1,
     paddingHorizontal: 20,
-    backgroundColor: 'rgba(27,30,35 ,0.7)',
   },
-  LogoSize: {
-    width: 170,
-    height: 170,
+  LogoSize: {backgroundColor: '#1777F2'},
+  LogoText: {
+    fontSize: 50,
   },
   textStyle: {
-    color: 'white',
+    color: '#696969',
     textAlign: 'center',
     fontSize: 16,
     marginTop: 20,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   LogoStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 2,
+    flex: 1,
     marginTop: 40,
     marginBottom: 40,
   },
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textQuote: {
-    color: 'white',
+    color: '#696969',
     fontStyle: 'italic',
     fontSize: 18,
     textAlign: 'center',
