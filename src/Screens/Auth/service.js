@@ -124,7 +124,7 @@ const addUser = async (uid, fullName, avatar = '', phone = '') => {
         background: '',
         friend: friendTmp,
         roomChatList: roomChat,
-        money: money,
+        money: parseInt(money),
         gender: gender,
         dateOfBirth: dob,
         phoneNumber: phoneNumber,
