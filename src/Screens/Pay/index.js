@@ -21,7 +21,7 @@ import {useSelector} from 'react-redux';
 import CarouselComponent from './carousel';
 
 function formatMoney(n, currency = '') {
-  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return currency + n?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 const ImageCarousel = [
@@ -48,7 +48,7 @@ export default function Pay({navigation}) {
           <Text style={styles.textHeader1}>Home</Text>
         </Pressable>
         <Text style={styles.textHeader1}>
-          Số dư : {formatMoney(userMoney.money)} đ
+          Số dư : {userMoney.money ? formatMoney(userMoney.money) + "đ" : "0đ" } 
         </Text>
       </View>
       <ScrollView containerStyle={{flex: 1, paddingBottom: 10}}>

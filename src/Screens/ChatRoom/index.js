@@ -106,7 +106,7 @@ export default function ChatRoom({navigation}) {
                         <Avatar.Image
                           source={{
                             uri:
-                              item.avatar.length > 0
+                              item?.avatar?.length > 0
                                 ? item.avatar
                                 : avatarDefault,
                           }}

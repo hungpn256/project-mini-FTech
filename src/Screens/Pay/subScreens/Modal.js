@@ -27,7 +27,7 @@ export default function User() {
   const dispatch = useDispatch();
 
   function formatMoney(n, currency = '') {
-    return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return currency + n?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 
   function formatNumber(n, currency = '') {
@@ -117,7 +117,7 @@ export default function User() {
           <View style={styles.money}>
             <Text style={{fontSize: 18, fontWeight: 'bold'}}>Money</Text>
             <Text style={{marginLeft: 5, color: '#696969'}}>
-              {'('}Balance : {formatMoney(money)} {''}đ{')'}
+              Balance : { money ? formatMoney(money) + "đ" : "0đ"}
             </Text>
           </View>
           <View

@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import Loading from '../../../Components/Loading';
 
 function formatMoney(n, currency = '') {
-  return currency + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return currency + n?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 const Recharge = () => {
@@ -38,7 +38,7 @@ const Recharge = () => {
       <Loading loading={loading} />
       <View style={styles.content}>
         <Text style={styles.textHeader}>
-          Số dư tài khoản: {formatMoney(userMoney.money)} đ
+        Số dư tài khoản: {userMoney.money ?  formatMoney(userMoney.money) + 'đ' : "0đ"}
         </Text>
         <TextInput
           placeholder="Nhập số tiền cần rút"
