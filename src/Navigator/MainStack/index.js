@@ -220,7 +220,7 @@ export default function AppNavigator() {
       });
     };
     connectChat();
-  }, [roomChatList.length]);
+  }, [roomChatList?.length]);
   return (
     <NavigationContainer>
       <Stack.Navigator>
