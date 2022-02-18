@@ -9,36 +9,45 @@ const styles = StyleSheet.create({
 
   image: {
     position: 'relative',
-    height: 230,
+    height: 290,
+  },
+  wrapperCover: {
+    width: '100%',
+    height: 240,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 2,
   },
   cover: {
-    height: 200,
     width: '100%',
+    height: 240,
   },
-  avatar: {
-    height: 160,
-    width: 160,
+  wrapperAvatar: {
     position: 'absolute',
-    borderRadius: 50,
-    borderColor: '#fff',
-    borderWidth: 5,
+    borderRadius: 999,
+    borderColor: '#EEEEEE',
+    borderWidth: 4,
     left: '50%',
     bottom: 0,
-    transform: [{translateX: -80}],
+    transform: [{translateX: -90}],
+  },
+  avatar: {
+    height: 180,
+    width: 180,
+    borderRadius: 999,
   },
   name: {
+    fontFamily: 'SourceSansPro-SemiBoldItalic',
     color: '#000',
     fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
-    borderBottomColor: 'rgba(0,0,0,0.2)',
-    borderBottomWidth: 1,
-    paddingBottom: 5,
+    paddingBottom: 15,
   },
   infor: {
     flexDirection: 'row',
-
-    borderBottomColor: 'rgba(0,0,0,0.4)',
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderTopWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
     borderBottomWidth: 1,
   },
   inforItem: {
@@ -68,23 +77,22 @@ const styles = StyleSheet.create({
   textHeader: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#777',
+    color: '#333',
     padding: 8,
   },
   txtActive: {
-    color: '#333',
+    color: '#1777F2',
   },
   btnActive: {
     backgroundColor: '#D6EAF8',
     borderRadius: 999,
     padding: 0,
-    marginVertical: 5,
   },
   photosImages: {
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 16,
+    marginTop: 8,
   },
   photosItem: {
     width: windowWidth / 3 - 2,
@@ -115,7 +123,57 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   viewContent: {
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#eeeeee',
+  },
+  btnGroup: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  btn: {
+    flex: 1,
+    margin: 5,
+    backgroundColor: '#1777F2',
+    height: 43,
+    justifyContent: 'center',
+  },
+  btnText: {
+    color: '#fff',
+  },
+  titleEditModal: {
+    fontWeight: '500',
+    fontSize: 24,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  input: {
+    borderBottomWidth: 1,
+    marginHorizontal: 10,
+    borderBottomColor: 'rgba(0,0,0,0.5)',
+    fontSize: 16,
+    paddingVertical: 4,
+    color: 'rgba(0,0,0,0.7)',
+  },
+  textDate: {
+    width: '100%',
+    textAlignVertical: 'center',
+    paddingHorizontal: 15,
+    paddingTop: 8,
+    fontSize: 15,
+    marginHorizontal: 2,
+    color: '#000',
+  },
+  textDone: {
+    color: '#1777F2',
+    fontWeight: 'bold',
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  arrowBack: {
+    position: 'absolute',
+    top: 10,
+    padding: 10,
+    zIndex: 999,
   },
 });
 export default styles;

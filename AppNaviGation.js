@@ -1,71 +1,165 @@
-import React, { useEffect,useState } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import AuthStack from './src/Navigator/AuthStack'
-import MainStack from './src/Navigator/MainStack'
-import {CHECK} from './src/Screens/Auth/constants'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Loading from './src/Component/Loading/index'
-import {createStackNavigator} from '@react-navigation/stack';
-import Login from './src/Screens/Auth/Login';
-import Home from './src/Screens/Home';
-import Register from './src/Screens/Auth/Register';
-import {Provider, useSelector} from 'react-redux';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Text, View, StyleSheet} from 'react-native';
-import Profile from './src/Screens/Profile';
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-export default function AppNavigator() {
-  const isLogged = useSelector(state => state.auth.isLogged)
-  const dispatch = useDispatch()
-  const [loading,setLoading] = useState(true)
-  useEffect(()=>{
-    const check = async ()=> {
-      const data = await AsyncStorage.getItem("USER_ID")
-      if (data !== null) {
-        dispatch({type:CHECK,payload:true})
-        setLoading(false)
-      }
-      else{
-        dispatch({type:CHECK,payload:false})
-        setLoading(false)
-      }
-    }
-    check()
-  },[])
+import NoInternetModal from './src/Components/NoInternetModal';
+import Loading from './src/Components/SplashScreen/index';
+import AuthStack from './src/Navigator/AuthStack';
+import MainStack from './src/Navigator/MainStack';
+import {USER_DEL, USER_SET} from './src/Screens/Auth/constants';
+import ModalComponent from './src/Screens/Modal';
+import ModalCreatePost from './src/Screens/ModalCreatePost';
+import ModalPostConfig from './src/Screens/ModalPostConfig';
+import SQLite from 'react-native-sqlite-storage';
 
-  return (
-    loading ? (
-      <>
-        <Loading/>
-      </>
-    )
-    :
-    (
-    <>
-      {
-      isLogged ?
-        <MainStack/>
-        :
-        <AuthStack/>
+SQLite.enablePromise(true);
+export default function AppNavigator() {
+  const userData = useSelector(state => state.auth.user);
+  const post = useSelector(state => state.home.post);
+  const dispatch = useDispatch();
+  const load = useSelector(state => state.auth.splashScreen);
+  const [loadDb, setLoadDb] = useState(false);
+  const saveId = async uid => {
+    const token = await messaging().getToken();
+    console.log(token + 'TOKEN');
+    await AsyncStorage.setItem('USER_ID', JSON.stringify(uid));
+  };
+
+  const removeId = async () => {
+    await AsyncStorage.removeItem('USER_ID');
+  };
+
+  useEffect(() => {
+    // (async () => {
+    // let user, getpost;
+    // try {
+    // user = JSON.parse(await AsyncStorage.getItem('user'));
+    // getpost = JSON.parse(await AsyncStorage.getItem('post'));
+    // } catch (e) {
+    // console.log(e, 'get data fail');
+    // }
+    // console.log('get', user, getpost);
+    // if (user) {
+    // dispatch({
+    //   type: GET_USER_SUCCESS,
+    //   payload: {user},
+    // });
+    // }
+    // if (getpost) {
+    // dispatch({type: ALL_POST, payload: {data: getpost}});
+    // }
+    // })();
+    (() => {
+      auth().onAuthStateChanged(function (user) {
+        if (user) {
+          saveId(user.uid);
+        } else {
+          removeId();
+        }
+      });
+    })();
+    const check = async () => {
+      const data = await AsyncStorage.getItem('USER_ID');
+      if (data !== null) {
+        dispatch({type: USER_SET});
+      } else {
+        dispatch({type: USER_DEL});
       }
+    };
+    check();
+    // dispatch({type: LOGOUT});
+  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (userData) {
+  //       const userData_ = {...userData};
+  //       delete userData_.friend;
+  //       try {
+  //         await AsyncStorage.setItem('user', JSON.stringify(userData_));
+  //       } catch (error) {
+  //         console.log('user', error);
+  //       }
+  //     } else {
+  //       console.log('user remove');
+  //       // await AsyncStorage.removeItem('user');
+  //     }
+  //   })();
+  // }, [userData]);
+  // useEffect(() => {
+  //   console.log(post, 'post change');
+  //   (async () => {
+  //     if (userData && post) {
+  //       console.log('post set local');
+  //       try {
+  //         let post_ = [...post];
+  //         post_ = post_.slice(0, 2).map(item => {
+  //           return {...item, createAt: item.createAt?.toDate()};
+  //         });
+  //         await AsyncStorage.setItem('post', JSON.stringify(post_));
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     } else {
+  //       console.log('post remove');
+  //       // await AsyncStorage.removeItem('post');
+  //     }
+  //   })();
+  // }, [post]);
+  const [isOffline, setOfflineStatus] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const removeNetInfoSubscription = NetInfo.addEventListener(state => {
+      const offline = !(state.isConnected && state.isInternetReachable);
+      setOfflineStatus(offline);
+      console.log('sdasd', offline);
+    });
+    setTimeout(() => {
+      setReady(true);
+    }, 3000);
+    return () => removeNetInfoSubscription();
+  }, []);
+
+  const fetchUsers = useCallback(() => {
+    setLoading(true);
+    firestore()
+      .collection('user')
+      .get()
+      .then(() => {
+        isOffline && setOfflineStatus(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [isOffline]);
+
+  return load || isOffline || !ready ? (
+    <>
+      <Loading />
+      {isOffline && (
+        <NoInternetModal
+          show={isOffline}
+          onRetry={fetchUsers}
+          isRetrying={isLoading}
+        />
+      )}
     </>
-  )
-  )
+  ) : (
+    <>
+      {userData ? (
+        <>
+          <ModalCreatePost />
+          <ModalPostConfig />
+          <MainStack />
+          <ModalComponent />
+        </>
+      ) : (
+        <AuthStack />
+      )}
+    </>
+  );
 }
-const styles = StyleSheet.create({
-  tabBottom: {
-    width: '90%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tabBottomFocus: color => ({
-    borderColor: color,
-    borderTopWidth: 4,
-  }),
-});

@@ -1,40 +1,35 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  View,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
-  Image,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
-function ImageComponent({handleDelete, setImageModal, index, item}) {
-  console.log('render' + index);
+import {useDispatch} from 'react-redux';
+import {MODAL_CHANGE_STATE} from '../../Modal/constant';
+function ImageComponent({item}) {
+  const dispatch = useDispatch();
   return (
     <View style={styles.photosItem}>
       {item ? (
-        <>
-          <TouchableOpacity
-            activeOpacity={0.6}
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={styles.photosImageItem}
+          onPress={() => {
+            dispatch({
+              type: MODAL_CHANGE_STATE,
+              payload: {image: item.imageUrl},
+            });
+          }}>
+          <Image
             style={styles.photosImageItem}
-            onPress={() => {
-              setImageModal(index);
-            }}>
-            <Image
-              style={styles.photosImageItem}
-              source={{
-                uri: item.url,
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btnDeleteImg}
-            onPress={() => {
-              handleDelete(item.id);
-            }}>
-            <Icon name="trash" size={25} color="#000" />
-          </TouchableOpacity>
-        </>
+            source={{
+              uri: item.imageUrl,
+            }}
+          />
+        </TouchableOpacity>
       ) : (
         <Text>loading...</Text>
       )}

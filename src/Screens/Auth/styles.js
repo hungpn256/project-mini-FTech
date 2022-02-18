@@ -1,54 +1,57 @@
-import { StyleSheet} from 'react-native';
-
+import {StyleSheet, Dimensions} from 'react-native';
+const heightWindow = Dimensions.get('window').height;
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-  },
-  background:{
+  container: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
   },
-  overlay:{
-    paddingHorizontal:20,
-    backgroundColor:'rgba(27,30,35 ,0.7)',
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    minHeight: heightWindow,
+    backgroundColor: '#fff',
   },
-  LogoSize:{
-    width:170,height:170
+  overlay: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
-  textStyle:{
-    color:'white',
-    textAlign:'center',
-    fontSize:16,
-    marginTop:20
+  LogoSize: {backgroundColor: '#1777F2'},
+  LogoText: {
+    fontSize: 50,
   },
-  LogoStyle:{
-    alignItems:'center',
-    justifyContent:'center',
-    flex:2,
-    marginTop:40,
-    marginBottom:40
-},
-btn:{
-  flex:1,
-  marginBottom:10,
-},
-input:{
-  flex:1,
-  marginBottom:10
-},
-quote:{
-  flex:1,
-  alignItems:'center',
-  justifyContent:'center',
-},
-textQuote:{
-  color:'white',
-  fontStyle:'italic',
-  fontSize:18,
-  textAlign:'center',
-  marginBottom:20
-},
+  textStyle: {
+    color: '#696969',
+    textAlign: 'center',
+    fontSize: 16,
+    marginTop: 20,
+  },
+  LogoStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  btn: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  input: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  quote: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textQuote: {
+    color: '#696969',
+    fontStyle: 'italic',
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   // background: {
   //   flex: 1,
   //   backgroundColor: '#191720',
@@ -100,11 +103,5 @@ textQuote:{
   //   textAlign: 'center',
   //   textAlignVertical: 'center',
   // },
-  viewModal: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.6)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
 export default styles;
